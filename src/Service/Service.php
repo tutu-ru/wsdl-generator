@@ -153,7 +153,7 @@ class Service implements ClassGenerator
 		$name = $this->identifier;
 
 		// Generate a valid class name
-		$name = Validator::validateClass($name, $this->config->get('namespaceName'));
+		$name = Validator::validateClass($name, $this->config->get($this->config::PACKAGE_NAMESPACE));
 
 		// Uppercase the name
 		$name = ucfirst($name);
@@ -166,10 +166,10 @@ class Service implements ClassGenerator
 			$this->getNamespace(),
 			$name,
 			false,
-			$this->config->get('soapClientClass'),
+			$this->config->get($this->config::SOAP_CLIENT_CLASS),
 			$comment
 		);
-		$this->class->setSavePath($this->config->get('serviceFolder'));
+		$this->class->setSavePath($this->config->get($this->config::SERVICES_DIRECTORY));
 
 		// Create the constructor
 		$comment = new PhpDocComment();
@@ -182,10 +182,12 @@ class Service implements ClassGenerator
       $options[\'classmap\'][$key] = $value;
     }
   }' . PHP_EOL;
-		$source .= '  $options = array_merge(' . var_export($this->config->get('soapClientOptions'), true) .
-			', $options);' . PHP_EOL;
+		$source .= $source = sprintf(
+			'$options = array_merge(%s,$options);'  . PHP_EOL,
+			var_export($this->config->get($this->config::SOAP_CLIENT_OPTIONS), true)
+		);
 		$source .= '  if (!$wsdl) {' . PHP_EOL;
-		$source .= '    $wsdl = \'' . $this->config->get('inputFile') . '\';' . PHP_EOL;
+		$source .= '    $wsdl = \'' . $this->config->get($this->config::INPUT_FILE) . '\';' . PHP_EOL;
 		$source .= '  }' . PHP_EOL;
 		$source .= '  parent::__construct($wsdl, $options);' . PHP_EOL;
 
@@ -227,9 +229,11 @@ class Service implements ClassGenerator
 				$comment->addParam(PhpDocElementFactory::getParam($arr['type'], $arr['name'], $arr['desc']));
 			}
 
-			$source =
-				'  return $this->__soapCall(\'' . $operation->getName() . '\', array(' .
-				$operation->getParamStringNoTypeHints() . '));' . PHP_EOL;
+			$source = sprintf(
+				'return $this->__soapCall(\'%s\',array(%s));'  . PHP_EOL,
+				$operation->getName(),
+				$operation->getParamStringNoTypeHints()
+			);
 
 			$paramStr = $operation->getParamString($this->types);
 
@@ -250,11 +254,11 @@ class Service implements ClassGenerator
 	 */
 	public function getNamespace()
 	{
-		if ($this->config->get('namespaceName'))
+		if ($this->config->get($this->config::PACKAGE_NAMESPACE))
 		{
-			$namespace = $this->config->get('namespaceName') . '\\';
-			$namespace .= (!empty($this->config->get('serviceFolder')))
-				? ucfirst($this->config->get('serviceFolder'))
+			$namespace = $this->config->get($this->config::PACKAGE_NAMESPACE) . '\\';
+			$namespace .= (!empty($this->config->get($this->config::SERVICES_DIRECTORY)))
+				? ucfirst($this->config->get($this->config::SERVICES_DIRECTORY))
 				: '';
 			return $namespace;
 		}

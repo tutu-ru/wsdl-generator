@@ -115,14 +115,10 @@ class Validator
 	 */
 	public static function validateClass($name, $namespace = null)
 	{
-		$name = trim($name, '_');
+		$name      = trim($name, '_');
 		$nameParts = explode('.', $name);
-		$name      = '';
-		foreach ($nameParts as $part)
-		{
-			$name .= ucfirst($part);
-		}
-		$name = self::validateNamingConvention($name);
+		$name      = implode(', ', array_map("ucfirst", $nameParts));
+		$name      = self::validateNamingConvention($name);
 
 		$prefix = !empty($namespace) ? $namespace . '\\' : '';
 

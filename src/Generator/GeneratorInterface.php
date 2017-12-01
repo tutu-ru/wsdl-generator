@@ -16,10 +16,8 @@ interface GeneratorInterface
 
 	/**
 	 * Generates php source code from a wsdl file
-	 *
-	 * @param ConfigInterface $config The config to use for generation
 	 */
-	public function generate(ConfigInterface $config);
+	public function generate();
 
 
 	/**

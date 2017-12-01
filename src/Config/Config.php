@@ -5,6 +5,7 @@ namespace Tutu\Wsdl2PhpGenerator\Config;
 use InvalidArgumentException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tutu\Wsdl2PhpGenerator\Exception\GeneratorException;
 
 /**
  * This class contains configurable key/value pairs.
@@ -13,6 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Config implements ConfigInterface
 {
+
 	/**
 	 * @var array The actual key/value pairs.
 	 */
@@ -29,18 +31,110 @@ class Config implements ConfigInterface
 
 
 	/**
+	 * @return array Available config options
+	 */
+	public static function getOptionsList()
+	{
+		return [
+			// namespace and base extend class options
+			self::PACKAGE_NAMESPACE,
+			self::BASE_EXTEND_CLASS,
+
+			// input file and directories options
+			self::INPUT_FILE,
+			self::OUTPUT_DIRECTORY,
+			self::ARRAYS_DIRECTORY,
+			self::ENUMS_DIRECTORY,
+			self::SERVICES_DIRECTORY,
+			self::STRUCTS_DIRECTORY,
+			self::WSDLS_DIRECTORY,
+
+			// classes generation options 
+			self::CLASS_NAMES,
+			self::CLASS_PREFIX,
+			self::CLASS_SUFFIX,
+			self::OPERATION_NAMES,
+			self::SHARED_TYPES,
+			self::MAPPED_TYPES,
+
+			// methods and params options
+			self::CONSTRUCTOR_NULL_PARAMS,
+			self::CONSTRUCTORS_ENABLED,
+			self::SETTERS_ENABLED,
+			self::GETTERS_ENABLED,
+
+			// soap class and options 
+			self::SOAP_CLIENT_CLASS,
+			self::SOAP_CLIENT_OPTIONS,
+
+			// proxy options
+			self::PROXY,
+
+			// verbosity options
+			self::VERBOSE,
+		];
+	}
+
+
+	/**
+	 * @return array Default config options
+	 */
+	public static function getDefaultOptions()
+	{
+		return [
+			// namespace and base extend class options
+			self::PACKAGE_NAMESPACE       => 'MyNS\MyService',
+			self::BASE_EXTEND_CLASS       => null,
+
+			// input file and directories options
+			self::INPUT_FILE              => 'inputFile',
+			self::OUTPUT_DIRECTORY        => 'output',
+			self::ARRAYS_DIRECTORY        => 'Arrays',
+			self::ENUMS_DIRECTORY         => 'Enums',
+			self::SERVICES_DIRECTORY      => 'Services',
+			self::STRUCTS_DIRECTORY       => 'Structs',
+			self::WSDLS_DIRECTORY         => 'Wsdls',
+
+			// classes generation options 
+			self::CLASS_NAMES             => '',
+			self::CLASS_PREFIX            => '',
+			self::CLASS_SUFFIX            => '',
+			self::OPERATION_NAMES         => '',
+			self::SHARED_TYPES            => true,
+			self::MAPPED_TYPES            => [],
+
+			// methods and options
+			self::CONSTRUCTOR_NULL_PARAMS => true,
+			self::CONSTRUCTORS_ENABLED    => true,
+			self::SETTERS_ENABLED         => true,
+			self::GETTERS_ENABLED         => true,
+
+			// soap class and options 
+			self::SOAP_CLIENT_CLASS       => '\SoapClient',
+			self::SOAP_CLIENT_OPTIONS     => [],
+
+			// proxy options
+			self::PROXY                   => null,
+
+			// verbosity options
+			self::VERBOSE                 => false,
+		];
+	}
+
+
+	/**
 	 * Get a value from the configuration by key.
 	 *
 	 * @param $key
 	 *
 	 * @return mixed
-	 * @throws \InvalidArgumentException
+	 * @throws GeneratorException
 	 */
 	public function get($key)
 	{
-		if (!array_key_exists($key, $this->options))
+		if (!in_array($key, self::getOptionsList()))
 		{
-			throw new InvalidArgumentException(sprintf('The key %s does not exist.', $key));
+			throw new GeneratorException(sprintf('The key %s does not exist in config options list.', $key));
 		}
 
 		return $this->options[$key];
@@ -54,9 +148,15 @@ class Config implements ConfigInterface
 	 * @param $value
 	 *
 	 * @return $this|ConfigInterface
+	 * @throws GeneratorException
 	 */
 	public function set($key, $value)
 	{
+		if (!in_array($key, self::getOptionsList()))
+		{
+			throw new GeneratorException(sprintf('The key %s does not exist in config options list.', $key));
+		}
+
 		$this->options[$key] = $value;
 		return $this;
 	}
@@ -72,34 +172,35 @@ class Config implements ConfigInterface
 		);
 
 		$resolver->setDefaults(
-			[
-				'verbose'                        => false,
-				'namespaceName'                  => '',
-				'classNames'                     => '',
-				'operationNames'                 => '',
-				'sharedTypes'                    => false,
-				'constructorParamsDefaultToNull' => true,
-				'soapClientClass'                => '\SoapClient',
-				'soapClientOptions'              => [],
-				'proxy'                          => false,
-
-				'baseComplexClass' => false,
-				'settersEnabled'   => true,
-				'gettersEnabled'   => true,
-
-				'arrayTypeFolder'       => 'Arrays',
-				'complexTypeFolder'     => 'Structs',
-				'enumerationTypeFolder' => 'Enums',
-				'serviceFolder'         => 'Services',
-			]
+			self::getDefaultOptions()
+//			[
+//				'verbose'                        => false,
+//				'namespaceName'                  => '',
+//				'classNames'                     => '',
+//				'operationNames'                 => '',
+//				'sharedTypes'                    => false,
+//				'constructorParamsDefaultToNull' => true,
+//				'soapClientClass'                => '\SoapClient',
+//				'soapClientOptions'              => [],
+//				'proxy'                          => false,
+//
+//				'baseComplexClass' => false,
+//				'settersEnabled'   => true,
+//				'gettersEnabled'   => true,
+//
+//				'arrayTypeFolder'       => 'Arrays',
+//				'complexTypeFolder'     => 'Structs',
+//				'enumerationTypeFolder' => 'Enums',
+//				'serviceFolder'         => 'Services',
+//			]
 		);
 
 		// A set of configuration options names and normalizer callable's.
 		$normalizers = [
-			'classNames'        => [$this, 'normalizeArray'],
-			'operationNames'    => [$this, 'normalizeArray'],
-			'soapClientOptions' => [$this, 'normalizeSoapClientOptions'],
-			'proxy'             => [$this, 'normalizeProxy'],
+			self::CLASS_NAMES         => [$this, 'normalizeArray'],
+			self::OPERATION_NAMES     => [$this, 'normalizeArray'],
+			self::SOAP_CLIENT_OPTIONS => [$this, 'normalizeSoapClientOptions'],
+			self::PROXY               => [$this, 'normalizeProxy'],
 		];
 		// Convert each callable to a closure as that is required by OptionsResolver->setNormalizer().
 		$normalizers = array_map(
@@ -138,6 +239,10 @@ class Config implements ConfigInterface
 	 */
 	protected function normalizeArray(Options $options, $value)
 	{
+		if(is_array($value))
+		{
+			return $value;
+		}
 		if (strlen($value) === 0)
 		{
 			return [];
@@ -192,7 +297,7 @@ class Config implements ConfigInterface
 	 * @param string|array $value The value to be normalized
 	 *
 	 * @return array|bool The normalized value.
-	 * @throws \Exception
+	 * @throws GeneratorException
 	 */
 	protected function normalizeProxy(Options $options, $value)
 	{
@@ -206,7 +311,7 @@ class Config implements ConfigInterface
 			$url_parts = parse_url($value);
 			if ($url_parts === false)
 			{
-				throw new \Exception('"proxy" configuration setting contains a malformed url.');
+				throw new GeneratorException('"proxy" configuration setting contains a malformed url.');
 			}
 
 			$proxy_array = [
@@ -237,14 +342,14 @@ class Config implements ConfigInterface
 
 			if (empty($value['proxy_host']) || empty($value['proxy_port']))
 			{
-				throw new \Exception(
+				throw new GeneratorException(
 					'"proxy" configuration setting must contain at least keys "host" and "port'
 				);
 			}
 		}
 		else
 		{
-			throw new \Exception(
+			throw new GeneratorException(
 				'"proxy" configuration setting must be either a string containing the proxy url '
 				. 'or an array containing at least a key "host" and "port"'
 			);

@@ -69,9 +69,12 @@ class Generator implements GeneratorInterface
 
 	/**
 	 * Generator constructor.
+	 *
+	 * @param ConfigInterface $config The config to use for generation
 	 */
-	public function __construct()
+	public function __construct(ConfigInterface $config)
 	{
+		$this->config = $config;
 		$this->service = null;
 		$this->types   = [];
 	}
@@ -79,16 +82,14 @@ class Generator implements GeneratorInterface
 
 	/**
 	 * Generates php source code from a wsdl file
-	 *
-	 * @param ConfigInterface $config The config to use for generation
 	 */
-	public function generate(ConfigInterface $config)
+	public function generate()
 	{
-		$this->config = $config;
 		$this->log('Starting generation');
+
 		// Warn users who have disabled SOAP_SINGLE_ELEMENT_ARRAYS.
 		// Note that this can be
-		$options = $this->config->get('soapClientOptions');
+		$options = $this->config->get($this->config::SOAP_CLIENT_OPTIONS);
 		if (empty($options['features']) ||
 			(($options['features'] & SOAP_SINGLE_ELEMENT_ARRAYS) != SOAP_SINGLE_ELEMENT_ARRAYS)
 		)
@@ -100,7 +101,8 @@ class Generator implements GeneratorInterface
 			];
 			$this->log(implode(PHP_EOL, $message), 'warning');
 		}
-		$wsdl = $this->config->get('inputFile');
+
+		$wsdl = $this->config->get($this->config::INPUT_FILE);
 		if (is_array($wsdl))
 		{
 			foreach ($wsdl as $ws)
@@ -112,6 +114,7 @@ class Generator implements GeneratorInterface
 		{
 			$this->load($wsdl);
 		}
+
 		$this->savePhp();
 		$this->log('Generation complete', 'info');
 	}
@@ -120,7 +123,7 @@ class Generator implements GeneratorInterface
 	/**
 	 * Load the wsdl file into php
 	 *
-	 * @param string $wsdl
+	 * @param string $wsdl The wsdl file or url
 	 */
 	protected function load($wsdl)
 	{
@@ -140,6 +143,7 @@ class Generator implements GeneratorInterface
 		$service = $this->wsdl->getService();
 		$this->log('Starting to load service ' . $service->getName());
 		$this->service = new Service($this->config, $service->getName(), $this->types, $service->getDocumentation());
+
 		foreach ($this->wsdl->getOperations() as $function)
 		{
 			$this->log('Loading function ' . $function->getName());
@@ -152,6 +156,7 @@ class Generator implements GeneratorInterface
 				)
 			);
 		}
+
 		$this->log('Done loading service ' . $service->getName());
 	}
 
@@ -289,7 +294,7 @@ class Generator implements GeneratorInterface
 					else
 					{
 						// @TODO map types
-						var_dump($commonMember->getType() . '---xxx---' . $member->getType() . ' --- '. $complexFirst->getPhpIdentifier());
+						// var_dump($commonMember->getType() . '---xxx---' . $member->getType() . ' --- '. $complexFirst->getPhpIdentifier());
 					}
 				}
 			}
@@ -324,6 +329,7 @@ class Generator implements GeneratorInterface
 		$filteredService = $filter->filter($this->service);
 		$service         = $filteredService->getClass();
 		$filteredTypes   = $filteredService->getTypes();
+
 		if ($service == null)
 		{
 			throw new GeneratorException('No service loaded');
@@ -354,7 +360,7 @@ class Generator implements GeneratorInterface
 	 */
 	protected function log($message, $level = 'notice')
 	{
-		if (isset($this->logger))
+		if ($this->config->get($this->config::VERBOSE) && isset($this->logger))
 		{
 			$this->logger->log($level, $message);
 		}

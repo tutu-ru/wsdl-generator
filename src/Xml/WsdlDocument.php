@@ -3,6 +3,7 @@
 namespace Tutu\Wsdl2PhpGenerator\Xml;
 
 use Tutu\Wsdl2PhpGenerator\Config\ConfigInterface;
+use Tutu\Wsdl2PhpGenerator\Exception\GeneratorException;
 
 /**
  * Class WsdlDocument
@@ -27,23 +28,34 @@ class WsdlDocument extends SchemaDocument
 	protected $config;
 
 
+	/**
+	 * WsdlDocument constructor.
+	 *
+	 * @param ConfigInterface $config
+	 * @param string          $wsdlUrl
+	 *
+	 * @throws GeneratorException
+	 */
 	public function __construct(ConfigInterface $config, $wsdlUrl)
 	{
 		$this->config = $config;
 
 		// Never use PHP WSDL cache to when creating the SoapClient instance used to extract information.
 		// Otherwise we risk generating code for a WSDL that is no longer valid.
-		$options = array_merge($this->config->get('soapClientOptions'), ['cache_wsdl' => WSDL_CACHE_NONE]);
+		$options = array_merge(
+			$this->config->get($this->config::SOAP_CLIENT_OPTIONS), 
+			['cache_wsdl' => WSDL_CACHE_NONE]
+		);
 
 		try
 		{
-			$soapClientClass  = new \ReflectionClass($this->config->get('soapClientClass'));
+			$soapClientClass  = new \ReflectionClass($this->config->get($this->config::SOAP_CLIENT_CLASS));
 			$this->soapClient = $soapClientClass->newInstance($wsdlUrl, $options);
 			parent::__construct($config, $wsdlUrl);
 		}
 		catch (\SoapFault $e)
 		{
-			throw new \Exception('Unable to load WSDL: ' . $e->getMessage(), $e->getCode(), $e);
+			throw new GeneratorException('Unable to load WSDL: ' . $e->getMessage(), $e->getCode(), $e);
 		}
 	}
 

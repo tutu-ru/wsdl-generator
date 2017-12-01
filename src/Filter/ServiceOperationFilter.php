@@ -30,10 +30,10 @@ class ServiceOperationFilter implements FilterInterface
 	/**
 	 * @param ConfigInterface $config
 	 */
-	public function __construct($config)
+	public function __construct(ConfigInterface $config)
 	{
 		$this->config  = $config;
-		$this->methods = $config->get('operationNames');
+		$this->methods = $config->get($config::OPERATION_NAMES);
 	}
 
 
@@ -63,6 +63,7 @@ class ServiceOperationFilter implements FilterInterface
 					$methodTypes[] = $type;
 				}
 			}
+
 			// Discover types used in returns
 			$returns = $operation->getReturns();
 
@@ -76,13 +77,16 @@ class ServiceOperationFilter implements FilterInterface
 			{
 				$methodTypes = array_merge($methodTypes, $this->findUsedTypes($service, $type));
 			}
+
 			$operations[] = $operation;
 			$types        = array_merge($types, $methodTypes);
 		}
+
 		// Remove duplicated using standard equality checks. Default string
 		// comparison does not work here.
 		$types           = array_unique($types, SORT_REGULAR);
 		$filteredService = new Service($this->config, $service->getIdentifier(), $types, $service->getDescription());
+
 		// Pull created service with operations
 		foreach ($operations as $operation)
 		{
