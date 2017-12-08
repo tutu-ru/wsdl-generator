@@ -1,0 +1,2137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:sws_xsd="http://webservices.sabre.com/sabreXML/2011/10" xmlns:sws="https://webservices.sabre.com/websvc" xmlns:eb="http://www.ebxml.org/namespaces/messageHeader" xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext" targetNamespace="https://webservices.sabre.com/websvc">
+	<wsdl:types>
+		<xsd:schema>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="dateTime">
+		<xs:annotation>
+			<xs:documentation>A date time type that forces both date and time to be specified. A year and seconds are allowed to be omitted. Example formats: "yyyy-mm-ddThh:mm:ss", "mm-ddThh:mm:ss", "mm-ddThh:mm", "yyyy-mm-ddThh:mm"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-9])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-30)))|(((19|20)(([02468][048])|([13579][26]))-02-29))|((20[0-9][0-9])|(19[0-9][0-9]))-((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))T([0-1][0-9]|[2][0-3])(:([0-5][0-9])){1,2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="date">
+		<xs:annotation>
+			<xs:documentation>A simple date type. Allows specifying a date without a year. Accepted formats: "yyyy-mm-dd" or "mm-dd"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-9])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-30)))|(((19|20)(([02468][048])|([13579][26]))-02-29))|((20[0-9][0-9])|(19[0-9][0-9]))-((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="fullDate">
+		<xs:annotation>
+			<xs:documentation>A full date type. Accepted format: "yyyy-mm-dd"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:date">
+			<xs:pattern value="\d{4}-\d{2}-\d{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="expireDate">
+		<xs:annotation>
+			<xs:documentation>A type representing credit card expiration date. Accepted format: "yyyy-mm"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:gYearMonth">
+			<xs:pattern value="\d{4}-\d{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="dateOrTime">
+		<xs:annotation>
+			<xs:documentation>Allows all combinations of date and time</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="((((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-9])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-30)))|(((19|20)(([02468][048])|([13579][26]))-02-29))|((20[0-9][0-9])|(19[0-9][0-9]))-((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))T(([0-1][0-9]|[2][0-3])(:([0-5][0-9])){1,2}))|(((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-9])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-30)))|(((19|20)(([02468][048])|([13579][26]))-02-29))|((20[0-9][0-9])|(19[0-9][0-9]))-((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))|(([0-1][0-9]|[2][0-3])(:([0-5][0-9])){1,2})"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="fullDateTime">
+		<xs:annotation>
+			<xs:documentation>A full dateTime type. Accepted format: "yyyy-mm-ddThh:mm:ss"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime">
+			<xs:pattern value="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="time">
+		<xs:annotation>
+			<xs:documentation>A simple time type. Seconds can be omitted, since those values are not propagated to the Sabre backend systems. Accepted formats: "hh:mm:ss" or "hh:mm"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([0-1][0-9]|[2][0-3])(:([0-5][0-9])){1,2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="shortTime">
+		<xs:annotation>
+			<xs:documentation>A short time type, that does not allow specifying seconds. Accepted format: "hh:mm"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([0-1][0-9]|[2][0-3]):([0-5][0-9])"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="fullTime">
+		<xs:annotation>
+			<xs:documentation>A full time type. Accepted format: "hh:mm:ss"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:time">
+			<xs:pattern value="\d{2}:\d{2}:\d{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="AutomatedExchangesRQ">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ExchangeComparison" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ExchangeOverrides" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="ChangeFee" minOccurs="0" type="xs:string"/>
+										<xs:element name="FeeOnPenalty" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Tax" maxOccurs="2">
+														<xs:complexType>
+															<xs:attribute name="Amount" type="xs:string" use="required"/>
+															<xs:attribute name="Code" type="xs:string" use="required"/>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="TicketFeeAmount" minOccurs="0" type="xs:string"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ExchangeSegment" minOccurs="0" maxOccurs="30">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="PriceRequestInformation" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="OptionalQualifiers" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="MiscQualifiers" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="BaggageAllowance" minOccurs="0">
+																				<xs:complexType>
+																					<xs:attribute name="Number" type="xs:string" use="optional"/>
+																				</xs:complexType>
+																			</xs:element>
+																			<xs:element name="ValidityDates" minOccurs="0">
+																				<xs:complexType>
+																					<xs:sequence>
+																						<xs:element name="NotValidAfter" minOccurs="0" type="sws:date"/>
+																						<xs:element name="NotValidBefore" minOccurs="0" type="sws:date"/>
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="PricingQualifiers" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="Brand" minOccurs="0" type="xs:string"/>
+																			<xs:element name="CommandPricing" minOccurs="0" type="xs:string"/>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="SegmentNumber" type="xs:integer" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="PriceRequestInformation">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="OptionalQualifiers">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="FlightQualifiers" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="VendorPrefs">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="Airline">
+																				<xs:complexType>
+																					<xs:attribute name="Code" type="xs:string" use="required"/>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="MiscQualifiers" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Endorsements" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="Endorsement" minOccurs="0" type="xs:string"/>
+																			<xs:element name="EndorsementOverride" minOccurs="0" type="xs:string"/>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="TourCode" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="Text" type="xs:string"/>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="PricingQualifiers">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Account" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="Code" type="xs:string"/>
+																		</xs:sequence>
+																		<xs:attribute name="Force" type="xs:boolean" use="optional"/>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="BargainFinder" minOccurs="0">
+																	<xs:complexType>
+																		<xs:attribute name="Rebook" type="xs:boolean" use="required"/>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="Brand" minOccurs="0" type="xs:string"/>
+																<xs:element name="ChangeFeeCollectionOptions" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="CollectFee" minOccurs="0">
+																				<xs:complexType>
+																					<xs:attribute name="InTotal" type="xs:boolean" use="optional"/>
+																					<xs:attribute name="OnEMD" type="xs:boolean" use="optional"/>
+																					<xs:attribute name="ReportFeeAsCP" type="xs:boolean" use="optional"/>
+																					<xs:attribute name="AsTax" type="xs:string" use="optional"/>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="CommandPricing" minOccurs="0" type="xs:string"/>
+																<xs:element name="Corporate" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="ID" type="xs:string"/>
+																		</xs:sequence>
+																		<xs:attribute name="Force" type="xs:boolean" use="optional"/>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="CountryInformation" minOccurs="0">
+																	<xs:complexType>
+																		<xs:attribute name="Residency" type="xs:string" use="optional"/>
+																		<xs:attribute name="Employment" type="xs:string" use="optional"/>
+																		<xs:attribute name="Nationality" type="xs:string" use="optional"/>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="Diagnostic" minOccurs="0" type="xs:string"/>
+																<xs:element name="FareOptions" minOccurs="0">
+																	<xs:complexType>
+																		<xs:attribute name="Private" type="xs:boolean" use="optional"/>
+																		<xs:attribute name="Public" type="xs:boolean" use="optional"/>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="ItineraryOptions" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="SegmentSelect" maxOccurs="unbounded">
+																				<xs:complexType>
+																					<xs:attribute name="Number" type="xs:integer" use="required"/>
+																					<xs:attribute name="EndNumber" type="xs:integer" use="optional"/>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="NameSelect">
+																	<xs:complexType>
+																		<xs:attribute name="NameNumber" type="xs:string" use="required"/>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="Overrides" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="NoAdvancePurchase" minOccurs="0">
+																				<xs:complexType>
+																					<xs:attribute name="Ind" type="xs:boolean" use="required"/>
+																				</xs:complexType>
+																			</xs:element>
+																			<xs:element name="NoFareRestrictions" minOccurs="0">
+																				<xs:complexType>
+																					<xs:attribute name="Ind" type="xs:boolean" use="required"/>
+																				</xs:complexType>
+																			</xs:element>
+																			<xs:element name="NoMinMaxStay" minOccurs="0">
+																				<xs:complexType>
+																					<xs:attribute name="Ind" type="xs:boolean" use="required"/>
+																				</xs:complexType>
+																			</xs:element>
+																			<xs:element name="NoPenalty" minOccurs="0">
+																				<xs:complexType>
+																					<xs:attribute name="Ind" type="xs:boolean" use="required"/>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="PassengerType" minOccurs="0">
+																	<xs:complexType>
+																		<xs:attribute name="Code" type="xs:string" use="optional"/>
+																		<xs:attribute name="Force" type="xs:boolean" use="optional"/>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="PlusUp" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="TicketDesignator" minOccurs="0" type="xs:string"/>
+																		</xs:sequence>
+																		<xs:attribute name="Amount" type="xs:string" use="optional"/>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="SpanishLargeFamilyDiscountLevel" minOccurs="0">
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:enumeration value="1"/>
+																			<xs:enumeration value="2"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="Taxes" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="NoTax" minOccurs="0">
+																				<xs:complexType>
+																					<xs:attribute name="Ind" type="xs:boolean" use="required"/>
+																				</xs:complexType>
+																			</xs:element>
+																			<xs:element name="TaxExempt" minOccurs="0" maxOccurs="20">
+																				<xs:complexType>
+																					<xs:attribute name="Code" type="xs:string" use="required"/>
+																				</xs:complexType>
+																			</xs:element>
+																			<xs:element name="TaxOverride" minOccurs="0" maxOccurs="20">
+																				<xs:complexType>
+																					<xs:attribute name="Amount" type="xs:string" use="required"/>
+																					<xs:attribute name="Code" type="xs:string" use="required"/>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																		<xs:attribute name="QuebecSalesTax" type="xs:string" use="optional"/>
+																		<xs:attribute name="VAT_TaxCode" type="xs:string" use="optional"/>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+															<xs:attribute name="AlternateCurrencyCode" type="xs:string" use="optional"/>
+															<xs:attribute name="AutoRedirect" type="xs:boolean" use="optional"/>
+															<xs:attribute name="FareFocusExclude" type="xs:boolean" use="optional"/>
+															<xs:attribute name="RoundTheWorld" type="xs:boolean" use="optional"/>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="ExemptPaperSurcharge" type="xs:boolean" use="optional"/>
+						<xs:attribute name="OriginalTicketNumber" type="xs:string" use="required"/>
+						<xs:attribute name="TicketMedia" use="optional">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="E"/>
+									<xs:enumeration value="P"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ExchangeConfirmation" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="OptionalQualifiers" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="FOP_Qualifiers" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="BasicFOP" minOccurs="0" maxOccurs="30">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="CC_Info" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="PaymentCard">
+																				<xs:complexType>
+																					<xs:attribute name="Code" type="xs:string" use="required"/>
+																					<xs:attribute name="ExpireDate" type="sws:expireDate" use="required"/>
+																					<xs:attribute name="ManualApprovalCode" type="xs:string" use="optional"/>
+																					<xs:attribute name="Number" type="xs:string" use="required"/>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																		<xs:attribute name="Suppress" type="xs:boolean" use="optional"/>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="PayLaterPlan" minOccurs="0">
+																	<xs:complexType>
+																		<xs:attribute name="AirlinePlanCode" type="xs:string" use="optional"/>
+																		<xs:attribute name="InstallmentCount" type="xs:string" use="optional"/>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+															<xs:attribute name="PayLater" type="xs:boolean" use="optional"/>
+															<xs:attribute name="Type" use="optional">
+																<xs:simpleType>
+																	<xs:restriction base="xs:string">
+																		<xs:enumeration value="CA"/>
+																		<xs:enumeration value="CK"/>
+																	</xs:restriction>
+																</xs:simpleType>
+															</xs:attribute>
+															<xs:attribute name="Virtual" type="xs:string" use="optional"/>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="MiscQualifiers" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="BaggageAllowance" minOccurs="0">
+														<xs:complexType>
+															<xs:attribute name="Number" type="xs:string" use="required"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="Commission" minOccurs="0">
+														<xs:complexType>
+															<xs:attribute name="Amount" type="xs:string" use="optional"/>
+															<xs:attribute name="AmountOnPenalty" type="xs:string" use="optional"/>
+															<xs:attribute name="Percent" type="xs:string" use="optional"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="EndorsementOverride" minOccurs="0" type="xs:string"/>
+													<xs:element name="Hemisphere" minOccurs="0">
+														<xs:complexType>
+															<xs:attribute name="Code" type="xs:integer" use="required"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="Journey" minOccurs="0">
+														<xs:complexType>
+															<xs:attribute name="Code" type="xs:integer" use="required"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="NewTicketFullCommission" minOccurs="0">
+														<xs:complexType>
+															<xs:attribute name="Amount" type="xs:string" use="required"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="RefundableAmountOnEMD" minOccurs="0" type="xs:string"/>
+													<xs:element name="Taxes" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="TaxExempt">
+																	<xs:complexType>
+																		<xs:attribute name="Code" type="xs:string" use="required"/>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="TourCode" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Text" type="xs:string"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="MiniItin" type="xs:boolean" use="optional"/>
+												<xs:attribute name="PNR_Override" type="xs:string" use="optional"/>
+												<xs:attribute name="ROE_Override" type="xs:string" use="optional"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="PQR_Number" type="xs:integer" use="required"/>
+						<xs:attribute name="DoNotIssueEMDForChangeFee" type="xs:boolean" use="optional"/>
+						<xs:attribute name="Print" use="optional">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="DP"/>
+									<xs:enumeration value="DPB"/>
+									<xs:enumeration value="DPE"/>
+									<xs:enumeration value="DPI"/>
+									<xs:enumeration value="DPO"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="RemoteCoupon" use="optional">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="RA"/>
+									<xs:enumeration value="RB"/>
+									<xs:enumeration value="RC"/>
+									<xs:enumeration value="RE"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="SelfSaleInd" type="xs:boolean" use="optional"/>
+						<xs:attribute name="TicketDeliveryOffice" type="xs:string" use="optional"/>
+						<xs:attribute name="WaiverCode" type="xs:string" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="ReturnHostCommand" type="xs:boolean" use="optional"/>
+			<xs:attribute name="TimeStamp" type="xs:dateTime" use="optional"/>
+			<xs:attribute name="Version" type="xs:string" fixed="2.6.1" use="required"/>
+		</xs:complexType>
+	</xs:element>
+
+	
+	
+	
+  <xsd:annotation>
+  	<xsd:documentation>
+  		October 11, 2011 - added ShortText to SystemSpecificResults.
+  		
+  		May 25, 2011 - version 1.1.1 - dmh - moved ApplicationResults and Results to STL namespace
+
+		Created: April 21, 2011
+		Description: This schema is the minimal Sabre Type Library (STL) schema needed for the Sabre SOAP Envelope schema to
+		identify the STL_Payload  substitution group head element and type to be extended by message schemas..
+
+		Copyright Sabre 2011
+		The copyright to the computer program(s) hereinis the property of Sabre. The program(s) may be used and/or copied only with the written permission of Sabre or in accordance with the terms and conditions stipulated in theagreement/contract under which the program(s) have been supplied.
+  	</xsd:documentation>
+  </xsd:annotation>
+
+	
+	<xsd:annotation>
+		<xsd:documentation>
+			October 11, 2011 - added key to trace attributes.
+			
+			August 8 - added HostCommand to system specific results.
+			
+		  	May 25, 2011 - version 1.1.1 - dmh - moved ApplicationResults and Results to STL namespace
+		
+			Created: April 21, 2011
+			Description: This schema is a standalone schema that defines Header metadata 
+			structures that are independent of the payload schema.
+			
+			Copyright Sabre 2011
+			The copyright to the computer program(s) hereinis the property of Sabre. The program(s) may be used and/or copied only
+			with the written permission of Sabre or in accordance with the terms and conditions stipulated in
+			theagreement/contract under which the program(s) have been supplied.
+  	</xsd:documentation>
+	</xsd:annotation>
+	
+	<xsd:element name="Diagnostics" type="Diagnostics"/>
+	<xsd:element name="Identification" type="Identification"/>
+	<xsd:element name="ResultSummary" type="ResultSummary"/>
+	<xsd:element name="Security" type="Security"/>
+	<xsd:element name="Service" type="Service"/>
+	<xsd:element name="Traces" type="Traces"/>
+
+	<xsd:element name="SabreHeader" type="SabreHeader"/>
+	<xsd:complexType name="SabreHeader">
+		<xsd:sequence>
+			<xsd:element ref="Service"/>
+			<xsd:element ref="Identification"/>
+			<xsd:element ref="ResultSummary" minOccurs="0"/>
+			<xsd:element ref="Security" minOccurs="0"/>
+			<xsd:element ref="Traces" minOccurs="0"/>
+			<xsd:element ref="Diagnostics" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:group name="SabreHeaderGroup">
+		<xsd:sequence>
+			<xsd:element ref="Service"/>
+			<xsd:element ref="Identification"/>
+			<xsd:element ref="ResultSummary" minOccurs="0"/>
+			<xsd:element ref="Security" minOccurs="0"/>
+			<xsd:element ref="Traces" minOccurs="0"/>
+			<xsd:element ref="Diagnostics" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+		
+	<xsd:complexType name="DiagnosticResults">
+		<xsd:sequence>
+			<xsd:any namespace="##other" processContents="lax" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Diagnostics">
+		<xsd:sequence>
+			<xsd:element name="Level" type="DiagnosticLevels" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Describes the level of diagnostic data requested or provided.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Data" type="Text.Long" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Block of diagnostic data included in request or returned in the response.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Diagnostic" type="DiagnosticResults" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Diagnostic data. Must be defined in a differrent namespace as the header.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="Identification">
+        <xsd:annotation>
+        	<xsd:documentation>The Identification metadata uniquely identify each message instance.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+			<xsd:element name="CustomerID" type="PseudoCityCodeOrOAC" minOccurs="1"/>
+            <xsd:element name="CustomerAppID" type="stlh:Text.Short" minOccurs="0"/>
+            <xsd:element name="ConversationID" type="TrackingID" minOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						The ConversationId element is a string identifying the set of related messages that make up a
+						conversation between two or more Parties. The Party initiating a conversation determines the value of
+						the ConversationId element that shall be reflected in all messages pertaining to that
+						conversation. It remains constant for all messages within a conversation.
+						Service providers are expected to increment the optional TrackingID integer attribute when present.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MessageID" type="Identifier" minOccurs="1"/>
+			<xsd:element name="TimeStamp" type="xsd:dateTime" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="Identifier.System">
+		<xsd:annotation>
+			<xsd:documentation>System identifier used to uniquily identify the specific system.
+ 	"Source" is used to return the application name responsible for fulfilling the particular request transaction.
+	"ApplicationInstance" is used to return the application instance responsible for fulfilling the particular request transaction.
+	"Cluster" is used to return the application cluster responsible for fulfilling the particular request transaction.
+	"HostName" is used to return the particular server name responsible for fulfilling the particular request transaction.
+	 Example: Source ApplicationInstance="PROD1" Cluster="PROD TPF SCC" HostName="PSS" TPF Source
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="Identifier">
+				<xsd:attribute name="instance" type="Identifier"/>
+				<xsd:attribute name="cluster" type="Identifier"/>
+				<xsd:attribute name="host" type="Identifier"/>
+				<xsd:attribute name="uri" type="Identifier">
+					<xsd:annotation>
+						<xsd:documentation>The uri representing the endpoint reference by which this system can be accessed.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="Message.Condition">
+		<xsd:annotation>
+			<xsd:documentation>Free text and code provided by the application or system that detected the condition. 
+			Contents may be anything the system detecting the error chooses to convey. Used by service consumers.  
+			Codes and/or messages should be agreed upon by service users. 
+			Do not use for structured data, use parameters instead.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="Text.Long">
+				<xsd:attribute name="code" type="xsd:string"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="ProblemBase">
+		<xsd:sequence>
+		</xsd:sequence>
+		<xsd:attribute name="type" type="ErrorType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>An indication of the source of error when processing the request.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="status" type="CompletionCodes" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Impact of the error on process completion.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="timeStamp" type="xsd:dateTime"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="ProblemSummary">
+		<xsd:sequence>
+			<xsd:element name="Source" type="Identifier.System" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						The system that the reporting system deemed to be the cause of the problem. If omitted, the
+						reporting system is also the source of the problem. For application errors, the element may
+						identify a system the application is dependent upon that failed to respond. For validation
+						errors this may identify the service consumer.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ReportingSystem" type="Identifier.System">
+				<xsd:annotation>
+					<xsd:documentation>
+						The system that created the results record. If the Source system identifier is omitted, the
+						system identified here both was the cause of the problem and created the result record.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Message" type="Message.Condition" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						An informative code and message that describes the results. Note: the message code and text must
+						NOT be required to process to understand retry/compensate status.
+						This value should be the same as in the SystemSpecificResults in the body.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+			<xsd:element name="ShortText" type="Text.Short" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						An abbreviated version of the error in textual format.
+						This value should be the same as in the SystemSpecificResults in the body.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="type" type="ErrorType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>An indication of the source of error when processing the request.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="status" type="CompletionCodes" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Impact of the error on process completion.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="timeStamp" type="xsd:dateTime"/>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="ResultSummary">
+		<xsd:choice>
+			<xsd:element name="Success" type="EmptyElement">
+				<xsd:annotation>
+					<xsd:documentation>Success indicates that the request was
+						processed successfully.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Error" type="ProblemSummary"/>
+		</xsd:choice>
+	</xsd:complexType>
+	
+	
+	<xsd:complexType name="Security">
+		<xsd:annotation>
+			<xsd:documentation>Header records no longer contain user credentials (username/password) as these are needed only for 
+     		 SessionCreateRQ in which the credentials should be in the payload.
+     		 </xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element name="SecurityToken" type="Text.Long"/>
+		</xsd:choice>
+	</xsd:complexType>
+	
+	<xsd:complexType name="Service">
+		<xsd:simpleContent>
+			<xsd:extension base="Text.Short">
+				<xsd:attribute name="operation" type="Text.Short"/>
+				<xsd:attribute name="version" type="Text.Short"/>
+				<xsd:attribute name="ttl" type="xsd:nonNegativeInteger"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
+	
+	<xsd:complexType name="Traces">
+		<xsd:sequence>
+			<xsd:element name="Trace" type="TraceRecord" minOccurs="0" maxOccurs="999"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="TraceRecord">
+		<xsd:annotation>
+			<xsd:documentation>Record for all systems (consumer, proxies and gateways, providers) to use to trace the message. 
+			The value is the common system name. 
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="Identifier">
+				<xsd:attribute name="key" type="Text.Long">
+					<xsd:annotation>
+						<xsd:documentation>
+							The key attribute is similar to ConversationID but is provided by the service requestor or entrypoint gateway and 
+							must be unique across all Sabre gateways. Each gateway instance must prepend the ID value with its unique system identifier. 
+							Internal service consumers must provide this value which may be their unique system identifier concantanated 
+							with the ConversationID.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="start" type="xsd:dateTime" use="required">
+					<xsd:annotation>
+						<xsd:documentation>When the system stated processing the message.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="end" type="xsd:dateTime">
+					<xsd:annotation>
+						<xsd:documentation>When the system completed processing the message. 
+						Example: 2002-10-10T12:00:00+05:00.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="appInstance" type="Identifier">
+					<xsd:annotation>
+						<xsd:documentation>The application instance involved in the particular transaction. 
+						For example: PROD1
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="cluster" type="Identifier">
+					<xsd:annotation>
+						<xsd:documentation>The application server cluster involved in the particular transaction. 
+						Example: PROD TPFC SCC
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="host" type="Identifier">
+					<xsd:annotation>
+						<xsd:documentation>The server name involved in the particular transaction. 
+						Example: PSS
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="targetURI" type="xsd:anyURI">
+					<xsd:annotation>
+						<xsd:documentation>The targetURI is the endpoint address this system sent the message to. 
+						For ServiceProviders it should be the abstract service address which is the address used by 
+						registries to look up the actual service endpoint URI. The endpoint address may be a queue
+						name (MOM service name).
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="role" type="TraceRole"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
+
+	<xsd:complexType name="TrackingID">
+		<xsd:annotation>
+			<xsd:documentation>Tracking Identifier is an identifier intended for use to a set of related items and provide an 
+			optional sequence number for the items.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="Identifier">
+				<xsd:attribute name="seq" type="xsd:integer"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	
+	<xsd:simpleType name="CompletionCodes">
+		<xsd:restriction base="xsd:token">
+			<xsd:enumeration value="Complete"/>
+			<xsd:enumeration value="Incomplete"/>
+			<xsd:enumeration value="NotProcessed"/>
+			<xsd:enumeration value="Unknown"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="DiagnosticLevels">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Mock">
+				<xsd:annotation>
+					<xsd:documentation>Return a sample message without invoking service logic.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Simulate">
+				<xsd:annotation>
+					<xsd:documentation>Compute response without making changes to service data, state or status.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="EmptyElement">
+		<xsd:annotation>
+			<xsd:documentation>Elements of this type are used for indicators whose presense denotes the 
+				condition described by their name. They  have no content nor any attributes. 
+				For example, an empty Success element denote that the process was successfully completed.
+			</xsd:documentation>
+				</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="0"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="ErrorType">
+		<xsd:restriction base="xsd:NMTOKEN">
+			<xsd:enumeration value="Transport">
+				<xsd:annotation>
+					<xsd:documentation>
+						Transport errors occur when the infrastructure systems are unable to deliver the request message
+						to the service provider or the service response is not delivered within the allotted time frame.
+						These errors are always detected by the transport infrastructure systems. The detecting system
+						should indicate the need for compensation in Severity and Status values. These errors may be
+						transient and consumers may choose to retry their request.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Validation">
+				<xsd:annotation>
+					<xsd:documentation>
+						Validation errors occur when the message is determined to not conform to the interface
+						specifications. For example, it is an validation error when the request violates security
+						requirements or the message is not schema valid according to the service interface schema. These
+						errors may be detected by either the transport or application systems. Applications must not
+						make changes that will require compensation when validation errors are detected. These errors
+						are caused by the structure or content of the request and consumers should not attempt to retry
+						their unmodified request.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Application">
+				<xsd:annotation>
+					<xsd:documentation>
+						Application errors occur when a valid message is delivered to the service provider yet the
+						request cannot be completely processed. This can occur when the provider has technical issues
+						such as internal exceptions, database locks, or connectivity failure to a system it is dependent
+						upon. These errors are always detected by the application system. The application should
+						indicate the need for compensation in Severity and Status values. These errors may be transient
+						and consumers may choose to retry their request.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BusinessLogic">
+				<xsd:annotation>
+					<xsd:documentation>
+						Business logic errors occur when a service provider is able to process the request message but
+						the request violates pre-condition or internal application business logic. Example business
+						logic errors are a request for flight information but the flight does not exist or a request to
+						reserve more seats than are on the aircraft. The response message will likely provide details
+						about the error condition and may or may not use a standard error response record. Business
+						logic errors are always detected by the application system. Applications must not make changes
+						that will require compensation when business logic errors are detected. These errors are caused
+						by content of the request; consumers should only attempt to retry their unmodified request if
+						the business condition described in the application specific response indicates the condition
+						may be transient. Service providers should use the ErrorMessage and code attribute to describe
+						the business condition and document those conditions in their service contract.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="Identifier">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="255"/>
+			<xsd:minLength value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="PseudoCityCodeOrOAC">
+		<xsd:annotation>
+			<xsd:documentation>Customer Identifier assigned to office or agency or location. Commonly use values are 
+			Psuedo City Code - 3 to 16 characters or the Sabre Office accounting code (OAC) which can be upto 25 characters.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="25"/>
+			<xsd:minLength value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="Text.Long">
+		<xsd:annotation>
+			<xsd:documentation>Same as STL Text.Long - A field text characters and no other constraints.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="0"/>
+			<xsd:maxLength value="4096"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="Text.Short">
+		<xsd:annotation>
+			<xsd:documentation>Same as STL Text.Short - A field of text characters and no other constraints.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="128"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="TraceRole">
+		<xsd:restriction base="xsd:NMTOKEN">
+			<xsd:enumeration value="consumer">
+				<xsd:annotation>
+					<xsd:documentation>the system that initiated the service request and will be the ultimate consumer 
+					of the service results.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="provider">
+				<xsd:annotation>
+					<xsd:documentation>System that performs the service operation defined in the service interface. 
+					For RQ/RS exchange patterns, the provider reads the request message, applies business logic and 
+					returns a response.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="gateway"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+
+
+	<xsd:element name="STL_Payload" type="STL_Payload" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>Create all message root elements as member of the substitution group with the element as the head.
+				Global message types must be defined as an extension of the STL_Payload type.
+      </xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="STL_Payload">
+		<xsd:annotation>
+			<xsd:documentation>All message roots should be created as an extension of this base type. Global message elements
+				must declare they are a member of the STL_Payload substitution group. This type may be used when an empty payload is
+				needed for error handling. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="ApplicationResults" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="version">
+			<xsd:annotation>
+				<xsd:documentation>Version of the payload message.</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="1"/>
+					<xsd:maxLength value="255"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+
+<!-- 
+   - Results and Problem Information components. 
+  -->
+	<xsd:element name="Results" type="Results" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>Results is an abstract type to be used as a substitution group head.
+				ApplicationResults is an example of its intended usage. 
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="Results">
+	</xsd:complexType>
+	<xsd:element name="ApplicationResults" type="ApplicationResults" substitutionGroup="Results">
+		<xsd:annotation>
+			<xsd:documentation>ApplicationResults can be used anywhere where Results is referenced, specifically as
+				the contents of a Sabre SOAP Fault/detail element.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="ApplicationResults">
+		<xsd:complexContent>
+			<xsd:extension base="Results">
+				<xsd:sequence>
+					<xsd:element name="Success" type="ProblemInformation" minOccurs="0" maxOccurs="99"/>
+					<xsd:element name="Error" type="ProblemInformation" minOccurs="0" maxOccurs="99"/>
+					<xsd:element name="Warning" type="ProblemInformation" minOccurs="0" maxOccurs="99"/>
+				</xsd:sequence>
+				<xsd:attribute name="status" type="stlh:CompletionCodes" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:element name="ProblemInformation" type="ProblemInformation"/>
+	<xsd:complexType name="ProblemInformation">
+		<xsd:sequence>
+			<xsd:element name="SystemSpecificResults" type="SystemSpecificResults" minOccurs="0" maxOccurs="99"/>
+		</xsd:sequence>
+		<xsd:attribute name="type" type="stlh:ErrorType">
+			<xsd:annotation>
+				<xsd:documentation>An indication of the source of error when processing the request.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="timeStamp" type="xsd:dateTime"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="SystemSpecificResults">
+		<xsd:sequence>
+			<xsd:element name="HostCommand" type="HostCommand" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Host system command run to create this result.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Message" type="stlh:Message.Condition" minOccurs="0" maxOccurs="99">
+				<xsd:annotation>
+					<xsd:documentation>Application specific code and Message. A textual description to provide more 
+					information about the specific condition, warning or error  with code attribute as numeric value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ShortText" type="stlh:Text.Short" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>An abbreviated version of the error in textual format.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Element" type="stlh:Text.Long" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If present, this attribute may identify an unknown or misspelled tag that caused 
+					an error in processing. It is recommended that the Tag attribute use XPath notation to identify the 
+					location of a tag in the event that more than one tag of the same name is present in the document. 
+					Alternatively, the tag name alone can be used to identify missing data [Type=ReqFieldMissing].
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RecordID" type="stlh:Identifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If present, this attribute allows for batch processing and the identification of the 
+					record that failed amongst a group of records. This value may contain a concatenation of a unique failed 
+					transaction ID with specific record(s) associated with that transaction.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DocURL" type="xsd:anyURI" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If present, this attribute refers to an online description of the error that occurred.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="timeStamp" type="xsd:dateTime"/>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="HostCommand">
+		<xsd:simpleContent>
+			<xsd:extension base="stlh:Text.Long">
+				<xsd:attribute name="LNIATA" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="dateTime">
+		<xs:annotation>
+			<xs:documentation>A date time type that forces both date and time to be specified. A year and seconds are allowed to be omitted. Example formats: "yyyy-mm-ddThh:mm:ss", "mm-ddThh:mm:ss", "mm-ddThh:mm", "yyyy-mm-ddThh:mm"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-9])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-30)))|(((19|20)(([02468][048])|([13579][26]))-02-29))|((20[0-9][0-9])|(19[0-9][0-9]))-((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))T([0-1][0-9]|[2][0-3])(:([0-5][0-9])){1,2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="date">
+		<xs:annotation>
+			<xs:documentation>A simple date type. Allows specifying a date without a year. Accepted formats: "yyyy-mm-dd" or "mm-dd"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-9])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-30)))|(((19|20)(([02468][048])|([13579][26]))-02-29))|((20[0-9][0-9])|(19[0-9][0-9]))-((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="fullDate">
+		<xs:annotation>
+			<xs:documentation>A full date type. Accepted format: "yyyy-mm-dd"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:date">
+			<xs:pattern value="\d{4}-\d{2}-\d{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="expireDate">
+		<xs:annotation>
+			<xs:documentation>A type representing credit card expiration date. Accepted format: "yyyy-mm"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:gYearMonth">
+			<xs:pattern value="\d{4}-\d{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="dateOrTime">
+		<xs:annotation>
+			<xs:documentation>Allows all combinations of date and time</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="((((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-9])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-30)))|(((19|20)(([02468][048])|([13579][26]))-02-29))|((20[0-9][0-9])|(19[0-9][0-9]))-((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))T(([0-1][0-9]|[2][0-3])(:([0-5][0-9])){1,2}))|(((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-9])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-30)))|(((19|20)(([02468][048])|([13579][26]))-02-29))|((20[0-9][0-9])|(19[0-9][0-9]))-((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))|(([0-1][0-9]|[2][0-3])(:([0-5][0-9])){1,2})"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="fullDateTime">
+		<xs:annotation>
+			<xs:documentation>A full dateTime type. Accepted format: "yyyy-mm-ddThh:mm:ss"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime">
+			<xs:pattern value="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="time">
+		<xs:annotation>
+			<xs:documentation>A simple time type. Seconds can be omitted, since those values are not propagated to the Sabre backend systems. Accepted formats: "hh:mm:ss" or "hh:mm"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([0-1][0-9]|[2][0-3])(:([0-5][0-9])){1,2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="shortTime">
+		<xs:annotation>
+			<xs:documentation>A short time type, that does not allow specifying seconds. Accepted format: "hh:mm"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([0-1][0-9]|[2][0-3]):([0-5][0-9])"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="fullTime">
+		<xs:annotation>
+			<xs:documentation>A full time type. Accepted format: "hh:mm:ss"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:time">
+			<xs:pattern value="\d{2}:\d{2}:\d{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="AutomatedExchangesRS">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="stl:ApplicationResults"/>
+				<xs:element name="BaggageInfo" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="FlightSegment" minOccurs="0" maxOccurs="30">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="DestinationLocation" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="LocationCode" type="xs:string" use="optional"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="FreeBaggageAllowance" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="Number" type="xs:string" use="optional"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="MarketingAirline" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="Code" type="xs:string" use="optional"/>
+												<xs:attribute name="FlightNumber" type="xs:string" use="optional"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="OriginLocation" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="LocationCode" type="xs:string" use="optional"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="ArrivalDateTime" type="xs:string" use="optional"/>
+									<xs:attribute name="DepartureDateTime" type="sws:date" use="optional"/>
+									<xs:attribute name="FlightNumber" type="xs:string" use="optional"/>
+									<xs:attribute name="ResBookDesigCode" type="xs:string" use="optional"/>
+									<xs:attribute name="RPH" type="xs:integer" use="optional"/>
+									<xs:attribute name="SegmentNumber" type="xs:string" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Text" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Endorsements" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+				<xs:element name="ExchangeComparison" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="AirItineraryPricingInfo" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="ItinTotalFare" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="BaseFare" minOccurs="0">
+														<xs:complexType>
+															<xs:attribute name="Amount" type="xs:string" use="optional"/>
+															<xs:attribute name="CurrencyCode" type="xs:string" use="optional"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="EquivFare" minOccurs="0">
+														<xs:complexType>
+															<xs:attribute name="Amount" type="xs:string" use="optional"/>
+															<xs:attribute name="CurrencyCode" type="xs:string" use="optional"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="Taxes" minOccurs="0">
+														<xs:complexType>
+															<xs:attribute name="TotalAmount" type="xs:string" use="optional"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="TotalFare" minOccurs="0">
+														<xs:complexType>
+															<xs:attribute name="Amount" type="xs:string" use="optional"/>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="Type" type="xs:string" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="TaxComparison" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Tax" minOccurs="0" maxOccurs="3">
+											<xs:complexType>
+												<xs:attribute name="Amount" type="xs:decimal" use="optional"/>
+												<xs:attribute name="TaxCode" type="xs:string" use="optional"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="Type" type="xs:string" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ExchangeDetails" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="ChangeFeeCollectionOptions" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="CancelPenaltyFees" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Taxes" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="Tax" minOccurs="0" maxOccurs="2">
+																				<xs:complexType>
+																					<xs:attribute name="Amount" type="xs:string" use="optional"/>
+																					<xs:attribute name="TaxCode" type="xs:string" use="optional"/>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="CollectFee" minOccurs="0">
+														<xs:complexType>
+															<xs:attribute name="AsTax" type="xs:string" use="optional"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="CollectTotal" minOccurs="0">
+														<xs:complexType>
+															<xs:attribute name="Amount" type="xs:string" use="optional"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="FeeCollectionMethod" minOccurs="0" type="xs:string"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Category35NetFare" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="FareInformation" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="BaseFare" minOccurs="0">
+																	<xs:complexType>
+																		<xs:attribute name="Amount" type="xs:decimal" use="optional"/>
+																		<xs:attribute name="CurrencyCode" type="xs:string" use="optional"/>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="EquivFare" minOccurs="0">
+																	<xs:complexType>
+																		<xs:attribute name="Amount" type="xs:decimal" use="optional"/>
+																		<xs:attribute name="CurrencyCode" type="xs:string" use="optional"/>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="TotalTax" minOccurs="0">
+																	<xs:complexType>
+																		<xs:attribute name="Amount" type="xs:decimal" use="optional"/>
+																		<xs:attribute name="CurrencyCode" type="xs:string" use="optional"/>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="TotalFare" minOccurs="0">
+																	<xs:complexType>
+																		<xs:attribute name="Amount" type="xs:decimal" use="optional"/>
+																		<xs:attribute name="CurrencyCode" type="xs:string" use="optional"/>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="TaxInformation" minOccurs="0" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="Tax" minOccurs="0" maxOccurs="3">
+																				<xs:complexType>
+																					<xs:attribute name="Amount" type="xs:decimal" use="optional"/>
+																					<xs:attribute name="TaxCode" type="xs:string" use="optional"/>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																		<xs:attribute name="Type" type="xs:string" use="optional"/>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+															<xs:attribute name="TicketedFareLevel" type="xs:string" use="optional"/>
+															<xs:attribute name="Type" type="xs:string" use="optional"/>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="RefundableAmountOnEMD" minOccurs="0" type="xs:string"/>
+										<xs:element name="ResidualTaxesPresent" minOccurs="0" type="xs:string"/>
+										<xs:element name="Text" minOccurs="0" type="xs:string"/>
+										<xs:element name="AdditionalText" minOccurs="0" type="xs:string"/>
+										<xs:element name="TicketFee" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="Amount" type="xs:string" use="optional"/>
+												<xs:attribute name="TaxCode" type="xs:string" use="optional"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="AutoRedirect" type="xs:string" use="optional"/>
+									<xs:attribute name="ChangeFee" type="xs:string" use="optional"/>
+									<xs:attribute name="ChgFeeEMDNotSupported" type="xs:string" use="optional"/>
+									<xs:attribute name="ExchangeReissue" type="xs:string" use="optional"/>
+									<xs:attribute name="ShortText" type="xs:string" use="optional"/>
+									<xs:attribute name="TotalRefund" type="xs:string" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="PQR_Number" type="xs:string" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ExchangeConfirmation" minOccurs="0">
+					<xs:complexType>
+						<xs:attribute name="PQR_Number" type="xs:string" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Source" minOccurs="0">
+					<xs:complexType>
+						<xs:attribute name="AgencyCity" type="xs:string" use="optional"/>
+						<xs:attribute name="AgentDutySine" type="xs:string" use="optional"/>
+						<xs:attribute name="AgentWorkArea" type="xs:string" use="optional"/>
+						<xs:attribute name="CreateDateTime" type="sws:dateTime" use="optional"/>
+						<xs:attribute name="IATA_Number" type="xs:string" use="optional"/>
+						<xs:attribute name="PrimeHostID" type="xs:string" use="optional"/>
+						<xs:attribute name="PseudoCityCode" type="xs:string" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Text" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+			</xs:sequence>
+			<xs:attribute name="Version" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+
+
+			
+			
+	<xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" name="Security" msdata:Prefix="wsse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="UsernameToken" msdata:Prefix="wsse" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Username" type="xs:string" minOccurs="0" msdata:Prefix="wsse"/>
+							<xs:element name="Password" type="xs:string" minOccurs="0" msdata:Prefix="wsse"/>
+							<xs:element name="NewPassword" type="xs:string" minOccurs="0" maxOccurs="2" msdata:Prefix="wsse"/>
+							<xs:element name="Organization" type="xs:string" form="unqualified" minOccurs="0"/>
+							<xs:element name="Domain" type="xs:string" form="unqualified" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="SabreAth" msdata:Prefix="wsse" minOccurs="0" type="xs:string"/>
+				<xs:element name="BinarySecurityToken" type="xs:string" minOccurs="0" msdata:Prefix="wsse">
+					<!--xs:complexType>
+						<xs:attribute name="EncodingType" type="xs:string" use="optional"/>
+						<xs:attribute name="valueType" type="xs:string" use="optional"/>						
+					</xs:complexType-->
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+			
+	
+  <xsd:annotation>
+  	<xsd:documentation>
+  		October 11, 2011 - added ShortText to SystemSpecificResults.
+  		
+  		May 25, 2011 - version 1.1.1 - dmh - moved ApplicationResults and Results to STL namespace
+
+		Created: April 21, 2011
+		Description: This schema is the minimal Sabre Type Library (STL) schema needed for the Sabre SOAP Envelope schema to
+		identify the STL_Payload  substitution group head element and type to be extended by message schemas..
+
+		Copyright Sabre 2011
+		The copyright to the computer program(s) hereinis the property of Sabre. The program(s) may be used and/or copied only with the written permission of Sabre or in accordance with the terms and conditions stipulated in theagreement/contract under which the program(s) have been supplied.
+  	</xsd:documentation>
+  </xsd:annotation>
+
+	
+	<xsd:annotation>
+		<xsd:documentation>
+			October 11, 2011 - added key to trace attributes.
+			
+			August 8 - added HostCommand to system specific results.
+			
+		  	May 25, 2011 - version 1.1.1 - dmh - moved ApplicationResults and Results to STL namespace
+		
+			Created: April 21, 2011
+			Description: This schema is a standalone schema that defines Header metadata 
+			structures that are independent of the payload schema.
+			
+			Copyright Sabre 2011
+			The copyright to the computer program(s) hereinis the property of Sabre. The program(s) may be used and/or copied only
+			with the written permission of Sabre or in accordance with the terms and conditions stipulated in
+			theagreement/contract under which the program(s) have been supplied.
+  	</xsd:documentation>
+	</xsd:annotation>
+	
+	<xsd:element name="Diagnostics" type="Diagnostics"/>
+	<xsd:element name="Identification" type="Identification"/>
+	<xsd:element name="ResultSummary" type="ResultSummary"/>
+	<xsd:element name="Security" type="Security"/>
+	<xsd:element name="Service" type="Service"/>
+	<xsd:element name="Traces" type="Traces"/>
+
+	<xsd:element name="SabreHeader" type="SabreHeader"/>
+	<xsd:complexType name="SabreHeader">
+		<xsd:sequence>
+			<xsd:element ref="Service"/>
+			<xsd:element ref="Identification"/>
+			<xsd:element ref="ResultSummary" minOccurs="0"/>
+			<xsd:element ref="Security" minOccurs="0"/>
+			<xsd:element ref="Traces" minOccurs="0"/>
+			<xsd:element ref="Diagnostics" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:group name="SabreHeaderGroup">
+		<xsd:sequence>
+			<xsd:element ref="Service"/>
+			<xsd:element ref="Identification"/>
+			<xsd:element ref="ResultSummary" minOccurs="0"/>
+			<xsd:element ref="Security" minOccurs="0"/>
+			<xsd:element ref="Traces" minOccurs="0"/>
+			<xsd:element ref="Diagnostics" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:group>
+		
+	<xsd:complexType name="DiagnosticResults">
+		<xsd:sequence>
+			<xsd:any namespace="##other" processContents="lax" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Diagnostics">
+		<xsd:sequence>
+			<xsd:element name="Level" type="DiagnosticLevels" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Describes the level of diagnostic data requested or provided.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Data" type="Text.Long" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Block of diagnostic data included in request or returned in the response.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Diagnostic" type="DiagnosticResults" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Diagnostic data. Must be defined in a differrent namespace as the header.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="Identification">
+        <xsd:annotation>
+        	<xsd:documentation>The Identification metadata uniquely identify each message instance.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+			<xsd:element name="CustomerID" type="PseudoCityCodeOrOAC" minOccurs="1"/>
+            <xsd:element name="CustomerAppID" type="stlh:Text.Short" minOccurs="0"/>
+            <xsd:element name="ConversationID" type="TrackingID" minOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						The ConversationId element is a string identifying the set of related messages that make up a
+						conversation between two or more Parties. The Party initiating a conversation determines the value of
+						the ConversationId element that shall be reflected in all messages pertaining to that
+						conversation. It remains constant for all messages within a conversation.
+						Service providers are expected to increment the optional TrackingID integer attribute when present.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MessageID" type="Identifier" minOccurs="1"/>
+			<xsd:element name="TimeStamp" type="xsd:dateTime" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="Identifier.System">
+		<xsd:annotation>
+			<xsd:documentation>System identifier used to uniquily identify the specific system.
+ 	"Source" is used to return the application name responsible for fulfilling the particular request transaction.
+	"ApplicationInstance" is used to return the application instance responsible for fulfilling the particular request transaction.
+	"Cluster" is used to return the application cluster responsible for fulfilling the particular request transaction.
+	"HostName" is used to return the particular server name responsible for fulfilling the particular request transaction.
+	 Example: Source ApplicationInstance="PROD1" Cluster="PROD TPF SCC" HostName="PSS" TPF Source
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="Identifier">
+				<xsd:attribute name="instance" type="Identifier"/>
+				<xsd:attribute name="cluster" type="Identifier"/>
+				<xsd:attribute name="host" type="Identifier"/>
+				<xsd:attribute name="uri" type="Identifier">
+					<xsd:annotation>
+						<xsd:documentation>The uri representing the endpoint reference by which this system can be accessed.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="Message.Condition">
+		<xsd:annotation>
+			<xsd:documentation>Free text and code provided by the application or system that detected the condition. 
+			Contents may be anything the system detecting the error chooses to convey. Used by service consumers.  
+			Codes and/or messages should be agreed upon by service users. 
+			Do not use for structured data, use parameters instead.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="Text.Long">
+				<xsd:attribute name="code" type="xsd:string"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="ProblemBase">
+		<xsd:sequence>
+		</xsd:sequence>
+		<xsd:attribute name="type" type="ErrorType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>An indication of the source of error when processing the request.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="status" type="CompletionCodes" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Impact of the error on process completion.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="timeStamp" type="xsd:dateTime"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="ProblemSummary">
+		<xsd:sequence>
+			<xsd:element name="Source" type="Identifier.System" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						The system that the reporting system deemed to be the cause of the problem. If omitted, the
+						reporting system is also the source of the problem. For application errors, the element may
+						identify a system the application is dependent upon that failed to respond. For validation
+						errors this may identify the service consumer.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ReportingSystem" type="Identifier.System">
+				<xsd:annotation>
+					<xsd:documentation>
+						The system that created the results record. If the Source system identifier is omitted, the
+						system identified here both was the cause of the problem and created the result record.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Message" type="Message.Condition" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						An informative code and message that describes the results. Note: the message code and text must
+						NOT be required to process to understand retry/compensate status.
+						This value should be the same as in the SystemSpecificResults in the body.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+			<xsd:element name="ShortText" type="Text.Short" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						An abbreviated version of the error in textual format.
+						This value should be the same as in the SystemSpecificResults in the body.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="type" type="ErrorType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>An indication of the source of error when processing the request.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="status" type="CompletionCodes" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Impact of the error on process completion.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="timeStamp" type="xsd:dateTime"/>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="ResultSummary">
+		<xsd:choice>
+			<xsd:element name="Success" type="EmptyElement">
+				<xsd:annotation>
+					<xsd:documentation>Success indicates that the request was
+						processed successfully.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Error" type="ProblemSummary"/>
+		</xsd:choice>
+	</xsd:complexType>
+	
+	
+	<xsd:complexType name="Security">
+		<xsd:annotation>
+			<xsd:documentation>Header records no longer contain user credentials (username/password) as these are needed only for 
+     		 SessionCreateRQ in which the credentials should be in the payload.
+     		 </xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element name="SecurityToken" type="Text.Long"/>
+		</xsd:choice>
+	</xsd:complexType>
+	
+	<xsd:complexType name="Service">
+		<xsd:simpleContent>
+			<xsd:extension base="Text.Short">
+				<xsd:attribute name="operation" type="Text.Short"/>
+				<xsd:attribute name="version" type="Text.Short"/>
+				<xsd:attribute name="ttl" type="xsd:nonNegativeInteger"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
+	
+	<xsd:complexType name="Traces">
+		<xsd:sequence>
+			<xsd:element name="Trace" type="TraceRecord" minOccurs="0" maxOccurs="999"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="TraceRecord">
+		<xsd:annotation>
+			<xsd:documentation>Record for all systems (consumer, proxies and gateways, providers) to use to trace the message. 
+			The value is the common system name. 
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="Identifier">
+				<xsd:attribute name="key" type="Text.Long">
+					<xsd:annotation>
+						<xsd:documentation>
+							The key attribute is similar to ConversationID but is provided by the service requestor or entrypoint gateway and 
+							must be unique across all Sabre gateways. Each gateway instance must prepend the ID value with its unique system identifier. 
+							Internal service consumers must provide this value which may be their unique system identifier concantanated 
+							with the ConversationID.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="start" type="xsd:dateTime" use="required">
+					<xsd:annotation>
+						<xsd:documentation>When the system stated processing the message.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="end" type="xsd:dateTime">
+					<xsd:annotation>
+						<xsd:documentation>When the system completed processing the message. 
+						Example: 2002-10-10T12:00:00+05:00.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="appInstance" type="Identifier">
+					<xsd:annotation>
+						<xsd:documentation>The application instance involved in the particular transaction. 
+						For example: PROD1
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="cluster" type="Identifier">
+					<xsd:annotation>
+						<xsd:documentation>The application server cluster involved in the particular transaction. 
+						Example: PROD TPFC SCC
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="host" type="Identifier">
+					<xsd:annotation>
+						<xsd:documentation>The server name involved in the particular transaction. 
+						Example: PSS
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="targetURI" type="xsd:anyURI">
+					<xsd:annotation>
+						<xsd:documentation>The targetURI is the endpoint address this system sent the message to. 
+						For ServiceProviders it should be the abstract service address which is the address used by 
+						registries to look up the actual service endpoint URI. The endpoint address may be a queue
+						name (MOM service name).
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="role" type="TraceRole"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
+
+	<xsd:complexType name="TrackingID">
+		<xsd:annotation>
+			<xsd:documentation>Tracking Identifier is an identifier intended for use to a set of related items and provide an 
+			optional sequence number for the items.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="Identifier">
+				<xsd:attribute name="seq" type="xsd:integer"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	
+	<xsd:simpleType name="CompletionCodes">
+		<xsd:restriction base="xsd:token">
+			<xsd:enumeration value="Complete"/>
+			<xsd:enumeration value="Incomplete"/>
+			<xsd:enumeration value="NotProcessed"/>
+			<xsd:enumeration value="Unknown"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="DiagnosticLevels">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Mock">
+				<xsd:annotation>
+					<xsd:documentation>Return a sample message without invoking service logic.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Simulate">
+				<xsd:annotation>
+					<xsd:documentation>Compute response without making changes to service data, state or status.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="EmptyElement">
+		<xsd:annotation>
+			<xsd:documentation>Elements of this type are used for indicators whose presense denotes the 
+				condition described by their name. They  have no content nor any attributes. 
+				For example, an empty Success element denote that the process was successfully completed.
+			</xsd:documentation>
+				</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="0"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="ErrorType">
+		<xsd:restriction base="xsd:NMTOKEN">
+			<xsd:enumeration value="Transport">
+				<xsd:annotation>
+					<xsd:documentation>
+						Transport errors occur when the infrastructure systems are unable to deliver the request message
+						to the service provider or the service response is not delivered within the allotted time frame.
+						These errors are always detected by the transport infrastructure systems. The detecting system
+						should indicate the need for compensation in Severity and Status values. These errors may be
+						transient and consumers may choose to retry their request.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Validation">
+				<xsd:annotation>
+					<xsd:documentation>
+						Validation errors occur when the message is determined to not conform to the interface
+						specifications. For example, it is an validation error when the request violates security
+						requirements or the message is not schema valid according to the service interface schema. These
+						errors may be detected by either the transport or application systems. Applications must not
+						make changes that will require compensation when validation errors are detected. These errors
+						are caused by the structure or content of the request and consumers should not attempt to retry
+						their unmodified request.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Application">
+				<xsd:annotation>
+					<xsd:documentation>
+						Application errors occur when a valid message is delivered to the service provider yet the
+						request cannot be completely processed. This can occur when the provider has technical issues
+						such as internal exceptions, database locks, or connectivity failure to a system it is dependent
+						upon. These errors are always detected by the application system. The application should
+						indicate the need for compensation in Severity and Status values. These errors may be transient
+						and consumers may choose to retry their request.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BusinessLogic">
+				<xsd:annotation>
+					<xsd:documentation>
+						Business logic errors occur when a service provider is able to process the request message but
+						the request violates pre-condition or internal application business logic. Example business
+						logic errors are a request for flight information but the flight does not exist or a request to
+						reserve more seats than are on the aircraft. The response message will likely provide details
+						about the error condition and may or may not use a standard error response record. Business
+						logic errors are always detected by the application system. Applications must not make changes
+						that will require compensation when business logic errors are detected. These errors are caused
+						by content of the request; consumers should only attempt to retry their unmodified request if
+						the business condition described in the application specific response indicates the condition
+						may be transient. Service providers should use the ErrorMessage and code attribute to describe
+						the business condition and document those conditions in their service contract.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="Identifier">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="255"/>
+			<xsd:minLength value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="PseudoCityCodeOrOAC">
+		<xsd:annotation>
+			<xsd:documentation>Customer Identifier assigned to office or agency or location. Commonly use values are 
+			Psuedo City Code - 3 to 16 characters or the Sabre Office accounting code (OAC) which can be upto 25 characters.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="25"/>
+			<xsd:minLength value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="Text.Long">
+		<xsd:annotation>
+			<xsd:documentation>Same as STL Text.Long - A field text characters and no other constraints.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="0"/>
+			<xsd:maxLength value="4096"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="Text.Short">
+		<xsd:annotation>
+			<xsd:documentation>Same as STL Text.Short - A field of text characters and no other constraints.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="128"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="TraceRole">
+		<xsd:restriction base="xsd:NMTOKEN">
+			<xsd:enumeration value="consumer">
+				<xsd:annotation>
+					<xsd:documentation>the system that initiated the service request and will be the ultimate consumer 
+					of the service results.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="provider">
+				<xsd:annotation>
+					<xsd:documentation>System that performs the service operation defined in the service interface. 
+					For RQ/RS exchange patterns, the provider reads the request message, applies business logic and 
+					returns a response.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="gateway"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+
+
+	<xsd:element name="STL_Payload" type="STL_Payload" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>Create all message root elements as member of the substitution group with the element as the head.
+				Global message types must be defined as an extension of the STL_Payload type.
+      </xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="STL_Payload">
+		<xsd:annotation>
+			<xsd:documentation>All message roots should be created as an extension of this base type. Global message elements
+				must declare they are a member of the STL_Payload substitution group. This type may be used when an empty payload is
+				needed for error handling. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="ApplicationResults" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="version">
+			<xsd:annotation>
+				<xsd:documentation>Version of the payload message.</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="1"/>
+					<xsd:maxLength value="255"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+
+<!-- 
+   - Results and Problem Information components. 
+  -->
+	<xsd:element name="Results" type="Results" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>Results is an abstract type to be used as a substitution group head.
+				ApplicationResults is an example of its intended usage. 
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="Results">
+	</xsd:complexType>
+	<xsd:element name="ApplicationResults" type="ApplicationResults" substitutionGroup="Results">
+		<xsd:annotation>
+			<xsd:documentation>ApplicationResults can be used anywhere where Results is referenced, specifically as
+				the contents of a Sabre SOAP Fault/detail element.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="ApplicationResults">
+		<xsd:complexContent>
+			<xsd:extension base="Results">
+				<xsd:sequence>
+					<xsd:element name="Success" type="ProblemInformation" minOccurs="0" maxOccurs="99"/>
+					<xsd:element name="Error" type="ProblemInformation" minOccurs="0" maxOccurs="99"/>
+					<xsd:element name="Warning" type="ProblemInformation" minOccurs="0" maxOccurs="99"/>
+				</xsd:sequence>
+				<xsd:attribute name="status" type="stlh:CompletionCodes" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:element name="ProblemInformation" type="ProblemInformation"/>
+	<xsd:complexType name="ProblemInformation">
+		<xsd:sequence>
+			<xsd:element name="SystemSpecificResults" type="SystemSpecificResults" minOccurs="0" maxOccurs="99"/>
+		</xsd:sequence>
+		<xsd:attribute name="type" type="stlh:ErrorType">
+			<xsd:annotation>
+				<xsd:documentation>An indication of the source of error when processing the request.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="timeStamp" type="xsd:dateTime"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="SystemSpecificResults">
+		<xsd:sequence>
+			<xsd:element name="HostCommand" type="HostCommand" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Host system command run to create this result.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Message" type="stlh:Message.Condition" minOccurs="0" maxOccurs="99">
+				<xsd:annotation>
+					<xsd:documentation>Application specific code and Message. A textual description to provide more 
+					information about the specific condition, warning or error  with code attribute as numeric value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ShortText" type="stlh:Text.Short" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>An abbreviated version of the error in textual format.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Element" type="stlh:Text.Long" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If present, this attribute may identify an unknown or misspelled tag that caused 
+					an error in processing. It is recommended that the Tag attribute use XPath notation to identify the 
+					location of a tag in the event that more than one tag of the same name is present in the document. 
+					Alternatively, the tag name alone can be used to identify missing data [Type=ReqFieldMissing].
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RecordID" type="stlh:Identifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If present, this attribute allows for batch processing and the identification of the 
+					record that failed amongst a group of records. This value may contain a concatenation of a unique failed 
+					transaction ID with specific record(s) associated with that transaction.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DocURL" type="xsd:anyURI" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If present, this attribute refers to an online description of the error that occurred.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="timeStamp" type="xsd:dateTime"/>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="HostCommand">
+		<xsd:simpleContent>
+			<xsd:extension base="stlh:Text.Long">
+				<xsd:attribute name="LNIATA" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="AutomatedExchangesInput">
+		<wsdl:part name="header" element="eb:MessageHeader"/>
+		<wsdl:part name="header2" element="wsse:Security"/>
+		<wsdl:part name="body" element="sws_xsd:AutomatedExchangesRQ"/>
+	</wsdl:message>
+	<wsdl:message name="AutomatedExchangesOutput">
+		<wsdl:part name="header" element="eb:MessageHeader"/>
+		<wsdl:part name="header2" element="wsse:Security"/>
+		<wsdl:part name="body" element="sws_xsd:AutomatedExchangesRS"/>
+	</wsdl:message>
+	<wsdl:portType name="AutomatedExchangesPortType">
+		<wsdl:operation name="AutomatedExchangesRQ">
+			<wsdl:input message="sws:AutomatedExchangesInput"/>
+			<wsdl:output message="sws:AutomatedExchangesOutput"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="AutomatedExchangesSoapBinding" type="sws:AutomatedExchangesPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="AutomatedExchangesRQ">
+			<soap:operation soapAction="AutomatedExchangesLLSRQ"/>
+			<wsdl:input>
+				<soap:header message="sws:AutomatedExchangesInput" part="header" use="literal"/>
+				<soap:header message="sws:AutomatedExchangesInput" part="header2" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="sws:AutomatedExchangesOutput" part="header" use="literal"/>
+				<soap:header message="sws:AutomatedExchangesOutput" part="header2" use="literal"/>
+				<soap:body parts="body" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="AutomatedExchangesService">
+		<wsdl:port name="AutomatedExchangesPortType" binding="sws:AutomatedExchangesSoapBinding">
+			<soap:address location="https://webservices.sabre.com/websvc"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -86,11 +86,11 @@ class ComplexType extends Type
 
 		if ($this instanceof ArrayType)
 		{
-			$this->class->setSavePath($this->config->get('arrayTypeFolder'));
+			$this->class->setSavePath($this->config->get($this->config::ARRAYS_DIRECTORY));
 		}
 		else
 		{
-			$this->class->setSavePath($this->config->get('complexTypeFolder'));
+			$this->class->setSavePath($this->config->get($this->config::STRUCTS_DIRECTORY));
 		}
 
 
@@ -126,7 +126,7 @@ class ComplexType extends Type
 
 			$cleanType = $type;
 			$isArray   = false;
-			if (substr($cleanType,-2) == "[]")
+			if (substr($cleanType, -2) == "[]")
 			{
 				$cleanType = substr($type, 0, -2);
 				$isArray   = true;
@@ -145,10 +145,10 @@ class ComplexType extends Type
 			$constructorSource            .= '  $this->' . $name . ' = $' . $name . ';' . PHP_EOL;
 
 
-			if ($this->config->get('gettersEnabled') == true)
+			if ($this->config->get($this->config::GETTERS_ENABLED) == true)
 			{
 				$getterMethodName = $this->getGetterMethodName($name, array_keys($accessors));
-				$getterComment    = new PhpDocComment();
+				$getterComment    = new PhpDocComment('Get ' . $name . ' value');
 				$getterComment->setReturn(PhpDocElementFactory::getReturn($type, ''));
 				$getterCode = '  return $this->' . $name . ';' . PHP_EOL;
 				$getter     = new PhpFunction('public', $getterMethodName, '', $getterCode, $getterComment);
@@ -156,10 +156,10 @@ class ComplexType extends Type
 				$accessors[$getterMethodName] = $getter;
 			}
 
-			if ($this->config->get('settersEnabled'))
+			if ($this->config->get($this->config::SETTERS_ENABLED))
 			{
 				$setterMethodName = $this->getSetterMethodName($name, array_keys($accessors));
-				$setterComment    = new PhpDocComment();
+				$setterComment    = new PhpDocComment('Set ' . $name . ' value');
 				$setterComment->addParam(PhpDocElementFactory::getParam($type, $name, ''));
 				$setterComment->setReturn(PhpDocElementFactory::getReturn($this->phpNamespaceIdentifier, ''));
 				$setterCode = '  $this->' . $name . ' = $' . $name . ';' . PHP_EOL;
@@ -215,7 +215,7 @@ class ComplexType extends Type
 			$this->buildParametersString(
 				$constructorParameters,
 				true,
-				$this->config->get('constructorParamsDefaultToNull')
+				$this->config->get($this->config::CONSTRUCTOR_NULL_PARAMS)
 			),
 			$constructorSource,
 			$constructorComment
@@ -236,11 +236,11 @@ class ComplexType extends Type
 	 */
 	public function getNamespace()
 	{
-		if ($this->config->get('namespaceName'))
+		if ($this->config->get($this->config::PACKAGE_NAMESPACE))
 		{
-			$namespace = $this->config->get('namespaceName') . '\\';
-			$namespace .= (!empty($this->config->get('complexTypeFolder')))
-				? ucfirst($this->config->get('complexTypeFolder'))
+			$namespace = $this->config->get($this->config::PACKAGE_NAMESPACE) . '\\';
+			$namespace .= (!empty($this->config->get($this->config::STRUCTS_DIRECTORY)))
+				? ucfirst($this->config->get($this->config::STRUCTS_DIRECTORY))
 				: '';
 			return $namespace;
 		}
@@ -265,9 +265,11 @@ class ComplexType extends Type
 		{
 			return $this->baseType->getPhpIdentifier();
 		}
-		else if (($this->config->get('baseComplexClass')) !== false && !empty($this->config->get('baseComplexClass')))
+		else if (($this->config->get($this->config::BASE_EXTEND_CLASS) !== false) &&
+			!empty($this->config->get($this->config::BASE_EXTEND_CLASS))
+		)
 		{
-			return $this->config->get('baseComplexClass');
+			return $this->config->get($this->config::BASE_EXTEND_CLASS);
 		}
 
 		return null;

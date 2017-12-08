@@ -3,6 +3,7 @@
 namespace Tutu\Wsdl2PhpGenerator\PhpType;
 
 use Tutu\Wsdl2PhpGenerator\Config\ConfigInterface;
+use Tutu\Wsdl2PhpGenerator\Exception\GeneratorException;
 
 /**
  * Class UnionType
@@ -40,14 +41,14 @@ class UnionType extends Type
 	 * Implements the loading of the class object
 	 * Always returns null because the pattern is not used as a class
 	 *
-	 * @throws \Exception if the class is already generated(not null)
+	 * @throws GeneratorException if the class is already generated(not null)
 	 * @return null
 	 */
 	protected function generateClass()
 	{
 		if ($this->class != null)
 		{
-			throw new \Exception("The class has already been generated");
+			throw new GeneratorException("The class has already been generated");
 		}
 
 		return null;

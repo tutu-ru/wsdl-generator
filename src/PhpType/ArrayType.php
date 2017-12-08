@@ -2,7 +2,7 @@
 
 namespace Tutu\Wsdl2PhpGenerator\PhpType;
 
-use \Exception;
+use Tutu\Wsdl2PhpGenerator\Exception\GeneratorException;
 use Tutu\Wsdl2PhpGenerator\PhpSource\PhpDocComment;
 use Tutu\Wsdl2PhpGenerator\PhpSource\PhpDocElementFactory;
 use Tutu\Wsdl2PhpGenerator\PhpSource\PhpFunction;
@@ -32,7 +32,7 @@ class ArrayType extends ComplexType
 	/**
 	 * Implements the loading of the class object
 	 *
-	 * @throws Exception if the class is already generated(not null)
+	 * @throws GeneratorException if the class is already generated(not null)
 	 */
 	protected function generateClass()
 	{
@@ -54,11 +54,11 @@ class ArrayType extends ComplexType
 	 */
 	public function getNamespace()
 	{
-		if ($this->config->get('namespaceName'))
+		if ($this->config->get($this->config::PACKAGE_NAMESPACE))
 		{
-			$namespace = '\\' . $this->config->get('namespaceName') . '\\';
-			$namespace .= (!empty($this->config->get('enumerationTypeFolder'))) 
-				? ucfirst($this->config->get('enumerationTypeFolder')) . '\\'
+			$namespace = '\\' . $this->config->get($this->config::PACKAGE_NAMESPACE) . '\\';
+			$namespace .= (!empty($this->config->get($this->config::ARRAYS_DIRECTORY))) 
+				? ucfirst($this->config->get($this->config::ARRAYS_DIRECTORY)) . '\\'
 				: '';
             return $namespace;
         }

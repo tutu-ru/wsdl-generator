@@ -5,6 +5,10 @@ namespace Tutu\Wsdl2PhpGenerator\Xml;
 use Tutu\Wsdl2PhpGenerator\Config\ConfigInterface;
 use Tutu\Wsdl2PhpGenerator\Exception\GeneratorException;
 
+use Tutu\Wsdl2PhpGenerator\WsdlHandler\Pattern;
+use Tutu\Wsdl2PhpGenerator\WsdlHandler\Struct;
+use Tutu\Wsdl2PhpGenerator\WsdlHandler\Union;
+
 /**
  * Class WsdlDocument
  *
@@ -26,6 +30,10 @@ class WsdlDocument extends SchemaDocument
 	 * @var ConfigInterface
 	 */
 	protected $config;
+
+	public $structures = [];
+	public $patterns = [];
+	public $unions = [];
 
 
 	/**
@@ -71,20 +79,59 @@ class WsdlDocument extends SchemaDocument
 		$typeStrings = $this->soapClient->__getTypes();
 		foreach ($typeStrings as $typeString)
 		{
-			if(substr($typeString, 0, strlen('union')) !== 'union')
+			// We have 3 type of data in soap types
+			// 1. Struct - Enum or Complex structure type 
+			// 2. Union - an union of types
+			// 3. Pattern - is a mapping type
+
+			// collect all wsdl types
+			if(substr($typeString, 0, strlen('struct')) == 'struct')
 			{
-				$type    = new TypeNode($typeString);
-				$element = $this->findTypeElement($type);
-				if (!empty($element))
+				$struct = new Struct($typeString);
+				$elements = $this->getElementsList($struct->getName());
+				foreach ($elements as $element) 
 				{
-					$type->setElement($this->document, $element);
+					$attributes = $element->getElementsByTagName('attribute');
+					var_dump($element->getAttribute('name'), $attributes, $struct); exit;
 				}
-				$types[] = $type;
+				//$struct->setXmlNode();
+				$this->structures[] = $struct;
+			} 
+			else if(substr($typeString, 0, strlen('union')) == 'union')
+			{
+				$union = new Union($typeString);
+				$this->unions[] = $union;
 			}
+			else 
+			{
+				$pattern = new Pattern($typeString);
+				$this->patterns[] = $pattern;
+			}
+
+//			if(substr($typeString, 0, strlen('union')) !== 'union')
+//			{
+//				$type    = new TypeNode($typeString);
+//				$element = $this->findTypeElement($type);
+//				if (!empty($element))
+//				{
+//					$type->setElement($this->document, $element);
+//				}
+//				$types[] = $type;
+//			}
 		}
+		var_dump($this->structures[10]); 
 		return $types;
 	}
 
+	public function getPatternBaseType()
+	{
+		
+	}
+
+	public function normalizeStructAttributes($struct)
+	{
+		
+	}
 
 	/**
 	 * Returns a representation of the service described by the WSDL file.

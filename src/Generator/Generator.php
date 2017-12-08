@@ -14,6 +14,7 @@ use Tutu\Wsdl2PhpGenerator\PhpType\Pattern;
 use Tutu\Wsdl2PhpGenerator\PhpType\Type;
 use Tutu\Wsdl2PhpGenerator\Service\Operation;
 use Tutu\Wsdl2PhpGenerator\Service\Service;
+use Tutu\Wsdl2PhpGenerator\WsdlHandler\WsdlSchema;
 use Tutu\Wsdl2PhpGenerator\Xml\WsdlDocument;
 
 /**
@@ -85,6 +86,18 @@ class Generator implements GeneratorInterface
 	 */
 	public function generate()
 	{
+//		$schema = new WsdlSchema();
+//		$schema->load('http://files.developer.sabre.com/wsdl/sabreXML1.0.00/shopping/BargainFinderMaxRQ_GIR_v3.3.0.wsdl');
+//
+//
+//		//file_put_contents('lib2.xml', $schema->saveXML());
+//
+//		$xpath = new \DOMXPath($schema);
+//		$xpath->registerNamespace('wsdl', 'http://schemas.xmlsoap.org/wsdl/');
+//		$xpath->registerNamespace('s', 'http://www.w3.org/2001/XMLSchema');
+//		$s = $xpath->query('//s:schema');
+//		var_dump($s);
+//		exit;
 		$this->log('Starting generation');
 
 		// Warn users who have disabled SOAP_SINGLE_ELEMENT_ARRAYS.
@@ -168,7 +181,7 @@ class Generator implements GeneratorInterface
 	{
 		$this->log('Loading types');
 		$types = $this->wsdl->getTypes();
-
+exit;
 		foreach ($types as $typeNode)
 		{
 			$type = null;
@@ -214,7 +227,7 @@ class Generator implements GeneratorInterface
 			{
 				$already_registered = false;
 				$foundType          = null;
-				if ($this->config->get('sharedTypes'))
+				if ($this->config->get($this->config::SHARED_TYPES))
 				{
 					foreach ($this->types as $key => $registeredType)
 					{
@@ -294,7 +307,7 @@ class Generator implements GeneratorInterface
 					else
 					{
 						// @TODO map types
-						// var_dump($commonMember->getType() . '---xxx---' . $member->getType() . ' --- '. $complexFirst->getPhpIdentifier());
+						var_dump($commonMember->getType() . '---xxx---' . $member->getType() . ' --- '. $complexFirst->getPhpIdentifier());
 					}
 				}
 			}
@@ -329,7 +342,6 @@ class Generator implements GeneratorInterface
 		$filteredService = $filter->filter($this->service);
 		$service         = $filteredService->getClass();
 		$filteredTypes   = $filteredService->getTypes();
-
 		if ($service == null)
 		{
 			throw new GeneratorException('No service loaded');

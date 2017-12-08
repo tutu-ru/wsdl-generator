@@ -84,7 +84,8 @@ class Config implements ConfigInterface
 		return [
 			// namespace and base extend class options
 			self::PACKAGE_NAMESPACE       => 'MyNS\MyService',
-			self::BASE_EXTEND_CLASS       => null,
+			self::BASE_EXTEND_CLASS       => '\MyNS\MyService\MyBaseClass',
+			self::BASE_EXTEND_CLASS       => '\MyNS\MyService\MyBaseClass',
 
 			// input file and directories options
 			self::INPUT_FILE              => 'inputFile',
@@ -116,8 +117,11 @@ class Config implements ConfigInterface
 			// proxy options
 			self::PROXY                   => null,
 
-			// verbosity options
+			// verbosity option
 			self::VERBOSE                 => false,
+
+			// save schemas option
+			self::SAVE_SCHEMAS            => false,
 		];
 	}
 
@@ -166,8 +170,8 @@ class Config implements ConfigInterface
 	{
 		$resolver->setRequired(
 			[
-				'inputFile',
-				'outputDir'
+				self::INPUT_FILE,
+				self::OUTPUT_DIRECTORY,
 			]
 		);
 
@@ -308,39 +312,37 @@ class Config implements ConfigInterface
 		}
 		if (is_string($value))
 		{
-			$url_parts = parse_url($value);
-			if ($url_parts === false)
+			$urlParts = parse_url($value);
+			if ($urlParts === false)
 			{
 				throw new GeneratorException('"proxy" configuration setting contains a malformed url.');
 			}
 
-			$proxy_array = [
-				'proxy_host' => $url_parts['host']
-			];
-			if (isset($url_parts['port']))
+			$proxyArray = ['proxyPost' => $urlParts['host']];
+			if (isset($urlParts['port']))
 			{
-				$proxy_array['proxy_port'] = $url_parts['port'];
+				$proxyArray['proxyPort'] = $urlParts['port'];
 			}
-			if (isset($url_parts['user']))
+			if (isset($urlParts['user']))
 			{
-				$proxy_array['proxy_login'] = $url_parts['user'];
+				$proxyArray['proxyLogin'] = $urlParts['user'];
 			}
-			if (isset($url_parts['pass']))
+			if (isset($urlParts['pass']))
 			{
-				$proxy_array['proxy_password'] = $url_parts['pass'];
+				$proxyArray['proxyPassword'] = $urlParts['pass'];
 			}
-			$value = $proxy_array;
+			$value = $proxyArray;
 		}
 		elseif (is_array($value))
 		{
-			foreach ($value as $k => $v)
-			{
-				// Prepend proxy_ to each key to match the expended proxy option names of the PHP SoapClient.
-				$value['proxy_' . $k] = $v;
-				unset($value[$k]);
-			}
+//			foreach ($value as $k => $v)
+//			{
+//				// Prepend proxy_ to each key to match the expended proxy option names of the PHP SoapClient.
+//				$value['proxy_' . $k] = $v;
+//				unset($value[$k]);
+//			}
 
-			if (empty($value['proxy_host']) || empty($value['proxy_port']))
+			if (empty($value['proxyHost']) || empty($value['proxyPort']))
 			{
 				throw new GeneratorException(
 					'"proxy" configuration setting must contain at least keys "host" and "port'
@@ -356,7 +358,7 @@ class Config implements ConfigInterface
 		}
 
 		// Make sure port is an integer
-		$value['proxy_port'] = intval($value['proxy_port']);
+		$value['proxyPort'] = intval($value['proxyPort']);
 
 		return $value;
 	}

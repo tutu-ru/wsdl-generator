@@ -24,32 +24,30 @@ class StreamContextFactory
 		$options = [];
 		$headers = [];
 
-		$proxy = $config->get('proxy');
+		$proxy = $config->get($config::PROXY);
 		if (is_array($proxy))
 		{
-			$options = [
-				'http' => [
-					'proxy' => $proxy['proxy_host'] . ':' . $proxy['proxy_port']
-				]
-			];
-			if (isset($proxy['proxy_login']) && isset($proxy['proxy_password']))
+			$options = ['http' => ['proxy' => $proxy['proxyHost'] . ':' . $proxy['proxyPort']]];
+			if (isset($proxy['proxyLogin']) && isset($proxy['proxyPassword']))
 			{
-				// Support for proxy authentication is untested. The current implementation is based on
-				// http://php.net/manual/en/function.stream-context-create.php#74431.
-				$headers[] = 'Proxy-Authorization: Basic ' .
-					base64_encode($proxy['proxy_login'] . ':' . $proxy['proxy_password']);
+				$authHash = base64_encode($proxy['proxyLogin'] . ':' . $proxy['proxyPassword']);
+				$headers[] = 'Proxy-Authorization: Basic ' . $authHash;
 			}
 		}
 
-		$soapOptions = $config->get('soapClientOptions');
+		$soapOptions = $config->get($config::SOAP_CLIENT_OPTIONS);
 
-		if ((!isset($soapOptions['authentication']) || $soapOptions['authentication'] === SOAP_AUTHENTICATION_BASIC) &&
-			isset($soapOptions['login']) &&
-			isset($soapOptions['password'])
+		if (
+			(
+				!isset($soapOptions['authentication']) 
+				|| $soapOptions['authentication'] === SOAP_AUTHENTICATION_BASIC
+			) 
+			&& isset($soapOptions['login']) 
+			&& isset($soapOptions['password'])
 		)
 		{
-			$headers[] = 'Authorization: Basic ' .
-				base64_encode($soapOptions['login'] . ':' . $soapOptions['password']);
+			$authHash = base64_encode($soapOptions['login'] . ':' . $soapOptions['password']);
+			$headers[] = 'Authorization: Basic ' . $authHash;
 		}
 
 		if (count($headers) > 0)

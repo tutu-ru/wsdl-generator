@@ -4,6 +4,7 @@ namespace Tutu\Wsdl2PhpGenerator\Xml;
 
 use Tutu\Wsdl2PhpGenerator\Base\StreamContextFactory;
 use Tutu\Wsdl2PhpGenerator\Config\ConfigInterface;
+use Tutu\Wsdl2PhpGenerator\Exception\GeneratorException;
 
 /**
  * Class SchemaDocument
@@ -51,7 +52,7 @@ class SchemaDocument extends XmlNode
 		$loaded   = $document->load($xsdUrl);
 		if (!$loaded)
 		{
-			throw new \Exception('Unable to load XML from ' . $xsdUrl);
+			throw new GeneratorException('Unable to load XML from ' . $xsdUrl);
 		}
 
 		parent::__construct($document, $document->documentElement);
@@ -104,7 +105,7 @@ class SchemaDocument extends XmlNode
 		);
 		if ($elements->length > 0)
 		{
-			$type = $this->findElementByStructure($typeNode, $elements);
+			$type = $this->findElementByStructure($elements);
 		}
 
 		if (empty($type))
@@ -123,6 +124,11 @@ class SchemaDocument extends XmlNode
 	}
 
 
+	/**
+	 * @param string $name
+	 *
+	 * @return \DOMElement[]
+	 */
 	public function getElementsList($name)
 	{
 		$elements = [];
@@ -137,7 +143,7 @@ class SchemaDocument extends XmlNode
 			for($i = 0; $i< $docElements->length; $i++)
 			{
 				$item = $docElements->item($i);
-				$elements[] = $item->getAttribute('name').' - '.$item->getAttribute('minOccurs').' - '.$item->getAttribute('maxOccurs');
+				$elements[] = $item;
 
 				//echo $item->;
 				//$doc->xpath('//s:attribute');
@@ -161,12 +167,11 @@ class SchemaDocument extends XmlNode
 	/**
 	 * Find element by it's structure
 	 * 
-	 * @param TypeNode $typeNode
 	 * @param \DOMNodeList $nodesList
 	 *
 	 * @return \DOMElement
 	 */
-	public function findElementByStructure($typeNode, $nodesList)
+	public function findElementByStructure($nodesList)
 	{
 		//array types has priority
 		for($i = 0; $i < $nodesList->length; $i++)

@@ -91,10 +91,11 @@ class PhpFile
 	 * Saves the source code for the file in $directory
 	 *
 	 * @param string $directory Should be / terminated and writable
+	 * @return bool|int
 	 */
 	public function save($directory)
 	{
-		file_put_contents($directory . DIRECTORY_SEPARATOR . $this->name . '.php', $this->getSource());
+		return file_put_contents($directory . DIRECTORY_SEPARATOR . $this->name . '.php', $this->getSource());
 	}
 
 

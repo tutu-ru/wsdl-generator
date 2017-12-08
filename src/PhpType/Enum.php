@@ -2,8 +2,8 @@
 
 namespace Tutu\Wsdl2PhpGenerator\PhpType;
 
-use \InvalidArgumentException;
 use Tutu\Wsdl2PhpGenerator\Config\ConfigInterface;
+use Tutu\Wsdl2PhpGenerator\Exception\GeneratorException;
 use Tutu\Wsdl2PhpGenerator\PhpSource\PhpClass;
 use Tutu\Wsdl2PhpGenerator\PhpSource\PhpDocComment;
 use Tutu\Wsdl2PhpGenerator\PhpSource\PhpDocElement;
@@ -40,17 +40,17 @@ class Enum extends Type
 	/**
 	 * Implements the loading of the class object
 	 *
-	 * @throws \Exception if the class is already generated(not null)
+	 * @throws GeneratorException if the class is already generated(not null)
 	 */
 	protected function generateClass()
 	{
 		if ($this->class != null)
 		{
-			throw new \Exception("The class has already been generated");
+			throw new GeneratorException("The class has already been generated");
 		}
 
 		$this->class = new PhpClass($this->getNamespace(), $this->phpIdentifier, false);
-		$this->class->setSavePath($this->config->get('enumerationTypeFolder'));
+		$this->class->setSavePath($this->config->get($this->config::ENUMS_DIRECTORY));
 
 		$first = true;
 		$names = [];
@@ -109,11 +109,11 @@ class Enum extends Type
 	 */
 	public function getNamespace()
 	{
-		if ($this->config->get('namespaceName'))
+		if ($this->config->get($this->config::PACKAGE_NAMESPACE))
 		{
-			$namespace = $this->config->get('namespaceName') . '\\';
-			$namespace .= (!empty($this->config->get('enumerationTypeFolder')))
-				? ucfirst($this->config->get('enumerationTypeFolder'))
+			$namespace = $this->config->get($this->config::PACKAGE_NAMESPACE) . '\\';
+			$namespace .= (!empty($this->config->get($this->config::ENUMS_DIRECTORY)))
+				? ucfirst($this->config->get($this->config::ENUMS_DIRECTORY))
 				: '';
 			return $namespace;
 		}
@@ -127,7 +127,7 @@ class Enum extends Type
 	 *
 	 * @param mixed $value The value to add
 	 *
-	 * @throws InvalidArgumentException if the value doesn't fit in the restriction
+	 * @throws GeneratorException if the value doesn't fit in the restriction
 	 */
 	public function addValue($value)
 	{
@@ -135,7 +135,7 @@ class Enum extends Type
 		{
 			if (is_string($value) == false)
 			{
-				throw new InvalidArgumentException(
+				throw new GeneratorException(
 					sprintf('The value (%s) is not string but the restriction demands it', $value)
                 );
 			}
@@ -150,7 +150,7 @@ class Enum extends Type
 
 			if (is_int($value) == false)
 			{
-				throw new InvalidArgumentException(
+				throw new GeneratorException(
                     sprintf('The value (%s) is not int but the restriction demands it', $value)
 				);
 			}
@@ -159,7 +159,7 @@ class Enum extends Type
 		{
 			if ($value == null)
 			{
-				throw new InvalidArgumentException(
+				throw new GeneratorException(
                     sprintf('The value (%s) is null', $value)
                 );
 			}

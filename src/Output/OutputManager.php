@@ -2,8 +2,8 @@
 
 namespace Tutu\Wsdl2PhpGenerator\Output;
 
-use \Exception;
 use Tutu\Wsdl2PhpGenerator\Config\ConfigInterface;
+use Tutu\Wsdl2PhpGenerator\Exception\GeneratorException;
 use Tutu\Wsdl2PhpGenerator\PhpSource\PhpClass;
 use Tutu\Wsdl2PhpGenerator\PhpSource\PhpFile;
 use Tutu\Wsdl2PhpGenerator\PhpSource\PhpFunction;
@@ -60,11 +60,11 @@ class OutputManager
 	 * Sets the output directory, creates it if needed
 	 * This must be called before saving a file
 	 *
-	 * @throws Exception If the dir can't be created and don't already exists
+	 * @throws GeneratorException If the dir can't be created and don't already exists
 	 */
 	private function setOutputDirectory()
 	{
-		$outputDirectory = $this->config->get('outputDir');
+		$outputDirectory = $this->config->get($this->config::OUTPUT_DIRECTORY);
 
 		//Try to create output dir if non existing
 		if ($this->createDirectory($outputDirectory))
@@ -73,7 +73,7 @@ class OutputManager
 		}
 		else
 		{
-			throw new Exception('Could not create output directory and it does not exist!');
+			throw new GeneratorException('Could not create output directory and it does not exist!');
 		}
 	}
 
@@ -84,7 +84,7 @@ class OutputManager
 	 *
 	 * @param PhpClass $class
 	 *
-	 * @throws Exception
+	 * @throws GeneratorException
 	 */
 	private function saveClassToFile(PhpClass $class)
 	{
@@ -104,11 +104,15 @@ class OutputManager
 			if ($this->createDirectory($saveDir))
 			{
 				$file->addClass($class);
-				$file->save($saveDir);
+				if($file->save($saveDir) === false){
+					throw new GeneratorException(
+						sprintf('Class %s not saved to %s directory!', $class->getIdentifier(), $saveDir)
+					);
+				}
 			}
 			else
 			{
-				throw new Exception(
+				throw new GeneratorException(
 					sprintf('Can\'t save class to %s folder. Make sure the folder exists!', $saveDir)
 				);
 			}
@@ -126,7 +130,7 @@ class OutputManager
 	 */
 	private function isValidClass(PhpClass $class)
 	{
-		$classNames = $this->config->get('classNames');
+		$classNames = $this->config->get($this->config::CLASS_NAMES);
 		return (empty($classNames) || in_array(
 				$class->getIdentifier(),
 				$classNames
@@ -143,7 +147,7 @@ class OutputManager
 	 */
 	private function saveAutoloader($name, array $classes)
 	{
-		$autoloaderName = 'autoload_' . md5($name . $this->config->get('namespaceName'));
+		$autoloaderName = 'autoload_' . md5($name . $this->config->get($this->config::PACKAGE_NAMESPACE));
 
 		// The autoloader function we build contain two parts:
 		// 1. An array of generated classes and their paths.
@@ -197,7 +201,7 @@ EOF;
 	 * @param string $dirName
 	 *
 	 * @return bool
-	 * @throws Exception
+	 * @throws GeneratorException
 	 */
 	public function createDirectory($dirName)
 	{
@@ -206,7 +210,7 @@ EOF;
 		{
 			if (mkdir($dirName, 0777, true) == false)
 			{
-				throw new Exception('Could not create output directory and it does not exist!');
+				throw new GeneratorException('Could not create output directory and it does not exist!');
 			}
 		}
 		return true;

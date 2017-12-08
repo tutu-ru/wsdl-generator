@@ -21,7 +21,7 @@ class FilterFactory
 	public function create(ConfigInterface $config)
 	{
 		$operationNames = $config->get($config::OPERATION_NAMES);
-		if (($operationNames !== null) || !empty($operationNames))
+		if (($operationNames !== null) && !empty($operationNames))
 		{
 			return new ServiceOperationFilter($config);
 		}

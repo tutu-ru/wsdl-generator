@@ -47,8 +47,11 @@ interface ConfigInterface
 	// proxy options
 	const PROXY = 'proxy';
 
-	// verbosity options
+	// verbosity option
 	const VERBOSE = 'verbose';
+
+	// schemas save option
+	const SAVE_SCHEMAS = 'save_schemas';
 
 
 	/**
