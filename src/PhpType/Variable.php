@@ -48,6 +48,42 @@ class Variable
 
 
 	/**
+	 * @param string $type
+	 */
+	public function setType(string $type)
+	{
+		$this->type = $type;
+	}
+
+
+	/**
+	 * @param string $name
+	 */
+	public function setName(string $name)
+	{
+		$this->name = $name;
+	}
+
+
+	/**
+	 * @param bool $nullable
+	 */
+	public function setNullable(bool $nullable)
+	{
+		$this->nullable = $nullable;
+	}
+
+
+	/**
+	 * @param string $namespace
+	 */
+	public function setNamespace(string $namespace)
+	{
+		$this->namespace = $namespace;
+	}
+
+
+	/**
 	 * @return string
 	 */
 	public function getType()

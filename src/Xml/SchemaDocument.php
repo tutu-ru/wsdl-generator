@@ -87,14 +87,14 @@ class SchemaDocument extends XmlNode
 	/**
 	 * Parses the schema for a type with a specific name.
 	 *
-	 * @param TypeNode $typeNode The name of the type
+	 * @param string $nodeName The name of the type
 	 *
 	 * @return \DOMElement|null Returns the type node with the provided if it is found. Null otherwise.
 	 */
-	public function findTypeElement($typeNode)
+	public function findTypeElement($nodeName)
 	{
 		$type = null;
-		$name = $typeNode->getName();
+		$name = $nodeName;
 
 		// @todo multiple types
 		$elements = $this->xpath(
@@ -112,7 +112,7 @@ class SchemaDocument extends XmlNode
 		{
 			foreach ($this->references as $import)
 			{
-				$type = $import->findTypeElement($typeNode);
+				$type = $import->findTypeElement($nodeName);
 				if (!empty($type))
 				{
 					break;
@@ -127,10 +127,10 @@ class SchemaDocument extends XmlNode
 	/**
 	 * @param string $name
 	 *
-	 * @return \DOMElement[]
+	 * @return array
 	 */
 	public function getElementsList($name)
-	{
+	{ 
 		$elements = [];
 		$docElements = $this->xpath(
 			'//s:simpleType[@name=%s]|//s:complexType[@name=%s]|//s:element[@name=%s and ./s:complexType[not(@name)]]',
@@ -140,15 +140,10 @@ class SchemaDocument extends XmlNode
 		);
 		if($docElements->length > 0)
 		{
-			for($i = 0; $i< $docElements->length; $i++)
-			{
-				$item = $docElements->item($i);
-				$elements[] = $item;
-
-				//echo $item->;
-				//$doc->xpath('//s:attribute');
-				//$elements['attributes'][] = $doc->xpath('//s:attribute');
-			}
+			$elements[] = [
+				'el' => $docElements,
+				'x' => $this
+			];
 		}
 		foreach ($this->references as $import)
 		{

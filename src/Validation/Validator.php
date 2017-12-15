@@ -106,6 +106,20 @@ class Validator
 
 
 	/**
+	 * Get class name from namespace
+	 * 
+	 * @param string $name
+	 *
+	 * @return string
+	 */
+	public static function getClassNameFromNS($name)
+	{
+		$nameParts = explode('\\', $name);
+		return array_pop($nameParts);
+	}
+
+
+	/**
 	 * Validates a class name against PHP naming conventions and already defined classes.
 	 *
 	 * @param string $name      the name of the class to test
@@ -203,12 +217,6 @@ class Validator
 	 */
 	public static function validateType($typeName)
 	{
-		$typeName = trim($typeName);
-		if (substr($typeName, -2) == "[]")
-		{
-			return self::validateNamingConvention(substr($typeName, 0, -2)) . "[]";
-		}
-
 		// case of type variation
 		$lowerTypeName = strtolower($typeName);
 		foreach (self::getTypeMappings() as $type => $knownVariations)
@@ -223,11 +231,6 @@ class Validator
 		if (strpos($typeName, 'anonymous') !== false)
 		{
 			return 'string';
-		}
-
-		if (self::isKeyword($typeName))
-		{
-			$typeName .= self::NAME_SUFFIX;
 		}
 
 		return $typeName;

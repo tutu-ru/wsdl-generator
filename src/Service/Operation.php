@@ -2,10 +2,9 @@
 
 namespace Tutu\Wsdl2PhpGenerator\Service;
 
-use Tutu\Wsdl2PhpGenerator\PhpType\ComplexType;
-use Tutu\Wsdl2PhpGenerator\PhpType\Enum;
-use Tutu\Wsdl2PhpGenerator\PhpType\Pattern;
-use Tutu\Wsdl2PhpGenerator\PhpType\Type;
+use Tutu\Wsdl2PhpGenerator\WsdlHandler\Struct;
+use Tutu\Wsdl2PhpGenerator\WsdlHandler\Enum;
+use Tutu\Wsdl2PhpGenerator\WsdlHandler\Pattern;
 
 /**
  * Class Operation
@@ -82,7 +81,7 @@ class Operation
 
 
 	/**
-	 * @param Type[] $validTypes An array of Type objects with valid types for type hinting
+	 * @param array $validTypes An array of Type objects with valid types for type hinting
 	 *
 	 * @return string A parameter string
 	 */
@@ -103,9 +102,9 @@ class Operation
 			{
 				foreach ($validTypes as $type)
 				{
-					if ($type instanceof ComplexType)
+					if ($type instanceof Struct)
 					{
-						if ($typeHint == $type->getPhpIdentifier())
+						if ($typeHint == $type->getClassName())
 						{
 							$ret .= $typeHint . ' ';
 							break;
@@ -155,7 +154,7 @@ class Operation
 
 		foreach ($validTypes as $type)
 		{
-			if ($paramType == $type->getIdentifier())
+			if ($paramType == $type->getName())
 			{
 				if ($type instanceof Pattern)
 				{
@@ -164,12 +163,12 @@ class Operation
 				}
 				else
 				{
-					$ret['type'] = $type->getPhpIdentifier();
+					$ret['type'] = $type->getName();
 
 					if ($type instanceof Enum)
 					{
 						$ret['desc'] =
-							'Constant: ' . $type->getDataType() . ' - ' . 'Valid values: ' . $type->getValidValues();
+							'Constant: ' . $type->getClassName() . PHP_EOL . 'Valid values: ' . $type->getValidValues();
 					}
 				}
 			}

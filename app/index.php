@@ -42,28 +42,39 @@ class AppLogger extends \Psr\Log\AbstractLogger
 	}
 }
 
-
-//build new config
-$config = new Config(
-	[
-		Config::PACKAGE_NAMESPACE       => 'Avia\Gate\Sabre\Wsdl\TravelItineraryRead',
+$servicesConfigs = [
+	'Tir390' => [
+		Config::PACKAGE_NAMESPACE       => 'Avia\Gate\Sabre\Wsdl\Tir390',
 		Config::BASE_EXTEND_CLASS       => '\Avia\Gate\Sabre\Wsdl\Base\AbstractBaseModel',
-		Config::INPUT_FILE              => __DIR__ . '/wsdls/TravelItineraryReadRQ/TravelItineraryReadRQ3.9.0.wsdl',
-		Config::OUTPUT_DIRECTORY        => __DIR__ . '/tmp/output/Lib390',
+		Config::INPUT_FILE              => __DIR__ . '/wsdls/Tir390/TravelItineraryReadRQ3.9.0.wsdl',
+		Config::OUTPUT_DIRECTORY        => __DIR__ . '/tmp/output/Tir390',
+		Config::SHARED_TYPES            => true,
+		Config::CONSTRUCTOR_NULL_PARAMS => true,
+		Config::VERBOSE                 => true,
+	],
+	'Bfm320' => [
+		Config::PACKAGE_NAMESPACE       => 'Avia\Gate\Sabre\Wsdl\Search',
+		Config::BASE_EXTEND_CLASS       => '\Avia\Gate\Sabre\Wsdl\Base\AbstractBaseModel',
+		Config::INPUT_FILE              => __DIR__ . '/wsdls/BargainFinderMaxRQ/BargainFinderMaxRQ_GIR_v3.2.0.wsdl',
+		Config::OUTPUT_DIRECTORY        => __DIR__ . '/tmp/output/Bfm320',
+		Config::SHARED_TYPES            => true,
+		Config::CONSTRUCTOR_NULL_PARAMS => true,
+		Config::VERBOSE                 => true,
+	],
+	'Bfm330' => [
+		Config::PACKAGE_NAMESPACE       => 'Avia\Gate\Sabre\Wsdl\BfmGir330',
+		Config::BASE_EXTEND_CLASS       => '\Avia\Gate\Sabre\Wsdl\Base\AbstractBaseModel',
+		Config::INPUT_FILE              => __DIR__ . '/wsdls/BfmGir330/BargainFinderMaxRQ_GIR_v3.3.0.wsdl',
+		Config::OUTPUT_DIRECTORY        => __DIR__ . '/tmp/output/BfmGir330',
 		Config::SHARED_TYPES            => true,
 		Config::CONSTRUCTOR_NULL_PARAMS => true,
 		Config::VERBOSE                 => true,
 	]
-//	[
-//		Config::PACKAGE_NAMESPACE       => 'Avia\Gate\Sabre\Wsdl\Search',
-//		Config::BASE_EXTEND_CLASS       => '\Avia\Gate\Sabre\Wsdl\Base\AbstractBaseModel',
-//		Config::INPUT_FILE              => __DIR__ . '/wsdls/BargainFinderMaxRQ/BargainFinderMaxRQ_GIR_v3.2.0.wsdl',
-//		Config::OUTPUT_DIRECTORY        => __DIR__ . '/tmp/output/Bfm320',
-//		Config::SHARED_TYPES            => true,
-//		Config::CONSTRUCTOR_NULL_PARAMS => true,
-//		Config::VERBOSE                 => true,
-//	]
-);
+];
+
+
+//build new config
+$config = new Config( $servicesConfigs['Bfm330']);
 
 // create an instance of generator
 $generator = new Generator($config);

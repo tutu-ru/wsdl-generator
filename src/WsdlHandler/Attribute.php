@@ -13,13 +13,34 @@ class Attribute
 	 */
 	public $name;
 	/**
+	 * @var mixed
+	 */
+	public $defaultValue;
+	/**
+	 * @var mixed
+	 */
+	public $typeHint = [];
+
+	/**
 	 * @var string
 	 */
 	public $baseType;
 	/**
+	 * @var string
+	 */
+	public $originalType;
+	/**
+	 * @var string[]
+	 */
+	public $mixedTypes = [];
+	/**
 	 * @var bool
 	 */
 	public $isStruct = false;
+	/**
+	 * @var bool
+	 */
+	public $isMixed = false;
 	/**
 	 * @var bool
 	 */
@@ -35,17 +56,14 @@ class Attribute
 	 *
 	 * @param string $name
 	 * @param string $baseType
-	 * @param bool   $isStruct
-	 * @param bool   $isArray
-	 * @param bool   $isNillable
+	 * @param mixed  $defaultValue
 	 */
-	public function __construct($name, $baseType, $isStruct = false, $isArray = false, $isNillable = false)
+	public function __construct($name, $baseType, $defaultValue = null)
 	{
-		$this->name       = $name;
-		$this->baseType   = $baseType;
-		$this->isStruct   = $isStruct;
-		$this->isArray    = $isArray;
-		$this->isNillable = $isNillable;
+		$this->name         = $name;
+		$this->defaultValue = $defaultValue;
+		$this->baseType     = $baseType;
+		$this->originalType = $baseType;
 	}
 
 
@@ -68,6 +86,42 @@ class Attribute
 
 
 	/**
+	 * @return mixed
+	 */
+	public function getDefaultValue()
+	{
+		return $this->defaultValue;
+	}
+
+
+	/**
+	 * @param mixed $defaultValue
+	 */
+	public function setDefaultValue($defaultValue)
+	{
+		$this->defaultValue = $defaultValue;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getTypeHint(): array 
+	{
+		return $this->typeHint;
+	}
+
+
+	/**
+	 * @param array $typeHint
+	 */
+	public function setTypeHint(array $typeHint)
+	{
+		$this->typeHint = $typeHint;
+	}
+
+
+	/**
 	 * @return string
 	 */
 	public function getBaseType(): string
@@ -82,6 +136,24 @@ class Attribute
 	public function setBaseType(string $baseType)
 	{
 		$this->baseType = $baseType;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getOriginalType(): string
+	{
+		return $this->originalType;
+	}
+
+
+	/**
+	 * @param string $originalType
+	 */
+	public function setOriginalType(string $originalType)
+	{
+		$this->originalType = $originalType;
 	}
 
 
@@ -136,5 +208,52 @@ class Attribute
 	public function setIsNillable(bool $isNillable)
 	{
 		$this->isNillable = $isNillable;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isMixed(): bool
+	{
+		return $this->isMixed;
+	}
+
+
+	/**
+	 * @param bool $isMixed
+	 */
+	public function setIsMixed(bool $isMixed)
+	{
+		$this->isMixed = $isMixed;
+	}
+
+
+	/**
+	 * @return \string[]
+	 */
+	public function getMixedTypes(): array
+	{
+		return $this->mixedTypes;
+	}
+
+
+	/**
+	 * @param \string[] $mixedTypes
+	 */
+	public function setMixedTypes(array $mixedTypes)
+	{
+		$this->mixedTypes = $mixedTypes;
+	}
+
+	/**
+	 * @param $type
+	 */
+	public function addToMixedTypes($type)
+	{
+		if(!in_array($type, $this->mixedTypes))
+		{
+			$this->mixedTypes[] = $type;
+		}
 	}
 }

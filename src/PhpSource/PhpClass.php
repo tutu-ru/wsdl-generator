@@ -44,6 +44,13 @@ class PhpClass extends PhpElement
 	 * @var string
 	 * @access private
 	 */
+	private $uses;
+
+	/**
+	 *
+	 * @var string
+	 * @access private
+	 */
 	private $extends;
 
 	/**
@@ -124,6 +131,7 @@ class PhpClass extends PhpElement
 	)
 	{
 		$this->namespace    = $namespace;
+		$this->uses         = [];
 		$this->dependencies = [];
 		$this->classExists  = $classExists;
 		$this->comment      = $comment;
@@ -198,6 +206,15 @@ class PhpClass extends PhpElement
 			$ret .= PHP_EOL;
 		}
 
+		if (count($this->uses) > 0)
+		{
+			foreach ($this->uses as $class)
+			{
+				$ret .= 'use ' . $class . ';' . PHP_EOL;
+			}
+			$ret .= PHP_EOL;
+		}
+
 		if ($this->comment !== null)
 		{
 			$ret .= $this->comment->getSource();
@@ -229,14 +246,15 @@ class PhpClass extends PhpElement
 
 		if (isset($this->default))
 		{
-			$ret .= $this->getIndentionStr() . 'const __default = ' . $this->default . ';' . PHP_EOL;
+			$ret .= $this->getIndentionStr() . 'const __DEFAULT = ' . $this->default . ';' . PHP_EOL;
 		}
 
 		if (count($this->constants) > 0)
 		{
 			foreach ($this->constants as $name => $value)
 			{
-				$ret .= $this->getIndentionStr() . 'const ' . $name . ' = \'' . $value . '\';' . PHP_EOL;
+				$ret .= $this->getIndentionStr() . 'const VALUE_' . strtoupper($name) . ' = \'' . $value . '\';' .
+					PHP_EOL;
 			}
 			$ret .= PHP_EOL;
 		}
@@ -292,6 +310,16 @@ class PhpClass extends PhpElement
 	{
 		$classes          = (array)$classes;
 		$this->implements = array_merge((array)$this->implements, $classes);
+	}
+
+
+	/**
+	 * @param string|\string[] $classes $filename
+	 */
+	public function addUses($classes)
+	{
+		$classes    = (array)$classes;
+		$this->uses = array_merge((array)$this->uses, $classes);
 	}
 
 

@@ -494,40 +494,4 @@ class ComplexType extends Type
 		}
 		throw new GeneratorException('Could not create a addTo method name! Too many similar attributes!');
 	}
-
-
-	/**
-	 * @param string $type
-	 * @param array  $fallbackTypes
-	 *
-	 * @return string
-	 */
-	protected function getFallbackMemberType($type, $fallbackTypes)
-	{
-		$returnType = $type;
-		if (array_key_exists($type, $fallbackTypes))
-		{
-			$returnType = $this->getFallbackMemberType(Validator::validateType($fallbackTypes[$type]), $fallbackTypes);
-		}
-
-		return $returnType;
-	}
-
-
-	/**
-	 * @param string $type
-	 * @param array  $knownTypes
-	 *
-	 * @return string
-	 */
-	protected function getKnownMemberType($type, $knownTypes)
-	{
-		$returnType = $type;
-		if (array_key_exists($type, $knownTypes))
-		{
-			$returnType = '\\' . $knownTypes[$type] . '\\' . $type;
-		}
-
-		return $returnType;
-	}
 }

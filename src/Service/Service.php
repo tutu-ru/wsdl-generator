@@ -12,6 +12,7 @@ use Tutu\Wsdl2PhpGenerator\PhpSource\PhpVariable;
 use Tutu\Wsdl2PhpGenerator\PhpType\ComplexType;
 use Tutu\Wsdl2PhpGenerator\PhpType\Type;
 use Tutu\Wsdl2PhpGenerator\Validation\Validator;
+use Tutu\Wsdl2PhpGenerator\WsdlHandler\Struct;
 
 /**
  * Class Service
@@ -27,14 +28,14 @@ class Service implements ClassGenerator
 	private $config;
 
 	/**
+	 * @var string The name of the service
+	 */
+	private $name;
+
+	/**
 	 * @var PhpClass The class used to create the service.
 	 */
 	private $class;
-
-	/**
-	 * @var string The name of the service
-	 */
-	private $identifier;
 
 	/**
 	 * @var Operation[] An array containing the operations of the service
@@ -47,28 +48,24 @@ class Service implements ClassGenerator
 	private $description;
 
 	/**
-	 * @var Type[] An array of Types
+	 * @var Struct[] An array of Types
 	 */
 	private $types;
 
 
 	/**
 	 * @param ConfigInterface $config      Configuration
-	 * @param string          $identifier  The name of the service
+	 * @param string          $name        The name of the service
 	 * @param array           $types       The types the service knows about
 	 * @param string          $description The description of the service
 	 */
-	public function __construct(ConfigInterface $config, $identifier, array $types, $description)
+	public function __construct(ConfigInterface $config, $name, array $types, $description)
 	{
 		$this->config      = $config;
-		$this->identifier  = $identifier;
+		$this->name        = $name;
 		$this->description = $description;
 		$this->operations  = [];
-		$this->types       = [];
-		foreach ($types as $type)
-		{
-			$this->types[$type->getIdentifier()] = $type;
-		}
+		$this->types       = $types;
 	}
 
 
@@ -111,13 +108,13 @@ class Service implements ClassGenerator
 
 
 	/**
-	 * Returns the identifier for the service ie. the name.
+	 * Returns the name for the service ie. the name.
 	 *
 	 * @return string The service name.
 	 */
-	public function getIdentifier()
+	public function getName()
 	{
-		return $this->identifier;
+		return $this->name;
 	}
 
 
@@ -137,7 +134,7 @@ class Service implements ClassGenerator
 	/**
 	 * Returns all types defined by the service.
 	 *
-	 * @return Type[] An array of types.
+	 * @return array An array of types.
 	 */
 	public function getTypes()
 	{
@@ -150,21 +147,25 @@ class Service implements ClassGenerator
 	 */
 	public function generateClass()
 	{
-		$name = $this->identifier;
 
-		// Generate a valid class name
-		$name = Validator::validateClass($name, $this->config->get($this->config::PACKAGE_NAMESPACE));
+		$className      = $this->getClassName();
+		$classNamespace = $this->getNamespace();
 
-		// Uppercase the name
-		$name = ucfirst($name);
+//		$name = $this->name;
+//
+//		// Generate a valid class name
+//		$name = Validator::validateClass($name, $this->config->get($this->config::PACKAGE_NAMESPACE));
+//
+//		// Uppercase the name
+//		$name = ucfirst($name);
 
 		// Create the class object
 		$comment = new PhpDocComment($this->description);
 
 		// Create the service class
 		$this->class = new PhpClass(
-			$this->getNamespace(),
-			$name,
+			$classNamespace,
+			$className,
 			false,
 			$this->config->get($this->config::SOAP_CLIENT_CLASS),
 			$comment
@@ -173,17 +174,14 @@ class Service implements ClassGenerator
 
 		// Create the constructor
 		$comment = new PhpDocComment();
-		$comment->addParam(PhpDocElementFactory::getParam('string', 'wsdl', 'The wsdl file to use'));
 		$comment->addParam(PhpDocElementFactory::getParam('array', 'options', 'A array of config values'));
+		$comment->addParam(PhpDocElementFactory::getParam('string', 'wsdl', 'The wsdl file to use'));
 
-		$source = '
-  foreach (self::$classmap as $key => $value) {
-    if (!isset($options[\'classmap\'][$key])) {
-      $options[\'classmap\'][$key] = $value;
-    }
-  }' . PHP_EOL;
-		$source .= $source = sprintf(
-			'$options = array_merge(%s,$options);'  . PHP_EOL,
+		$source  = '  if(!isset($options[\'classmap\'])) {' . PHP_EOL;
+		$source .= '    $options[\'classmap\'] = ClassMap::get();' . PHP_EOL;
+		$source .= '  }' . PHP_EOL;
+		$source .= sprintf(
+			'  $options = array_merge(%s, $options);' . PHP_EOL,
 			var_export($this->config->get($this->config::SOAP_CLIENT_OPTIONS), true)
 		);
 		$source .= '  if (!$wsdl) {' . PHP_EOL;
@@ -191,29 +189,34 @@ class Service implements ClassGenerator
 		$source .= '  }' . PHP_EOL;
 		$source .= '  parent::__construct($wsdl, $options);' . PHP_EOL;
 
-		$function =
-			new PhpFunction('public', '__construct', 'array $options = array(), $wsdl = null', $source, $comment);
+		$function = new PhpFunction(
+			'public',
+			'__construct',
+			'array $options = array(), $wsdl = null',
+			$source,
+			$comment
+		);
 
 		// Add the constructor
 		$this->class->addFunction($function);
 
-		// Generate the classmap
-		$name    = 'classmap';
-		$comment = new PhpDocComment();
-		$comment->setVar(PhpDocElementFactory::getVar('array', $name, 'The defined classes'));
-
-		$init = [];
-		foreach ($this->types as $type)
-		{
-			if ($type instanceof ComplexType)
-			{
-				$init[$type->getIdentifier()] = $type->getNamespace() . "\\" . $type->getPhpIdentifier();
-			}
-		}
-		$var = new PhpVariable('private static', $name, var_export($init, true), $comment);
-
-		// Add the classmap variable
-		$this->class->addVariable($var);
+//		// Generate the classmap
+//		$name    = 'classmap';
+//		$comment = new PhpDocComment();
+//		$comment->setVar(PhpDocElementFactory::getVar('array', $name, 'The defined classes'));
+//
+//		$init = [];
+//		foreach ($this->types as $type)
+//		{
+//			if ($type instanceof Struct)
+//			{
+//				$init[$type->getName()] = '\\' . $type->getClassNamespace();
+//			}
+//		}
+//		$var = new PhpVariable('private static', $name, var_export($init, true), $comment);
+//
+//		// Add the classmap variable
+//		$this->class->addVariable($var);
 
 		// Add all methods
 		foreach ($this->operations as $operation)
@@ -230,7 +233,7 @@ class Service implements ClassGenerator
 			}
 
 			$source = sprintf(
-				'return $this->__soapCall(\'%s\',array(%s));'  . PHP_EOL,
+				'return $this->__soapCall(\'%s\',array(%s));' . PHP_EOL,
 				$operation->getName(),
 				$operation->getParamStringNoTypeHints()
 			);
@@ -244,6 +247,17 @@ class Service implements ClassGenerator
 				$this->class->addFunction($function);
 			}
 		}
+	}
+
+
+	/**
+	 * Get class name
+	 *
+	 * @return string
+	 */
+	public function getClassName()
+	{
+		return Validator::validateClass($this->getName());
 	}
 
 

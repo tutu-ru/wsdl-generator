@@ -89,10 +89,7 @@ abstract class XmlNode
 	 */
 	protected function xpath($query, $args = null)
 	{
-		$xpath = new \DOMXPath($this->document);
-		// Preregister namespaces.
-		$xpath->registerNamespace('wsdl', self::WSDL_NS);
-		$xpath->registerNamespace('s', self::SCHEMA_NS);
+		$xpath = $this->getXPath();
 
 		// Arguments containing ' and " needs escaping.
 		// Inspired by https://gist.github.com/jaywilliams/2883026/#comment-813400.
@@ -133,5 +130,23 @@ abstract class XmlNode
 		// The part after the namespace will be the last part.
 		$parts = explode(':', $string, 2);
 		return end($parts);
+	}
+
+
+	/**
+	 * @return \DOMDocument
+	 */
+	public function getDocument(): \DOMDocument
+	{
+		return $this->document;
+	}
+	
+	public function getXPath()
+	{
+		$xpath = new \DOMXPath($this->getDocument());
+		// Preregister namespaces.
+		$xpath->registerNamespace('wsdl', self::WSDL_NS);
+		$xpath->registerNamespace('s', self::SCHEMA_NS);
+		return $xpath;
 	}
 }

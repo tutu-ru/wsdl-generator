@@ -1,0 +1,4360 @@
+struct TravelItineraryReadRQ {
+ MessagingDetails MessagingDetails;
+ UniqueID UniqueID;
+ string EchoToken;
+ ReturnOptions ReturnOptions;
+ dateTime TimeStamp;
+ string Version;
+}
+struct MessagingDetails {
+ SubjectAreas SubjectAreas;
+}
+struct SubjectAreas {
+ string SubjectArea;
+}
+struct UniqueID {
+ string ID;
+ UUID SnapshotId;
+ date CreateDate;
+}
+struct ReturnOptions {
+ boolean UnmaskCreditCard;
+ boolean ShowTicketStatus;
+ boolean Language;
+}
+string UUID
+struct AirType {
+ CommonString DepartureAirport;
+ string DepartureAirportCodeContext;
+ string DepartureTerminalName;
+ string DepartureTerminalCode;
+ CommonString ArrivalAirport;
+ string ArrivalAirportCodeContext;
+ string ArrivalTerminalName;
+ string ArrivalTerminalCode;
+ AirlineCode OperatingAirlineCode;
+ string OperatingAirlineShortName;
+ FlightNumber OperatingFlightNumber;
+ CommonString EquipmentType;
+ AirlineCodeOrSpecification MarketingAirlineCode;
+ FlightNumber MarketingFlightNumber;
+ CommonString OperatingClassOfService;
+ CommonString MarketingClassOfService;
+ CommonString CodeShareOperatingRecordLocator;
+ MarriageGrp MarriageGrp;
+ string AirlineRefId;
+ boolean Eticket;
+ dateTime DepartureDateTime;
+ dateTime ArrivalDateTime;
+ FlightNumber FlightNumber;
+ CommonString ClassOfService;
+ CommonString ActionCode;
+ Numeric0to99999 NumberInParty;
+ boolean inboundConnection;
+ boolean outboundConnection;
+ AncillaryServices AncillaryServices;
+ boolean BSGIndicator;
+ CommonString BSGPNRRecordLocator;
+ dateTime BSGPNRCreatedDate;
+ boolean PassiveSegmentIndicator;
+ boolean ScheduleChangeIndicator;
+ dateTime SegmentBookedDate;
+ string UpdatedDepartureDate;
+ string UpdatedDepartureTime;
+ string UpdatedArrivalTime;
+ AirPosType Pos;
+ string OALocator;
+ dateTime DirectConnectDate;
+ boolean InstantPurchase;
+ BrandIDType BrandID;
+ Numeric0to99999 index;
+ short sequence;
+ short segmentAssociationId;
+ boolean isPast;
+}
+struct MarriageGrp {
+ string Ind;
+ string Group;
+ string Sequence;
+}
+struct AncillaryServices {
+ AncillaryService AncillaryService;
+}
+struct AncillaryService {
+ string ref;
+}
+struct AirPosType {
+ string CrsCode;
+ string IataNumber;
+ string AgencyCityCode;
+ string CountryCode;
+ string DutyCode;
+ string OACAccountingCityCode;
+ string OACAccountingCode;
+ string HomeCityCode;
+}
+union AirlineCodeOrSpecification {,AirlineCode,AirlineSpecification}
+string AirlineSpecification
+string BrandIDType
+struct AncillaryServiceData {
+ NameAssociationList NameAssociationList;
+ SegmentAssociationList SegmentAssociationList;
+ CommonString CommercialName;
+ CommonString RficCode;
+ string RficSubcode;
+ CommonString SSRCode;
+ ProductTextDetails ProductTextDetails;
+ CommonString ProductText;
+ CommonString OwningCarrierCode;
+ CommonString SsimCode;
+ CommonString BookingIndicator;
+ CommonString Vendor;
+ CommonString EMDType;
+ CommonString EMDNumber;
+ CommonString EMDCoupon;
+ AncillaryServiceETicketNumberUpdate ETicketNumber;
+ CommonString ServiceFeeLineNumber;
+ boolean DisplayOnlyIndicator;
+ CommonString ConsumptionIndicator;
+ CommonString PresentTo;
+ CommonString AtCity;
+ CommonString Endorsements;
+ CommonString StationIndicator;
+ CommonString ServiceCity;
+ CommonString ServiceCityDestination;
+ ServiceType ServiceType;
+ RuleSet RuleSet;
+ OriginalPrice OriginalPrice;
+ byte NewMiscIndicator;
+ integer Quantity;
+ SegmentID.Pricing SegmentNumber;
+ AncillaryPrice EquivalentPrice;
+ AncillaryPrice TTLPrice;
+ string PortionOfTravelIndicator;
+ AncillaryPrice OriginalBasePrice;
+ CommonString RefundIndicator;
+ CommonString CommisionIndicator;
+ CommonString InterlineIndicator;
+ CommonString FeeApplicationIndicator;
+ string PassengerTypeCode;
+ string BoardPoint;
+ string OffPoint;
+ boolean TaxesIncluded;
+ Taxes Taxes;
+ boolean SoftMatchIndicator;
+ string NoChargeNotAvailIndicator;
+ TicketCouponNumberAssociation TicketCouponNumberAssociation;
+ string SimultaneousTicketIndicator;
+ string FormOfRefund;
+ boolean FeeNotGuaranteedIndicator;
+ short FQTVTierLevel;
+ CommonString TourCodeSHC;
+ CommonString TravelDateEffective;
+ CommonString LatestTravelDatePermitted;
+ date PurchaseByDate;
+ AncillaryPrice TotalOriginalBasePrice;
+ AncillaryPrice TotalEquivalentPrice;
+ AncillaryPrice TotalTTLPrice;
+ TotalTaxes TotalTaxes;
+ CommonString TaxExemptIndicator;
+ BagWeight BagWeight;
+ integer StatusIndicator;
+ CommonString NumberOfItems;
+ string ActionCode;
+ CommonString SegmentIndicator;
+ CommonString FrequentFlyerTier;
+ CommonString RefundFormIndicator;
+ CommonString FareGuaranteedIndicator;
+ CommonString ServiceChargeIndicator;
+ CommonString AdvancePurchaseIndicator;
+ CommonString BookingSource;
+ CommonString TaxIndicator;
+ CommonString TicketingIndicator;
+ CommonString FeeWaiveReason;
+ CommonString FulfillmentType;
+ CommonString AaPayOriginalSeat;
+ CommonString PdcSeat;
+ CommonString EquipmentType;
+ string AaPayOptionalStatus;
+ string FirstTravelDate;
+ string LastTravelDate;
+ dateTime TTYConfirmationTimestamp;
+ dateTime PurchaseTimestamp;
+ CommonString BrandedFareId;
+ CommonString GroupCode;
+ CommonString TourCode;
+ CommonString EmdPaperIndicator;
+ string SeatRequestTransactionID;
+ CommonString TicketUsedForEMDPricing;
+ OptionalIndicator PaperDocRequired;
+ OptionalIndicator EMDConsummedAtIssuance;
+ Indicator TaxExemption;
+ integer PriceQuoteDesignator;
+ PriceMismatchAction PriceMismatchAction;
+ CommonString InventoryControlledIndicator;
+ CommonString InventoryConfirmationToken;
+ integer ACSCount;
+ AncillaryPrice NetAmount;
+ AncillaryPriceQuoteData AncillaryPriceQuoteData;
+ SegmentOrTravelPortion Segment;
+ TravelPortions TravelPortions;
+ UniqueIdentifier id;
+ OperationType op;
+ AssociationMatrixID elementId;
+}
+struct NameAssociationList {
+ NameAssociationTag NameAssociationTag;
+}
+struct NameAssociationTag {
+ CommonString LastName;
+ CommonString FirstName;
+ CommonString Prefix;
+ CommonString NameRefNumber;
+ UniqueIdentifier Id;
+ int ReferenceId;
+}
+struct SegmentAssociationList {
+ SegmentAssociationTag SegmentAssociationTag;
+ int SegmentAssociationId;
+}
+struct SegmentAssociationTag {
+ AirlineCode CarrierCode;
+ FlightNumber FlightNumber;
+ date DepartureDate;
+ CityCode BoardPoint;
+ CityCode OffPoint;
+ CommonString ClassOfService;
+ CommonString BookingStatus;
+}
+struct AncillaryPriceQuoteData {
+ string PriceQuoteId;
+ string ProductFeeNumber;
+ date ExpirationDate;
+ int LrecAssociation;
+ boolean PriceQuoteIdCompressed;
+}
+struct SegmentOrTravelPortion {
+ CommonString AirlineCode;
+ CommonString FlightNumber;
+ CommonString OperatingFlightNumber;
+ CommonString ClassOfService;
+ date DepartureDate;
+ string BoardPoint;
+ string OffPoint;
+ CommonString EquipmentType;
+ CommonString ETicketNumber;
+ CommonString ETicketCoupon;
+ CommonString EMDNumber;
+ CommonString EMDCoupon;
+ CommonString MarketingCarrier;
+ CommonString OperatingCarrier;
+ UniqueIdentifier id;
+ Numeric0to99999 sequence;
+ boolean advisory;
+}
+struct AncillaryServiceETicketNumberUpdate {
+ CommonString ETicketNumber;
+ CommonString ETicketCoupon;
+}
+struct AncillaryPrice {
+ decimal Price;
+ string Currency;
+}
+struct AncillaryTax {
+ decimal TaxAmount;
+ CommonString TaxCode;
+}
+struct TravelPortions {
+ SegmentOrTravelPortion TravelPortion;
+}
+struct ProductTextDetails {
+ ProductTextDetailsItem ProductTextDetailsItem;
+}
+struct ProductTextDetailsItem {
+ CommonString ItemName;
+ CommonString ItemValue;
+}
+string ServiceType
+struct RuleSet {
+ string RuleName;
+ Deal Deal;
+ unsignedLong RuleId;
+}
+struct Deal {
+ decimal Percentage;
+ Amount Amount;
+ anonymous31 type;
+}
+struct Amount {
+ decimal _;
+ string currency;
+}
+string anonymous31
+struct OriginalPrice {
+ decimal _;
+ StringLength1to10 WaiverCode;
+}
+struct Taxes {
+ AncillaryTax Tax;
+}
+struct TicketCouponNumberAssociation {
+ short TicketCouponNumber;
+ CommonString TicketReferenceNumber;
+ CommonString TicketNumber;
+}
+struct TotalTaxes {
+ AncillaryTax Tax;
+}
+struct BagWeight {
+ integer _;
+ CommonString Unit;
+}
+string AssociationMatrixID
+string OperationType
+byte SegmentID.Pricing
+string PriceMismatchAction
+string Indicator
+string OptionalIndicator
+string AirlineCode
+union FlightNumber {,_flightNumberPattern,_flightNumberLiterals}
+string _flightNumberPattern
+string _flightNumberLiterals
+string CityCode
+string UniqueIdentifier
+string CommonString
+string StringLength1to20
+string StringLength1to10
+integer Numeric0to99999
+struct ProductType {
+ ProductBaseType ProductBase;
+ ProductDetailsType ProductDetails;
+ AdditionalContentType AdditionalContent;
+ short sequence;
+ string id;
+ boolean IsPast;
+}
+struct OpenReservationElementsType {
+ OpenReservationElementType OpenReservationElement;
+}
+struct OpenReservationElementType {
+ SocialMediaContactType SocialMediaContact;
+ AgencyFeesType AgencyFees;
+ LangDetailsType LangDetails;
+ FormOfPayment FormOfPayment;
+ Loyalty Loyalty;
+ AncillaryProductObject AncillaryProduct;
+ InvoiceData InvoiceData;
+ AccountingField AccountingField;
+ ServiceRequestType ServiceRequest;
+ Email Email;
+ PriceCache PriceCache;
+ InsuranceOptOut InsuranceOptOut;
+ TripProposalReference TripProposalReference;
+ SegmentAssociation SegmentAssociation;
+ NameAssociationTag NameAssociation;
+ string id;
+ string type;
+ int displayIndex;
+ AssociationMatrixID elementId;
+}
+struct SegmentAssociation {
+ SegmentAssociationTag AirSegment;
+ string Id;
+ string SegmentAssociationId;
+ string Sequence;
+}
+struct SocialMediaContactType {
+ string FacebookID;
+ string TwitterID;
+}
+struct AgencyFeesType {
+ NotEmptyString PassengerType;
+ int NumberOfPassengers;
+ dateTime Date;
+ NotEmptyString FeeDescription;
+ NotEmptyString RuleLineDescription;
+ NotEmptyString RuleDetails;
+ NotEmptyString Status;
+ decimal Amount;
+ decimal Tax;
+ NotEmptyString Currency;
+}
+struct LangDetailsType {
+ LangDataType Data;
+ LangMatchDataType MatchData;
+ language lang;
+}
+struct LangDataType {
+ string Content;
+}
+struct LangMatchDataType {
+ string Id;
+ string Content;
+ string ElementType;
+}
+struct ProductDetailsType {
+ ProductNameType ProductName;
+ HotelProductType Hotel;
+ GroundTransportationType GroundTransportation;
+ RailType Rail;
+ TourType Tour;
+ AirType Air;
+ VisaType Visa;
+ InsuranceType Insurance;
+ VehicleType Vehicle;
+ OtherType Other;
+ SkiType Ski;
+ ExternalSystemReferenceType ExternalSystemReference;
+ TransactionInfo TransactionInfo;
+ BillingInfo BillingInfo;
+ CO2ValueType CO2Value;
+ string Comment;
+ string productCategory;
+ string productType;
+ string vendorCode;
+ string statusCode;
+ string previousStatusCode;
+ string startPoint;
+ dateTime startDateTime;
+ string endPoint;
+ dateTime endDateTime;
+ boolean normalizedIndicator;
+ integer numberInParty;
+}
+struct TransactionInfo {
+ RequestorSourceType RequestorInfo;
+ dateTime LastUpdateTimeStamp;
+}
+struct BillingInfo {
+ string BillingCode;
+}
+struct VisaType {
+ string CustomerResponsibilityID;
+ Rates Rates;
+ ServiceFee ServiceFee;
+ DestinationCountry DestinationCountry;
+ ProcessingTime ProcessingTime;
+ Purpose Purpose;
+ Transit Transit;
+ Vendor Vendor;
+ string Duration;
+ Payment Payment;
+ PricingElementsType PricingElements;
+}
+struct Rates {
+ string FOP;
+ decimal amount;
+ string currency;
+}
+struct ServiceFee {
+ decimal amount;
+ string currency;
+}
+struct DestinationCountry {
+ string code;
+ string name;
+}
+struct ProcessingTime {
+ string Duration;
+ string Notes;
+ string Unit;
+}
+struct Purpose {
+ string Comments;
+}
+struct Transit {
+ City City;
+}
+struct City {
+ string name;
+}
+struct Vendor {
+ string Name;
+}
+struct Payment {
+ string Receiver;
+}
+struct SkiType {
+ Booking Booking;
+ ChangePolicy ChangePolicy;
+ City City;
+ ClothingHire ClothingHire;
+ SkiCommonElementsType EquipmentHire;
+ SkiCommonElementsType Extras;
+ SkiCommonElementsType Lessons;
+ SkiCommonElementsType LiftPass;
+ Location Location;
+ Vendor Vendor;
+ Transfers Transfers;
+ PricingElementsType PricingElements;
+}
+struct Booking {
+ string ID;
+}
+struct ChangePolicy {
+ string Conditions;
+ string ConditionsDefault;
+}
+struct City {
+ string code;
+ string name;
+}
+struct ClothingHire {
+ string Item;
+}
+struct Location {
+ Regions Regions;
+ Resort Resort;
+}
+struct Regions {
+ string name;
+}
+struct Resort {
+ string name;
+}
+struct Vendor {
+ string code;
+ string name;
+}
+struct Transfers {
+ string Description;
+}
+struct SkiCommonElementsType {
+ string Description;
+ string Age;
+ CostPP CostPP;
+ string Duration;
+ string Name;
+ string Notes;
+ string Level;
+}
+struct CostPP {
+ decimal Amount;
+ string Currency;
+}
+struct GroundTransportationType {
+ string StatusCode;
+ CompanyType Vendor;
+ ServiceType Service;
+ ServiceProviderType ServiceProvider;
+ LocationDetailsType StartDetails;
+ LocationDetailsType StopDetails;
+ LocationDetailsType EndDetails;
+ ExternalReservationType ExternalReservation;
+ RestrictionsType Restrictions;
+ POSType POS;
+ LoyaltyType AgentLoyalty;
+ PassengerType Passenger;
+ RateQualifierType RateQualifier;
+ ChargesType Charges;
+}
+struct PricingElementsType {
+ Deposit Deposit;
+ Discount Discount;
+ Payment Payment;
+}
+struct Deposit {
+ date DueDate;
+ decimal amount;
+ string currencyCode;
+}
+struct Discount {
+ string DiscountDescription;
+ decimal amount;
+ string currencyCode;
+ string type;
+ string category;
+ string promoType;
+ string promoCode;
+}
+struct Payment {
+ SubTotal SubTotal;
+ Total Total;
+}
+struct SubTotal {
+ decimal amount;
+ string currency;
+}
+struct Total {
+ date DueDate;
+ decimal amount;
+ string currency;
+}
+struct OtherType {
+ Validity Validity;
+ Location Location;
+ Contributor Contributor;
+ Recipient Recipient;
+ Document Document;
+ PricingElementsType PricingElements;
+ string Text;
+}
+struct Validity {
+ dateTime from;
+ dateTime to;
+}
+struct Location {
+ string cityCode;
+ string name;
+}
+struct Contributor {
+ string name;
+}
+struct Recipient {
+ Guest Guest;
+ string name;
+}
+struct Guest {
+ string name;
+}
+struct Document {
+ string number;
+ string type;
+}
+struct CO2ValueType {
+ string _;
+ string unit;
+}
+struct ExternalSystemReferenceType {
+ string ID;
+ string Source;
+}
+struct HotelProductType {
+ MultilineTextType RateDescription;
+ HotelPolicy HotelPolicy;
+ string SupplementalInformation;
+ PricingElementsType PricingElements;
+}
+struct HotelPolicy {
+ string DepositPolicy;
+ string GuaranteePolicy;
+ string LateArrivalPolicy;
+ string LateDeparturePolicy;
+ string CancellationPolicy;
+ CancellationPolicyInfoList CancellationPolicyInfoList;
+ MultilineTextType AdditionalPolicy;
+ CheckInCheckOutPolicy CheckInCheckOutPolicy;
+}
+struct CancellationPolicyInfoList {
+ CancelPolicyInfo CancelPolicyInfo;
+}
+struct CancelPolicyInfo {
+ int VersionId;
+ string CancelTime;
+ string StartWindowHours;
+ unsignedShort NightCount;
+ float Percent;
+ float Amount;
+ string CurrencyCode;
+ string TimeZoneDescription;
+}
+struct CheckInCheckOutPolicy {
+ string _;
+ time CheckIn;
+ time CheckOut;
+}
+struct HotelUniqueIDType {
+ string Source;
+ string ID;
+}
+struct AdditionalContentType {
+ <anyXML> any;
+ boolean persist;
+ string name;
+}
+struct ProductBaseType {
+ string ProductType;
+ string VendorCode;
+ string StatusCode;
+ string StartPoint;
+ dateTime StartDateTime;
+ string EndPoint;
+ dateTime EndDateTime;
+ string Text;
+ int SegmentReference;
+}
+struct ProductNameType {
+ string _;
+ string type;
+}
+string CommaSeparatedUnsignedIntegers
+struct HotelType {
+ Reservation Reservation;
+ AdditionalInformation AdditionalInformation;
+ string SegmentText;
+ Numeric0to99999 index;
+ string id;
+ short sequence;
+ boolean isPast;
+}
+struct Reservation {
+ integer LineNumber;
+ string LineType;
+ string LineStatus;
+ string POSRequestorID;
+ SpecialPrefs SpecialPrefs;
+ RoomType RoomType;
+ Services Services;
+ RoomRates RoomRates;
+ RateAccessCodeBooked RateAccessCodeBooked;
+ GuestCounts GuestCounts;
+ dateTime TimeSpanStart;
+ string TimeSpanDuration;
+ dateTime TimeSpanEnd;
+ Guarantee Guarantee;
+ string ChainCode;
+ HotelCode HotelCode;
+ string HotelCityCode;
+ string HotelName;
+ HotelTotalPricing HotelTotalPricing;
+ string HotelReplyText;
+ HotelUniqueIDType HotelUniqueID;
+}
+struct SpecialPrefs {
+ string Text;
+ boolean LateDepartureRequired;
+}
+struct RoomType {
+ string RoomTypeCode;
+ integer NumberOfUnits;
+ string ShortText;
+ unsignedShort RateOccupancyPerRoom;
+ string BedTypeDesc;
+ unsignedShort NumOfBeds;
+}
+struct Services {
+ MealType MealType;
+}
+struct MealType {
+ string mealTypeCode;
+ string mealTypeDescription;
+}
+struct RoomRates {
+ string AmountBeforeTax;
+ string CurrencyCode;
+ boolean Override;
+}
+struct RateAccessCodeBooked {
+ string ClientIdentificationCode;
+ string RateAccessCode;
+ string CategoryTypeCode;
+}
+struct GuestCounts {
+ integer GuestCount;
+ string ExtraGuestCount;
+ string RollAwayCount;
+ integer CribCount;
+ string ReserveUnderName;
+ string Name;
+ unsignedShort ChildGuestCount;
+ CommaSeparatedUnsignedIntegers ChildAges;
+}
+struct Guarantee {
+ string PaymentCardNumber;
+ string Text;
+}
+struct HotelCode {
+ string _;
+ string Source;
+}
+struct HotelTotalPricing {
+ TotalTax TotalTax;
+ TotalSurcharge TotalSurcharge;
+ ApproximateTotal ApproximateTotal;
+ RateChange RateChange;
+ Disclaimer Disclaimer;
+ HotelFees HotelFees;
+ float NightlyRateTotal;
+ float MaxNightlyRate;
+ float CommissionableUsdTotal;
+ string CurrencyCode;
+}
+struct TotalTax {
+ Tax Tax;
+ string Amount;
+}
+struct Tax {
+ string _;
+ string Id;
+}
+struct TotalSurcharge {
+ Surcharge Surcharge;
+ string Amount;
+}
+struct Surcharge {
+ string _;
+ string Id;
+}
+struct ApproximateTotal {
+ string AmountAndCurrency;
+}
+struct RateChange {
+ string Id;
+ string Amount;
+ string Effective;
+ string Surcharge;
+ string Tax;
+}
+struct Disclaimer {
+ string _;
+ string Id;
+}
+struct HotelFees {
+ HotelFee HotelFee;
+}
+struct HotelFee {
+ string Description;
+ float Amount;
+}
+struct AdditionalInformation {
+ ConfirmationNumber ConfirmationNumber;
+ Address Address;
+ ContactNumbers ContactNumbers;
+ string CancelPenaltyPolicyCode;
+ string CustLoyaltyMembershipID;
+ string IDNumber;
+ string CorporateIDNumber;
+ string Text;
+ Commission Commission;
+ boolean WrittenConfirmation;
+}
+struct ConfirmationNumber {
+ string _;
+ string Source;
+ boolean DirectConnect;
+}
+struct Address {
+ string AddressLine;
+ string CountryCode;
+ string City;
+ string State;
+ string ZipCode;
+}
+struct ContactNumbers {
+ string PhoneNumber;
+ string FaxNumber;
+}
+struct Commission {
+ string Indicator;
+ string PerNight;
+ string Text;
+}
+struct SupplementaryServiceType {
+ Description Description;
+ ChargesType Charges;
+ PassengerReferences PassengerReferences;
+ UNKNOWN type;
+ UNKNOWN code;
+ UNKNOWN codeContext;
+}
+struct Description {
+ string _;
+ string lang;
+}
+struct PassengerReferences {
+ PassengerRef PassengerRef;
+}
+struct PassengerRef {
+ UNKNOWN id;
+}
+struct ServiceRefType {
+ Description Description;
+ PassengerReferences PassengerReferences;
+ string Accommodation;
+ string Occupancy;
+ int NoOfServices;
+ string TravellerAllocation;
+ PriceType ServicePrice;
+ string StealBoarding;
+ string id;
+ string productCategory;
+ string productType;
+ string vendorCode;
+ string statusCode;
+ string previousStatusCode;
+ string startPoint;
+ dateTime startDateTime;
+ string endPoint;
+ dateTime endDateTime;
+ boolean normalizedIndicator;
+ integer numberInParty;
+}
+struct Description {
+ string _;
+ string lang;
+}
+struct PassengerReferences {
+ PassengerRef PassengerRef;
+}
+struct PassengerRef {
+ UNKNOWN id;
+}
+struct DetailType {
+ UNKNOWN type;
+ UNKNOWN code;
+ UNKNOWN codeContext;
+}
+struct RailwayStationInfoType {
+}
+struct RailAccommodationType {
+ string PassengerRef;
+ Placement Placement;
+ string Meal;
+}
+struct Placement {
+ Coach Coach;
+ string Detail;
+ UNKNOWN code;
+ UNKNOWN type;
+}
+struct Coach {
+ string CoachNumber;
+ PlacementNumber PlacementNumber;
+ string CompartmentNumber;
+}
+struct PlacementNumber {
+ string _;
+ UNKNOWN compartmentRefId;
+}
+struct CompanyType {
+ string Name;
+ Code Code;
+ PhoneType Telephone;
+ AddressType Address;
+}
+struct Code {
+ string _;
+ UNKNOWN codeContext;
+}
+struct RailType {
+ string StatusCode;
+ boolean Open;
+ boolean CrossBorder;
+ string Duration;
+ MarketingCarrier MarketingCarrier;
+ ServiceProviderType OperatingCarrier;
+ Passengers Passengers;
+ SupplementaryServices SupplementaryServices;
+ TrainDetailsType TrainInfo;
+ RailAccommodationType Accommodation;
+ LocationDetailsType StartDetails;
+ LocationDetailsType StopDetails;
+ LocationDetailsType EndDetails;
+ RailFareType RailFares;
+ Documents Documents;
+ Details Details;
+}
+struct MarketingCarrier {
+}
+struct Passengers {
+ PassengerType Passenger;
+ string quantity;
+}
+struct SupplementaryServices {
+ SupplementaryServiceType SupplementaryService;
+}
+struct Documents {
+ DocumentType Document;
+}
+struct Details {
+ Detail Detail;
+}
+struct Detail {
+ string _;
+ string type;
+}
+struct TourType {
+ string StatusCode;
+ string MessageStatus;
+ string TravelType;
+ CompanyType Vendor;
+ LocationDetailsType StartDetails;
+ LocationDetailsType EndDetails;
+ Price Price;
+ PassengerType Customer;
+ Passengers Passengers;
+ Services Services;
+}
+struct Price {
+ PriceType Total;
+ Breakdown Breakdown;
+}
+struct Breakdown {
+ References References;
+ PriceType Price;
+}
+struct References {
+ PassengerRef PassengerRef;
+}
+struct PassengerRef {
+ UNKNOWN id;
+}
+struct Passengers {
+ PassengerType Passenger;
+ int quantity;
+}
+struct Services {
+ ServiceRefType Service;
+}
+struct PhoneType {
+ string PhoneUseType;
+ string PhoneCountryCode;
+ string PhoneCountryName;
+ string PhoneNumber;
+}
+struct TrainDetailsType {
+ string Number;
+ string Code;
+ string ShortName;
+ string LongName;
+}
+struct AddressType {
+ string LocationType;
+ string AddressLine;
+ string CityName;
+ CityCodes CityCodes;
+ string LocalCityName;
+ CodeDescriptionType StateProvince;
+ StateProvinceCodes StateProvinceCodes;
+ string PostCode;
+ CodeDescriptionType Country;
+ CountryCodes CountryCodes;
+ string Latitude;
+ string Longitude;
+ string Altitude;
+}
+struct CityCodes {
+ Code Code;
+}
+struct Code {
+ string _;
+ UNKNOWN codeContext;
+}
+struct StateProvinceCodes {
+ Code Code;
+}
+struct Code {
+ string _;
+ UNKNOWN codeContext;
+}
+struct CountryCodes {
+ Code Code;
+}
+struct Code {
+ string _;
+ UNKNOWN codeContext;
+}
+struct DocumentType {
+ string DocumentID;
+ string AgencyAccountNumber;
+ string CreationChannel;
+ string SeatNumber;
+ string TypeOfPass;
+ PassengerReferences PassengerReferences;
+ SegmentReferences SegmentReferences;
+ dateTime IssueTimeLimit;
+ dateTime IssueDateTime;
+ string DocumentStatus;
+ ChargesType Charges;
+ FormOfPayment FormOfPayment;
+ File File;
+ string IssueType;
+ DocumentRules DocumentRules;
+ UNKNOWN type;
+ UNKNOWN code;
+ UNKNOWN codeContext;
+}
+struct PassengerReferences {
+ PassengerRef PassengerRef;
+}
+struct PassengerRef {
+ UNKNOWN id;
+}
+struct SegmentReferences {
+ SegmentRef SegmentRef;
+}
+struct SegmentRef {
+ UNKNOWN id;
+}
+struct FormOfPayment {
+ CreditCard CreditCard;
+ string Cash;
+ string Check;
+ string Voucher;
+ string Other;
+ UNKNOWN transactionID;
+}
+struct CreditCard {
+ string Number;
+ string Issuer;
+ string ExpirationMonth;
+ string ExpirationYear;
+ CardHolder CardHolder;
+}
+struct CardHolder {
+ PersonNameType PersonName;
+ AddressType Address;
+ PhoneType Telephone;
+ string Email;
+}
+struct File {
+ string Representation;
+ string URL;
+ UNKNOWN type;
+ UNKNOWN coding;
+}
+struct DocumentRules {
+ string Exchangable;
+ string Refundable;
+ Rule Rule;
+}
+struct Rule {
+ string _;
+ string type;
+}
+struct CodeDescriptionType {
+ string _;
+ string code;
+}
+struct ServiceType {
+ ServiceLevelType ServiceLevel;
+ EquipmentType Equipment;
+ boolean MeetAndGreetInd;
+ int MaximumBaggage;
+ int MaximumPassengers;
+}
+struct ServiceLevelType {
+ string Code;
+ string Description;
+ string Level;
+}
+struct EquipmentType {
+ string Code;
+ string Type;
+ string Description;
+}
+struct ServiceProviderType {
+ string Name;
+ Code Code;
+ PhoneType Telephone;
+ AddressType Address;
+}
+struct Code {
+ string _;
+ UNKNOWN codeContext;
+}
+struct LocationDetailsType {
+ AddressType Address;
+ dateTime DateTime;
+ AirportInfoType AirportInfo;
+ RailwayStationInfo RailwayStationInfo;
+ string Comments;
+}
+struct RailwayStationInfo {
+ StationName StationName;
+ LocalStationName LocalStationName;
+ LocationCodes LocationCodes;
+ Amenities Amenities;
+ UNKNOWN borderPoint;
+}
+struct StationName {
+ string _;
+ string lang;
+}
+struct LocalStationName {
+ string _;
+ string lang;
+}
+struct LocationCodes {
+ Code Code;
+}
+struct Code {
+ string _;
+ UNKNOWN codeContext;
+}
+struct Amenities {
+ string Amenity;
+}
+struct AirportInfoType {
+ AirlineType Airline;
+ string AirportName;
+ string LocationCode;
+ string Terminal;
+ string Gate;
+}
+struct AirlineType {
+ string _;
+ string code;
+ string flightNumber;
+ dateTime flightDateTime;
+ FlightDirectionType flightType;
+ boolean privateAviation;
+}
+string FlightDirectionType
+struct ExternalReservationType {
+ string SourceSystem;
+ string ConfirmationNumber;
+ string CancellationNumber;
+ string ReferenceNumber;
+ string ReservationStatus;
+}
+struct RestrictionsType {
+ MultilineTextType CancelPolicy;
+}
+struct MultilineTextType {
+ string TextLine;
+}
+struct LoyaltyType {
+ string ProgramName;
+ string MembershipID;
+ CodeDescriptionType LoyaltyLevel;
+ dateTime EffectiveDate;
+ dateTime ExpireDate;
+ string Remark;
+}
+struct PassengerType {
+ Type Type;
+ PersonNameType PersonName;
+ PhoneType Telephone;
+ string Email;
+ AddressType Address;
+ int Age;
+ date DateOfBirth;
+ Profile Profile;
+ UNKNOWN passengerID;
+ boolean primary;
+}
+struct Type {
+ string _;
+ UNKNOWN code;
+ UNKNOWN codeContext;
+}
+struct Profile {
+ string ID;
+ string Type;
+ string Source;
+}
+struct RateQualifierType {
+ string AccountID;
+ string AccountName;
+ string PromotionCode;
+ SpecialInputType SpecialInput;
+}
+struct SpecialInputType {
+ string _;
+ string name;
+}
+struct ChargesType {
+ string GeneralNotes;
+ ChargeType Charge;
+ MoneyType GrandTotal;
+ string GeneralBillingType;
+}
+struct MoneyType {
+ decimal _;
+ string currencyCode;
+}
+struct ChargeType {
+ string Description;
+ string Notes;
+ string Name;
+ CalculationType Calculation;
+ string BillingType;
+ string currencyCode;
+}
+struct CalculationType {
+ string UnitName;
+ MinMaxType UnitCharge;
+ MinMaxType Quantity;
+ MinMaxType Total;
+}
+struct MinMaxType {
+ decimal _;
+ decimal min;
+ decimal max;
+}
+struct POSType {
+ SourceType Source;
+}
+struct SourceType {
+ RequestorIDType RequestorID;
+ BookingChannelType BookingChannel;
+ TTYRecordLocatorType TTYRecordLocator;
+ OACType OAC;
+ string BookingSource;
+ string AgentSine;
+ string PseudoCityCode;
+ string ISOCountry;
+ string ISOCurrency;
+ string AgentDutyCode;
+ string AirlineVendorID;
+ string AirportCode;
+ string FirstDepartPoint;
+ string SourceSystem;
+ string TerminalID;
+}
+struct BookingChannelType {
+ CompanyNameType CompanyName;
+ string Type;
+ boolean Primary;
+}
+struct TTYRecordLocatorType {
+ string CRSLocator;
+ string CRSCode;
+ string RecordLocator;
+ string AgencyId;
+ string IataNumber;
+ string AgencyLocation;
+ string UserType;
+ string CountryCode;
+ string Currency;
+ string DutyCode;
+ string ERSPUserId;
+ string FirstPointOfDeparture;
+}
+struct OACType {
+ string PartitionId;
+ string AccountingCityCode;
+ string AccountingCode;
+ string AccountingOfficeStationCode;
+}
+struct FeeType {
+ string Amount;
+ string Description;
+ UNKNOWN name;
+ UNKNOWN type;
+ UNKNOWN currencyCode;
+}
+struct PriceType {
+ string _;
+ string currencyCode;
+}
+struct RequestorIDType {
+ CompanyNameType CompanyName;
+ ArrangerDetailsType ArrangerDetails;
+ string URL;
+ string Type;
+ string Instance;
+ string ID;
+ string ID_Context;
+ string MessagePassword;
+}
+struct CompanyNameType {
+ string _;
+ string CompanyShortName;
+ string TravelSector;
+ string Code;
+ string CodeContext;
+ string Division;
+ string Department;
+}
+struct ArrangerDetailsType {
+ PersonNameType PersonName;
+ PhoneType Telephone;
+ string Email;
+}
+struct PersonNameType {
+ string Prefix;
+ string Given;
+ string Middle;
+ string Surname;
+ string Suffix;
+ string Type;
+ string PreferredFirstName;
+ string PreferredSurname;
+}
+struct RailFareType {
+ Fare Fare;
+}
+struct Fare {
+ PassengerReferences PassengerReferences;
+ SegmentReferences SegmentReferences;
+ ClassOfService ClassOfService;
+ ClassCode ClassCode;
+ FareDescription FareDescription;
+ PriceType FarePrice;
+}
+struct PassengerReferences {
+ PassengerRef PassengerRef;
+}
+struct PassengerRef {
+ UNKNOWN id;
+}
+struct SegmentReferences {
+ SegmentRef SegmentRef;
+}
+struct SegmentRef {
+ UNKNOWN id;
+}
+struct ClassOfService {
+ string _;
+ string code;
+ string type;
+}
+struct ClassCode {
+ string _;
+ string code;
+ string type;
+}
+struct FareDescription {
+ string Name;
+ string Code;
+ Detail Detail;
+ Condition Condition;
+ Fees Fees;
+}
+struct Detail {
+ string _;
+ string type;
+ string codeContext;
+}
+struct Condition {
+ string _;
+ string lang;
+}
+struct Fees {
+ FeeType Fee;
+}
+struct RequestorSourceType {
+ string AgentSine;
+ string PseudoCityCode;
+ string AgentDutyCode;
+ string AirportCode;
+ string TerminalID;
+ string ApplicationID;
+ string Agency;
+ string SubAgency;
+}
+string NotEmptyString
+struct MapType {
+ entry entry;
+}
+struct entry {
+ string key;
+ string value;
+}
+struct PriceCache {
+ string ProviderName;
+ Comment Comment;
+ ProviderRequest ProviderRequest;
+ ProviderResponse ProviderResponse;
+}
+struct Comment {
+ string _;
+ string name;
+ string type;
+}
+struct ProviderRequest {
+ <anyXML> any;
+}
+struct ProviderResponse {
+ <anyXML> any;
+}
+struct TripProposalReference {
+ ProposalId ProposalId;
+ OptionIds OptionIds;
+}
+struct ProposalId {
+ ProposalIDType _;
+ UUIDType snapshotId;
+}
+struct OptionIds {
+ string OptionId;
+}
+string ProposalIDType
+string UUIDType
+struct FormOfPayment {
+ PaymentCard PaymentCard;
+ Cash Cash;
+ Check Check;
+ Invoice Invoice;
+ Docket Docket;
+ GTR GTR;
+ VirtualCard VirtualCard;
+ OtherFOP Other;
+ PayLaterPlan PayLaterPlan;
+ LoyaltyProgramRedemption LoyaltyProgramRedemption;
+ boolean miscFOP;
+ boolean migrated;
+}
+struct Loyalty {
+ string ProgramName;
+ string MembershipID;
+ CodeDescription LoyaltyLevel;
+ dateTime EffectiveDate;
+ dateTime ExpireDate;
+ string Remark;
+ Metadata Metadata;
+ FrequentFlyer FrequentFlyer;
+}
+struct Metadata {
+ int DisplayIndex;
+}
+struct FrequentFlyer {
+ string PartnershipAirlineCodes;
+ string ActionCode;
+ string PreviousActionCode;
+ string Vendor;
+ string ReceivingCarrierCode;
+ short VitType;
+ string FrequentFlyerNumber;
+ string MembershipID;
+ string ProductType;
+ string ProgramCode;
+ string Provider;
+ string CITierLevel;
+ string ATPCOTierLevel;
+ string Indicators;
+ string Text;
+ string Banner;
+ string Tag;
+ string Tag2Char;
+}
+struct CodeDescription {
+ string _;
+ string code;
+}
+string FOP
+string FOP_Trip
+string OTA_Code
+struct PaymentCard {
+ FOP PaymentType;
+ FOP_Trip TripCategory;
+ OTA_Code CardType;
+ string CardCode;
+ CardNumber CardNumber;
+ gMonth ExpiryMonth;
+ gYear ExpiryYear;
+ string ExtendPayment;
+ ApprovalList ApprovalList;
+ string DeferredPaymentID;
+ boolean DefaultExtendPayment;
+ boolean SuppressFromInvoice;
+ boolean GenerateApprovalAtTicketing;
+ string CSCResultCode;
+ string CSCRemark;
+ string AVSResultCode;
+ string AVSRemark;
+ string BNumber;
+ string CardHolderName;
+ string CSC;
+ string CSCValidatingCarrier;
+ boolean reconcileAsCash;
+}
+struct CardNumber {
+ string _;
+ boolean tokenized;
+ boolean masked;
+ string token;
+}
+struct ApprovalList {
+ PaymentCardApproval Approval;
+}
+struct PaymentCardApproval {
+ boolean ManualApproval;
+ string ResponseCode;
+ string ApprovalCode;
+ dateTime RequestTime;
+ dateTime ExpiryTime;
+ string AirlineCode;
+ MoneyType Amount;
+ string Remarks;
+ string SupplierTransID;
+ string PaymentRef;
+ string CSCMatched;
+ string CSCRemark;
+ string Qualifier;
+ string ExtendPayment;
+}
+struct Cash {
+ string Text;
+ string BNumber;
+}
+struct Check {
+ string Text;
+ string BNumber;
+}
+struct Invoice {
+ string Text;
+ string BNumber;
+}
+struct Docket {
+ string Prefix;
+ string DocketNumber;
+ string AgentInitials;
+ string BNumber;
+}
+struct GR {
+ GGR GGR;
+ string Information;
+}
+struct SGR {
+ string Information;
+}
+struct GGR {
+ string Type;
+ string WarrantCode;
+ string DebtorCode;
+ string ObjectCode;
+}
+struct FGR {
+ string Information;
+}
+struct GTR {
+ GR GR;
+ SGR SGR;
+ GGR GGR;
+ FGR FGR;
+ string BNumber;
+}
+struct VirtualCard {
+ string CustomerAccountCode;
+ string BNumber;
+ Transactions Transactions;
+}
+struct Transactions {
+ Transaction Transaction;
+}
+struct Transaction {
+ dateTime LastUpdateTime;
+ string DeploymentId;
+ string DocumentNumber;
+ string ConfirmationNumber;
+ int index;
+}
+struct OtherFOP {
+ string Text;
+}
+struct PayLaterPlan {
+ string Type;
+ string Text;
+}
+struct LoyaltyProgramRedemption {
+ string ProgramName;
+ string MembershipNumber;
+ string MemberName;
+ string Vendor;
+ TierLevel TierLevel;
+ string LocalCardNumber;
+}
+struct TierLevel {
+ string _;
+ string code;
+}
+struct AncillaryProductObject {
+ ApoXmlData XmlData;
+ string Id;
+ ApoOperation Operation;
+}
+struct InvoiceData {
+ string SnapshotId;
+ string InvoiceId;
+ int InvoiceNumber;
+ dateTime InvoiceCreateDate;
+ string DkNumber;
+ string TravellerLastName;
+ string TravellerFirstName;
+ NameAssociationTag TravellerName;
+ string AccountingLine;
+ string SegmentNumber;
+}
+string ApoOperation
+struct ApoXmlData {
+ AncillaryServiceData AncillaryServiceData;
+}
+struct AccountingField {
+ AccountingTransaction Transaction;
+}
+struct AccountingTransaction {
+ string Type;
+ string Status;
+ dateTime Date;
+ string OriginatingLocator;
+ POSType POS;
+ AccountingTransactionItem Item;
+ Payment Payment;
+}
+struct Payment {
+ string TransactionId;
+ string SupplierId;
+ AccountingTransactionAmount ApprovalAmount;
+ string ApprovalCode;
+ FormOfPayment FormOfPayment;
+}
+struct AccountingTransactionItem {
+ AccountingTransactionSource Source;
+ AccountingTransactionAmountWithRule Price;
+ Tax Tax;
+ Promotion Promotion;
+ AccountingTransactionAmount AppliedAmount;
+ NameAssociationTag Passenger;
+}
+struct Tax {
+ string code;
+}
+struct Promotion {
+ string Type;
+ decimal Percentage;
+ string OfferName;
+}
+struct AccountingTransactionSource {
+ SegmentData SegmentData;
+ AncillaryServiceData AncillaryServiceData;
+}
+struct SegmentData {
+ FareComponent FareComponent;
+ SegmentOrTravelPortion Segments;
+}
+struct AncillaryServiceData {
+ CommonString CommercialName;
+ CommonString RficCode;
+ string RficSubcode;
+ CommonString SSRCode;
+ ProductTextDetails ProductTextDetails;
+ CommonString ProductText;
+ CommonString OwningCarrierCode;
+ CommonString SsimCode;
+ CommonString BookingIndicator;
+ CommonString Vendor;
+ CommonString EMDType;
+ CommonString EMDNumber;
+ CommonString EMDCoupon;
+ AncillaryServiceETicketNumberUpdate ETicketNumber;
+ CommonString ServiceFeeLineNumber;
+ boolean DisplayOnlyIndicator;
+ CommonString ConsumptionIndicator;
+ CommonString PresentTo;
+ CommonString AtCity;
+ CommonString Endorsements;
+ CommonString StationIndicator;
+ CommonString ServiceCity;
+ CommonString ServiceCityDestination;
+ ServiceType ServiceType;
+ RuleSet RuleSet;
+ OriginalPrice OriginalPrice;
+ byte NewMiscIndicator;
+ SegmentOrTravelPortion Segments;
+}
+struct AccountingTransactionAmount {
+ MoneyType Money;
+ Points Points;
+}
+struct Points {
+ string Type;
+ decimal Value;
+ decimal ConversionRate;
+}
+struct AccountingTransactionAmountWithRule {
+ RuleSet RuleSet;
+}
+struct RuleSet {
+ StringLength1to20 _;
+ unsignedLong RuleId;
+}
+struct FareComponent {
+ string FareBasisCode;
+ string BrandCode;
+ string AccountCode;
+ string PricingPassengerType;
+ string Origin;
+ string Destination;
+}
+struct PriceQuoteType {
+ <anyXML> any;
+}
+struct ServiceRequestType {
+ string Comment;
+ string FreeText;
+ string FullText;
+ ServiceRequestType.PassengerAddressInformation PassengerAddressInformation;
+ ServiceRequestType.OtherSupplementaryInformation OtherSupplementaryInformation;
+ ServiceRequestType.TravelDocument TravelDocument;
+ ServiceRequestType.PassengerProvidedContactForPassenger PassengerProvidedContactForPassenger;
+ ServiceRequestType.PassengerContactEmail PassengerContactEmail;
+ ServiceRequestType.PassengerContactMobilePhone PassengerContactMobilePhone;
+ string actionCode;
+ string airlineCode;
+ string code;
+ string serviceCount;
+ string serviceType;
+ string ssrType;
+}
+struct ServiceRequestType.PassengerAddressInformation {
+ string Type;
+ string Country;
+ string Street;
+ string City;
+ string StateOrProvince;
+ boolean Infant;
+ string ZipCode;
+}
+struct ServiceRequestType.OtherSupplementaryInformation {
+ string Type;
+ string PlaceOfBirth;
+ string DocumentNumber;
+ string PlaceOfIssue;
+ string IssueDate;
+ string ApplicableCountry;
+ boolean Infant;
+ boolean HasDocumentData;
+}
+struct ServiceRequestType.TravelDocument {
+ string Type;
+ string DocumentIssueCountry;
+ string DocumentNumber;
+ string DocumentNationalityCountry;
+ string DocumentExpirationDate;
+ string DateOfBirth;
+ string Gender;
+ string LastName;
+ string FirstName;
+ string MiddleName;
+ boolean Infant;
+ boolean PrimaryDocHolderInd;
+ boolean HasDocumentData;
+}
+struct ServiceRequestType.PassengerProvidedContactForPassenger {
+ string ContactName;
+ string CountryCode;
+ string PhoneNumber;
+ string FreeText;
+}
+struct ServiceRequestType.PassengerContactEmail {
+ string Email;
+ string Language;
+}
+struct ServiceRequestType.PassengerContactMobilePhone {
+ string PhoneNumber;
+ string Language;
+}
+struct InsuranceType {
+ string ConfirmationNumber;
+ QuoteID QuoteID;
+ Coverages Coverages;
+ AddOns AddOns;
+ string Excess;
+ string Cancellation;
+ string Commission;
+ string PremiumAmount;
+ string PremiumGrossAmount;
+ string PremiumPerDay;
+ DestinationLocation DestinationLocation;
+ OriginLocation OriginLocation;
+ Payment Payment;
+ Travelers Travelers;
+ string Text;
+ Vendor Vendor;
+ PricingElementsType PriceDetails;
+ Declarations Declarations;
+ string currencyCode;
+ dateTime end;
+ string numberOfPolicies;
+ string productCode;
+ string productName;
+ string planType;
+ string planName;
+ string tripType;
+ int minAge;
+ int maxAge;
+ dateTime purchaseDate;
+ dateTime start;
+}
+struct QuoteID {
+ string _;
+ string sessionId;
+}
+struct Coverages {
+ InsuranceCoverage Coverage;
+}
+struct AddOns {
+ InsuranceCoverAddOn AddOn;
+}
+struct DestinationLocation {
+ string locationCode;
+ string countryCode;
+ string areaCode;
+ string areaName;
+ string type;
+}
+struct OriginLocation {
+ string locationCode;
+}
+struct Payment {
+ string Form;
+}
+struct Travelers {
+ Traveler Traveler;
+}
+struct Traveler {
+ InsuranceCoverAddOn CoverAddOn;
+ boolean treatAsAdult;
+}
+struct Vendor {
+ string code;
+ string companyShortName;
+}
+struct Declarations {
+ Declaration Declaration;
+}
+struct Declaration {
+ string _;
+ string id;
+}
+struct InsuranceCoverAddOn {
+ Options Options;
+}
+struct Options {
+ Option Option;
+}
+struct Option {
+ string Value;
+ string Description;
+}
+struct InsuranceCoverage {
+ string Name;
+ string Description;
+ string code;
+ string vendorCode;
+ string amount;
+}
+struct Email {
+ string Address;
+ string comment;
+ string type;
+ string name;
+}
+struct InsuranceOptOut {
+ string VendorCode;
+ string QuoteID;
+ string ReasonCode;
+ string ReasonText;
+}
+struct VehicleType {
+ ChangePolicy ChangePolicy;
+ string ConfirmationNumber;
+ string DirectConnect;
+ POSType POS;
+ VehicleRentalCore VehicleRentalCore;
+ VehicleVendorAvail VehicleVendorAvail;
+ PricingElementsType PricingElements;
+ string dayOfWeekInd;
+ string linkCode;
+ string mergedSegmentInd;
+}
+struct ChangePolicy {
+ string Comment;
+}
+struct VehicleRentalCore {
+ DropOffLocationDetails DropOffLocationDetails;
+ FlightSegment FlightSegment;
+ LocationDetails LocationDetails;
+ string pickUpDateTime;
+ string returnDateTime;
+}
+struct DropOffLocationDetails {
+ string locationCode;
+}
+struct FlightSegment {
+ MarketingAirline MarketingAirline;
+ string flightNumber;
+}
+struct MarketingAirline {
+ string code;
+ string flightNumber;
+}
+struct LocationDetails {
+ PhoneType ContactNumber;
+ string extendedLocationCode;
+ string locationCode;
+ string locationName;
+}
+struct VehicleVendorAvail {
+ VehicleResCore VehicleResCore;
+ Vendor Vendor;
+}
+struct VehicleResCore {
+ CollectionDeliveryInfo CollectionDeliveryInfo;
+ GuaranteePrepaid GuaranteePrepaid;
+ PricedEquipment PricedEquipment;
+ RentalRate RentalRate;
+ Charge Charge;
+}
+struct CollectionDeliveryInfo {
+ CollectionInfo CollectionInfo;
+ DeliveryInfo DeliveryInfo;
+}
+struct CollectionInfo {
+ AddressType Address;
+ PhoneType ContactNumber;
+ string siteID;
+ string siteName;
+}
+struct DeliveryInfo {
+ AddressType Address;
+ string CollectionFee;
+ PhoneType ContactNumber;
+ string siteID;
+ string siteName;
+}
+struct GuaranteePrepaid {
+ CancellationRefundAmount CancellationRefundAmount;
+ string amount;
+ string amountPercentage;
+ string currencyCode;
+ string typeOfGuarantee;
+}
+struct CancellationRefundAmount {
+ string _;
+ string numDays;
+}
+struct PricedEquipment {
+ string equipmentType;
+ string quantity;
+ string specialEquipment;
+ string specialEquipmentConfirmed;
+}
+struct RentalRate {
+ Billing Billing;
+ Client Client;
+ Corporate Corporate;
+ CustLoyalty CustLoyalty;
+ InvoiceRemarks InvoiceRemarks;
+ Remarks Remarks;
+ string ReserveUnderName;
+ ServiceInformation ServiceInformation;
+ TourCode TourCode;
+ VehicleTypes VehicleTypes;
+ Voucher Voucher;
+ string changed;
+ string guaranteedQuoted;
+ string rateCode;
+ string stmRatePlan;
+}
+struct Billing {
+ string number;
+ string reference;
+}
+struct Client {
+ string ID;
+}
+struct Corporate {
+ string ID;
+}
+struct CustLoyalty {
+ string membershipID;
+}
+struct InvoiceRemarks {
+ string Text;
+}
+struct Remarks {
+ string Text;
+}
+struct ServiceInformation {
+ string Text;
+}
+struct TourCode {
+ string Text;
+}
+struct VehicleTypes {
+ string Transmission;
+ string VehType;
+ string UpgradedVehType;
+}
+struct Voucher {
+ string billingNumber;
+ string format;
+ string id;
+ string type;
+}
+struct Charge {
+ string Amount;
+ ConversionRate ConversionRate;
+ ChargeDetails ChargeDetails;
+ Commission Commission;
+ Mileage Mileage;
+ ExcessRate ExcessRate;
+ string dropOffCharge;
+ string typeOfGuarantee;
+}
+struct ConversionRate {
+ decimal value;
+ string currency;
+}
+struct ChargeDetails {
+ ApproximateTotalCharge ApproximateTotalCharge;
+}
+struct ApproximateTotalCharge {
+ string amount;
+ string mileageAllowance;
+ string numDays;
+ string numHours;
+ string rateType;
+ string totalMandatoryCharges;
+}
+struct Commission {
+ string amount;
+ string percent;
+}
+struct Mileage {
+ string currencyCode;
+ string extraMileageCharge;
+ string unitOfMeasure;
+}
+struct ExcessRate {
+ string amount;
+ string currencyCode;
+}
+struct Vendor {
+ string code;
+ string companyShortName;
+}
+struct TravelItineraryReadRS {
+ ApplicationResults ApplicationResults;
+ TravelItinerary TravelItinerary;
+ PriceQuoteType PriceQuote;
+ VCR VCR;
+ string Version;
+}
+struct TravelItinerary {
+ AccountingInfo AccountingInfo;
+ CustomerInfo CustomerInfo;
+ FileInfo FileInfo;
+ ItineraryInfo ItineraryInfo;
+ ItineraryRef ItineraryRef;
+ PayInfo PayInfo;
+ QueueInfo QueueInfo;
+ RemarkInfo RemarkInfo;
+ SpecialServiceInfo SpecialServiceInfo;
+ OpenReservationElements OpenReservationElements;
+ CorporateIDInfo CorporateIDInfo;
+ AssociationMatrices AssociationMatrices;
+}
+struct AccountingInfo {
+ AccountVendor AccountVendor;
+ Airline Airline;
+ BaseFare BaseFare;
+ string ChargeCategory;
+ DocumentInfo DocumentInfo;
+ string FareApplication;
+ PaymentInfo PaymentInfo;
+ PersonName PersonName;
+ Taxes Taxes;
+ string Text;
+ TicketingInfo TicketingInfo;
+ string LinkCode;
+ string Type;
+ string Id;
+}
+struct AccountVendor {
+ string Code;
+}
+struct Airline {
+ string Code;
+}
+struct BaseFare {
+ string Amount;
+ string CurrencyCode;
+ string Percent;
+}
+struct DocumentInfo {
+ Document Document;
+}
+struct Document {
+ string Number;
+}
+struct PaymentInfo {
+ Commission Commission;
+ Payment Payment;
+}
+struct Commission {
+ string Amount;
+ string Percent;
+}
+struct Payment {
+ CC_Info CC_Info;
+ string Form;
+}
+struct CC_Info {
+ PaymentCard PaymentCard;
+}
+struct PaymentCard {
+ string Code;
+ string Number;
+}
+struct PersonName {
+ string _;
+ string NameNumber;
+}
+struct Taxes {
+ GST GST;
+ QST QST;
+ Tax Tax;
+}
+struct GST {
+ string Amount;
+ string CurrencyCode;
+ string Percent;
+}
+struct QST {
+ string Amount;
+ string CurrencyCode;
+ string Percent;
+ string TaxCode;
+}
+struct Tax {
+ string Amount;
+ string CurrencyCode;
+ string Percent;
+ string TaxCode;
+}
+struct TicketingInfo {
+ eTicket eTicket;
+ Exchange Exchange;
+ date IssueDate;
+ string IssueLocation;
+ string OriginalInvoiceNumber;
+ string OriginalTicketNumber;
+ string TariffBasis;
+ Ticketing Ticketing;
+}
+struct eTicket {
+ boolean Ind;
+}
+struct Exchange {
+ boolean Ind;
+}
+struct Ticketing {
+ string ConjunctedCount;
+ string CouponCount;
+}
+struct CustomerInfo {
+ Address Address;
+ ContactNumbers ContactNumbers;
+ CustLoyalty CustLoyalty;
+ Passport Passport;
+ PaymentInfo PaymentInfo;
+ PersonName PersonName;
+}
+struct Address {
+ AddressLine AddressLine;
+}
+struct AddressLine {
+ string _;
+ string Id;
+ string type;
+}
+struct ContactNumbers {
+ ContactNumber ContactNumber;
+}
+struct ContactNumber {
+ PersonName PersonName;
+ string LocationCode;
+ string Phone;
+ string RPH;
+ string Id;
+}
+struct PersonName {
+ string _;
+ string NameNumber;
+}
+struct CustLoyalty {
+ string TravelingCarrierCode;
+ string MembershipID;
+ string NameNumber;
+ string ProgramID;
+ string RPH;
+ string ShortText;
+ string Status;
+ string Id;
+}
+struct Passport {
+ string Number;
+ string RPH;
+ string Id;
+}
+struct PaymentInfo {
+ Payment Payment;
+}
+struct Payment {
+ CC_Info CC_Info;
+ Form Form;
+}
+struct CC_Info {
+ CardHolderInfo CardHolderInfo;
+ string PreferredCustomer;
+ string ShortText;
+}
+struct CardHolderInfo {
+ Address Address;
+ ContactNumbers ContactNumbers;
+ string Name;
+}
+struct Address {
+ string AddressLine;
+}
+struct ContactNumbers {
+ ContactNumber ContactNumber;
+}
+struct ContactNumber {
+ string Phone;
+}
+struct Form {
+ string Text;
+ string RPH;
+ string Id;
+}
+struct PersonName {
+ Email Email;
+ string GivenName;
+ GroupInfo GroupInfo;
+ ProfileIndex ProfileIndex;
+ string Surname;
+ string WithInfant;
+ string NameNumber;
+ string NameReference;
+ string PassengerType;
+ string RPH;
+ string Id;
+ AssociationMatrixID elementId;
+}
+struct Email {
+ string _;
+ string Id;
+ string Comment;
+ string Type;
+ string Name;
+}
+struct GroupInfo {
+ AssociatedReferenceInformation AssociatedReferenceInformation;
+ string Name;
+ string OriginalNumberOfSeats;
+ string GroupNameNumber;
+ string NumSeatsRemaining;
+ string SoldNumberOfSeats;
+}
+struct AssociatedReferenceInformation {
+ AssociatedPNRSummaries AssociatedPNRSummaries;
+}
+struct AssociatedPNRSummaries {
+ AssociatedPNRSummary AssociatedPNRSummary;
+}
+struct AssociatedPNRSummary {
+ string RecordLocator;
+ string NumberOfSeats;
+ string TicketingTimeLimitInfo;
+ string FreeText;
+}
+struct ProfileIndex {
+ string _;
+ string Id;
+}
+struct FileInfo {
+ File File;
+}
+struct File {
+ string _;
+ string ProductCode;
+ string RPH;
+ string Id;
+}
+struct ItineraryInfo {
+ ItineraryPricing ItineraryPricing;
+ ReservationItems ReservationItems;
+ Ticketing Ticketing;
+}
+struct ItineraryPricing {
+ FuturePriceInfo FuturePriceInfo;
+ PriceQuote PriceQuote;
+ PriceQuoteTotals PriceQuoteTotals;
+}
+struct FuturePriceInfo {
+ string Text;
+ string RPH;
+}
+struct PriceQuote {
+ MiscInformation MiscInformation;
+ PricedItinerary PricedItinerary;
+ ResponseHeader ResponseHeader;
+ PriceQuotePlus PriceQuotePlus;
+ string RPH;
+}
+struct MiscInformation {
+ BaggageFees BaggageFees;
+ GlobalNetRemit GlobalNetRemit;
+ SignatureLine SignatureLine;
+ TicketingFees TicketingFees;
+}
+struct BaggageFees {
+ string Text;
+}
+struct GlobalNetRemit {
+ NetFare NetFare;
+ SellingFare SellingFare;
+ string Text;
+ string MethodType;
+ string ValueCode;
+}
+struct NetFare {
+ BaseFare BaseFare;
+ EquivFare EquivFare;
+ Taxes Taxes;
+ TotalFare TotalFare;
+}
+struct BaseFare {
+ string Amount;
+ string CurrencyCode;
+}
+struct EquivFare {
+ string Amount;
+ string CurrencyCode;
+}
+struct Taxes {
+ string TotalAmount;
+}
+struct TotalFare {
+ string Amount;
+}
+struct SellingFare {
+ BaseFare BaseFare;
+ EquivFare EquivFare;
+ Taxes Taxes;
+ TotalFare TotalFare;
+}
+struct BaseFare {
+ string Amount;
+ string CurrencyCode;
+}
+struct EquivFare {
+ string Amount;
+ string CurrencyCode;
+}
+struct Taxes {
+ string TotalAmount;
+}
+struct TotalFare {
+ string Amount;
+}
+struct SignatureLine {
+ string Text;
+ string Banner;
+ string CommissionAmount;
+ string CommissionID;
+ string ExpirationDateTime;
+ string PQR_Ind;
+ string Source;
+ string Status;
+}
+struct TicketingFees {
+ FeeInformation FeeInformation;
+ string Disclaimer;
+}
+struct FeeInformation {
+ AssociatedData AssociatedData;
+ string AccountData;
+ string Amount;
+ string DisplayOnOutputInd;
+ string FunctionCode;
+ string GuaranteeType;
+ string NonCommissionInd;
+ string NonRefundableInd;
+ string OnlineInterlineService;
+ string ServiceType;
+ string CurrencyCode;
+ string Description;
+}
+struct AssociatedData {
+ AssociatedDataItem AssociatedDataItem;
+}
+struct AssociatedDataItem {
+ string _;
+ string WaiverCode;
+ string NameNumber;
+}
+struct PricedItinerary {
+ AirItineraryPricingInfo AirItineraryPricingInfo;
+ NetTicketingInfo NetTicketingInfo;
+ string DeletedBy;
+ boolean DisplayOnly;
+ string InputMessage;
+ string RPH;
+ string StatusCode;
+ boolean TaxExempt;
+ string ValidatingCarrier;
+ string StoredDateTime;
+}
+struct AirItineraryPricingInfo {
+ ItinTotalFare ItinTotalFare;
+ PassengerTypeQuantity PassengerTypeQuantity;
+ PrivateFareInformation PrivateFareInformation;
+ PTC_FareBreakdown PTC_FareBreakdown;
+}
+struct ItinTotalFare {
+ BaseFare BaseFare;
+ EquivFare EquivFare;
+ Taxes Taxes;
+ TotalFare TotalFare;
+ Totals Totals;
+}
+struct BaseFare {
+ string Amount;
+ string CurrencyCode;
+}
+struct EquivFare {
+ string Amount;
+ string CurrencyCode;
+}
+struct Taxes {
+ Tax Tax;
+ TaxBreakdownCode TaxBreakdownCode;
+}
+struct Tax {
+ string Amount;
+ string TaxCode;
+}
+struct TaxBreakdownCode {
+ string _;
+ boolean TaxPaid;
+}
+struct TotalFare {
+ string Amount;
+ string CurrencyCode;
+}
+struct Totals {
+ BaseFare BaseFare;
+ EquivFare EquivFare;
+ Taxes Taxes;
+ TotalFare TotalFare;
+}
+struct BaseFare {
+ string Amount;
+}
+struct EquivFare {
+ string Amount;
+}
+struct Taxes {
+ Tax Tax;
+}
+struct Tax {
+ string Amount;
+}
+struct TotalFare {
+ string Amount;
+}
+struct PassengerTypeQuantity {
+ string Code;
+ string Quantity;
+}
+struct PrivateFareInformation {
+ string Text;
+ string PrivateFareType;
+ boolean PrivateFareInd;
+}
+struct PTC_FareBreakdown {
+ NetRemits NetRemits;
+ Endorsements Endorsements;
+ FareBasis FareBasis;
+ FareCalculation FareCalculation;
+ string FareSource;
+ FlightSegment FlightSegment;
+ FareComponent FareComponent;
+ string ResTicketingRestrictions;
+ TourCode TourCode;
+}
+struct NetRemits {
+ NetRemit NetRemit;
+}
+struct NetRemit {
+ string Text;
+}
+struct Endorsements {
+ Endorsement Endorsement;
+}
+struct Endorsement {
+ string Text;
+ string type;
+}
+struct FareBasis {
+ string Code;
+}
+struct FareCalculation {
+ string Text;
+}
+struct FlightSegment {
+ BaggageAllowance BaggageAllowance;
+ FareBasis FareBasis;
+ MarketingAirline MarketingAirline;
+ OriginLocation OriginLocation;
+ ValidityDates ValidityDates;
+ string ConnectionInd;
+ string DepartureDateTime;
+ string FlightNumber;
+ string ResBookDesigCode;
+ string SegmentNumber;
+ string Status;
+ string Id;
+}
+struct BaggageAllowance {
+ string Number;
+}
+struct FareBasis {
+ string Code;
+}
+struct MarketingAirline {
+ string Code;
+ string FlightNumber;
+}
+struct OriginLocation {
+ string LocationCode;
+}
+struct ValidityDates {
+ string NotValidAfter;
+ string NotValidBefore;
+}
+struct FareComponent {
+ Location Location;
+ Dates Dates;
+ FlightSegmentNumbers FlightSegmentNumbers;
+ string FareBasisCode;
+ string FareDirectionality;
+ string Amount;
+ string TicketDesignator;
+ string GoverningCarrier;
+ string FareComponentNumber;
+}
+struct Location {
+ string Origin;
+ string Destination;
+}
+struct Dates {
+ string DepartureDateTime;
+ string ArrivalDateTime;
+}
+struct FlightSegmentNumbers {
+ string FlightSegmentNumber;
+}
+struct TourCode {
+ string Text;
+}
+struct NetTicketingInfo {
+ NetFareDetails NetFareDetails;
+ SellingFareDetails SellingFareDetails;
+ string AccountCode;
+ string CorporateId;
+}
+struct NetFareDetails {
+ BaseFare BaseFare;
+ EquivFare EquivFare;
+ TotalTax TotalTax;
+ TotalFare TotalFare;
+ Commission Commission;
+ string FareCalc;
+ Taxes Taxes;
+}
+struct BaseFare {
+ string Amount;
+ string CurrencyCode;
+}
+struct EquivFare {
+ string Amount;
+ string CurrencyCode;
+}
+struct TotalTax {
+ string Amount;
+ string CurrencyCode;
+}
+struct TotalFare {
+ string Amount;
+ string CurrencyCode;
+}
+struct Commission {
+ Percent Percent;
+ string Amount;
+ string CurrencyCode;
+}
+struct Percent {
+ string _;
+ string Type;
+}
+struct Taxes {
+ Tax Tax;
+}
+struct Tax {
+ string Amount;
+ string TaxCode;
+ boolean Exempt;
+}
+struct SellingFareDetails {
+ BaseFare BaseFare;
+ EquivFare EquivFare;
+ TotalTax TotalTax;
+ TotalFare TotalFare;
+ Commission Commission;
+ string FareCalc;
+ Taxes Taxes;
+}
+struct BaseFare {
+ string Amount;
+ string CurrencyCode;
+}
+struct EquivFare {
+ string Amount;
+ string CurrencyCode;
+}
+struct TotalTax {
+ string Amount;
+ string CurrencyCode;
+}
+struct TotalFare {
+ string Amount;
+ string CurrencyCode;
+}
+struct Commission {
+ Percent Percent;
+ string Amount;
+ string CurrencyCode;
+}
+struct Percent {
+ string _;
+ string Type;
+}
+struct Taxes {
+ Tax Tax;
+}
+struct Tax {
+ string Amount;
+ string TaxCode;
+ boolean Exempt;
+}
+struct ResponseHeader {
+ string Text;
+}
+struct PriceQuotePlus {
+ string Header;
+ PassengerInfo PassengerInfo;
+ TicketingInstructionsInfo TicketingInstructionsInfo;
+ FuturePricingInfo FuturePricingInfo;
+ PACInfo PACInfo;
+ string DomesticIntlInd;
+ string PricingStatus;
+ boolean VerifyFareCalc;
+ boolean ItineraryChanged;
+ boolean ManualFare;
+ boolean NegotiatedFare;
+ string SystemIndicator;
+ boolean NUCSuppresion;
+ boolean SubjToGovtApproval;
+ string IT_BT_Fare;
+ boolean DisplayOnly;
+ string TourCode;
+ string DiscountAmount;
+}
+struct PassengerInfo {
+ PassengerData PassengerData;
+ string PassengerType;
+}
+struct PassengerData {
+ string _;
+ string NameNumber;
+}
+struct TicketingInstructionsInfo {
+ TicketingInstruction TicketingInstruction;
+}
+struct TicketingInstruction {
+ string Text;
+ string Id;
+}
+struct FuturePricingInfo {
+ FuturePrice FuturePrice;
+}
+struct FuturePrice {
+ string Text;
+}
+struct PACInfo {
+ PAC PAC;
+}
+struct PAC {
+ string Text;
+ string Id;
+}
+struct PriceQuoteTotals {
+ BaseFare BaseFare;
+ EquivFare EquivFare;
+ Taxes Taxes;
+ TotalFare TotalFare;
+}
+struct BaseFare {
+ string Amount;
+}
+struct EquivFare {
+ string Amount;
+}
+struct Taxes {
+ Tax Tax;
+}
+struct Tax {
+ string Amount;
+}
+struct TotalFare {
+ string Amount;
+}
+struct ReservationItems {
+ Item Item;
+}
+struct Item {
+ AirTaxi AirTaxi;
+ Arunk Arunk;
+ Cruise Cruise;
+ FlightSegment FlightSegment;
+ Hotel Hotel;
+ Insurance Insurance;
+ MiscSegment MiscSegment;
+ Rail Rail;
+ Seats Seats;
+ Surface Surface;
+ Tour Tour;
+ Vehicle Vehicle;
+ ProductType Product;
+ Ancillaries Ancillaries;
+ string RPH;
+ string Id;
+}
+struct AirTaxi {
+ DestinationLocation DestinationLocation;
+ OriginLocation OriginLocation;
+ string Text;
+ Vendor Vendor;
+ string DayOfWeekInd;
+ date DepartureDateTime;
+ string LinkCode;
+ string NumberInParty;
+ string SegmentNumber;
+ string Status;
+ string Type;
+ boolean IsPast;
+ string Id;
+}
+struct DestinationLocation {
+ string LocationCode;
+}
+struct OriginLocation {
+ string LocationCode;
+}
+struct Vendor {
+ string Code;
+}
+struct Arunk {
+ string SegmentNumber;
+ string Type;
+ string Id;
+}
+struct Cruise {
+ string Berth;
+ string Cabin;
+ string CarRate;
+ string ConfirmationNumber;
+ DestinationLocation DestinationLocation;
+ OriginLocation OriginLocation;
+ string Passenger;
+ string Seat;
+ ServiceInformation ServiceInformation;
+ string ShipName;
+ string SpaceReserved;
+ string Text;
+ string TotalFare;
+ string TrailerPrice;
+ Vendor Vendor;
+ string DayOfWeekInd;
+ string LinkCode;
+ string MergedSegmentInd;
+ string NumberInParty;
+ string SegmentNumber;
+ string Status;
+ string Type;
+ boolean IsPast;
+ string Id;
+}
+struct DestinationLocation {
+ date ArrivalDate;
+ time ArrivalTime;
+ string Point;
+ string LocationCode;
+ string LocationName;
+}
+struct OriginLocation {
+ date DepartureDate;
+ time DepartureTime;
+ string Point;
+ string LocationCode;
+ string LocationName;
+}
+struct ServiceInformation {
+ string Text;
+}
+struct Vendor {
+ string Code;
+}
+struct FlightSegment {
+ BSG_Record BSG_Record;
+ CheckInAirline CheckInAirline;
+ CodeshareRecord CodeshareRecord;
+ DestinationLocation DestinationLocation;
+ Equipment Equipment;
+ MarketingAirline MarketingAirline;
+ MarketingCodeshareRecord MarketingCodeshareRecord;
+ MarriageGrp MarriageGrp;
+ Meal Meal;
+ OperatingAirline OperatingAirline;
+ OperatingAirlinePricing OperatingAirlinePricing;
+ OperatingAirlineRecord OperatingAirlineRecord;
+ DisclosureCarrier DisclosureCarrier;
+ OriginLocation OriginLocation;
+ SupplierRef SupplierRef;
+ string Text;
+ string BSGIndicator;
+ string UpdatedArrivalTime;
+ string UpdatedDepartureTime;
+ Cabin Cabin;
+ string AirMilesFlown;
+ dateTime ArrivalDateTime;
+ string ConnectionInd;
+ string DayOfWeekInd;
+ dateTime DepartureDateTime;
+ dateTime SegmentBookedDate;
+ string ElapsedTime;
+ boolean eTicket;
+ string FlightNumber;
+ string NumberInParty;
+ string ResBookDesigCode;
+ string SegmentNumber;
+ boolean SmokingAllowed;
+ boolean SpecialMeal;
+ string Status;
+ string StopQuantity;
+ boolean IsPast;
+ boolean CodeShare;
+ boolean Wetlease;
+ string Id;
+}
+struct BSG_Record {
+ string ID;
+ string BSGPNRCreatedDate;
+}
+struct CheckInAirline {
+ string Code;
+ string CompanyShortName;
+}
+struct CodeshareRecord {
+ string ID;
+}
+struct DestinationLocation {
+ string LocationCode;
+ string Terminal;
+ string TerminalCode;
+}
+struct Equipment {
+ string AirEquipType;
+}
+struct MarketingAirline {
+ string Banner;
+ string Code;
+ string FlightNumber;
+ string ResBookDesigCode;
+}
+struct MarketingCodeshareRecord {
+ string ID;
+}
+struct MarriageGrp {
+ string Group;
+ string Ind;
+ string Sequence;
+}
+struct Meal {
+ string Code;
+}
+struct OperatingAirline {
+ string Banner;
+ string Code;
+ string FlightNumber;
+ string ResBookDesigCode;
+ string OwningCarrier;
+}
+struct OperatingAirlinePricing {
+ string Code;
+}
+struct OperatingAirlineRecord {
+ string ID;
+}
+struct DisclosureCarrier {
+ string Banner;
+ string Code;
+ boolean DOT;
+}
+struct OriginLocation {
+ string LocationCode;
+ string Terminal;
+ string TerminalCode;
+}
+struct SupplierRef {
+ string ID;
+}
+struct Cabin {
+ string Code;
+ string SabreCode;
+ string Name;
+ string ShortName;
+ string Lang;
+}
+struct Hotel {
+ BasicPropertyInfo BasicPropertyInfo;
+ Customer Customer;
+ string Guarantee;
+ POS POS;
+ RoomRates RoomRates;
+ SpecialPrefs SpecialPrefs;
+ string Text;
+ TimeSpan TimeSpan;
+ string DayOfWeekInd;
+ string LinkCode;
+ string MergedSegmentInd;
+ string NumberInParty;
+ string NumberOfUnits;
+ string SegmentNumber;
+ string Status;
+ string Type;
+ boolean IsPast;
+ string Id;
+}
+struct BasicPropertyInfo {
+ Address Address;
+ CancelPenalty CancelPenalty;
+ string ConfirmationNumber;
+ string DirectConnect;
+ ContactNumbers ContactNumbers;
+ string ChainCode;
+ string HotelCityCode;
+ string HotelCode;
+ string HotelName;
+ string ServiceCityName;
+}
+struct Address {
+ string AddressLine;
+ string CountryCode;
+}
+struct CancelPenalty {
+ string PolicyCode;
+}
+struct ContactNumbers {
+ ContactNumber ContactNumber;
+}
+struct ContactNumber {
+ string Fax;
+ string Phone;
+}
+struct Customer {
+ Corporate Corporate;
+ CustLoyalty CustLoyalty;
+ ID ID;
+ string ReserveUnderName;
+}
+struct Corporate {
+ string ID;
+}
+struct CustLoyalty {
+ string MembershipID;
+}
+struct ID {
+ string Number;
+}
+struct POS {
+ Source Source;
+}
+struct Source {
+ string RequestorID;
+}
+struct RoomRates {
+ Commission Commission;
+ Rate Rate;
+}
+struct Commission {
+ string _;
+ string Amount;
+ boolean NonCommission;
+ string Percent;
+}
+struct Rate {
+ AdditionalGuestAmounts AdditionalGuestAmounts;
+ HotelRateDescripton HotelRateDescripton;
+ HotelTotalPricing HotelTotalPricing;
+ RateAccessCodeBooked RateAccessCodeBooked;
+ string RateAccessCodeRequested;
+ string Amount;
+ string CurrencyCode;
+ string DCS_AuxRateCode;
+ string RoomTypeCode;
+}
+struct AdditionalGuestAmounts {
+ string NumCribs;
+ string NumExtraPersons;
+ string NumRollaways;
+}
+struct HotelRateDescripton {
+ RateDescriptions RateDescriptions;
+ string CancelationsPolicy;
+ string GuaranteePolicy;
+ string DespositPolicy;
+ string LateArrivalPolicy;
+ Additionals Additionals;
+}
+struct RateDescriptions {
+ RateDescription RateDescription;
+}
+struct RateDescription {
+ string _;
+ string Id;
+}
+struct Additionals {
+ Additional Additional;
+}
+struct Additional {
+ string _;
+ string Id;
+}
+struct HotelTotalPricing {
+ TotalTax TotalTax;
+ TotalSurcharge TotalSurcharge;
+ ApproximateTotal ApproximateTotal;
+ RateChange RateChange;
+ Disclaimer Disclaimer;
+}
+struct TotalTax {
+ Tax Tax;
+ string Amount;
+}
+struct Tax {
+ string _;
+ string Id;
+}
+struct TotalSurcharge {
+ Surcharge Surcharge;
+ string Amount;
+}
+struct Surcharge {
+ string _;
+ string Id;
+}
+struct ApproximateTotal {
+ string AmountAndCurrency;
+}
+struct RateChange {
+ string Id;
+ string Amount;
+ string Effective;
+ string Surcharge;
+ string Tax;
+}
+struct Disclaimer {
+ string _;
+ string Id;
+}
+struct RateAccessCodeBooked {
+ string ClientIdentificationCode;
+ string RateAccessCode;
+ string CategoryTypeCode;
+}
+struct SpecialPrefs {
+ string Text;
+}
+struct TimeSpan {
+ string Duration;
+ date End;
+ date Start;
+}
+struct Insurance {
+ InsuranceDetails InsuranceDetails;
+ string SegmentNumber;
+ string Status;
+ string Type;
+ boolean IsPast;
+ string Id;
+}
+struct InsuranceDetails {
+ string ConfirmationNumber;
+ Coverage Coverage;
+ DestinationLocation DestinationLocation;
+ OriginLocation OriginLocation;
+ Payment Payment;
+ PersonName PersonName;
+ string Text;
+ Vendor Vendor;
+ string CurrencyCode;
+ date End;
+ string NumPolicies;
+ string PlanType;
+ string PremiumAmount;
+ string PurchaseDate;
+ date Start;
+ string StatusCode;
+}
+struct Coverage {
+ string Amount;
+ string Type;
+}
+struct DestinationLocation {
+ string LocationCode;
+}
+struct OriginLocation {
+ string LocationCode;
+}
+struct Payment {
+ string Form;
+}
+struct PersonName {
+ string GivenName;
+ string Surname;
+}
+struct Vendor {
+ string Code;
+ string CompanyShortName;
+}
+struct MiscSegment {
+ OriginLocation OriginLocation;
+ string Text;
+ Vendor Vendor;
+ string DayOfWeekInd;
+ date DepartureDateTime;
+ string LinkCode;
+ string NumberInParty;
+ string SegmentNumber;
+ string Status;
+ string Type;
+ boolean IsPast;
+ string Id;
+}
+struct OriginLocation {
+ string LocationCode;
+ string LocationName;
+}
+struct Vendor {
+ string Code;
+}
+struct Rail {
+ string ConfirmationNumber;
+ DestinationLocation DestinationLocation;
+ string IssueDate;
+ OriginLocation OriginLocation;
+ ServiceInformation ServiceInformation;
+ SNCF_Information SNCF_Information;
+ string SpaceReserved;
+ string Text;
+ string TicketControlNumber;
+ Train Train;
+ Vendor Vendor;
+ string DayOfWeekInd;
+ string LinkCode;
+ string MergedSegmentInd;
+ string NumberInParty;
+ string ResBookDesigCode;
+ string SegmentNumber;
+ string Status;
+ string Type;
+ boolean IsPast;
+ string Id;
+}
+struct DestinationLocation {
+ date ArrivalDate;
+ time ArrivalTime;
+ string LocationName;
+ string Point;
+ string LocationCode;
+}
+struct OriginLocation {
+ date DepartureDate;
+ time DepartureTime;
+ string LocationName;
+ string Point;
+ string LocationCode;
+}
+struct ServiceInformation {
+ string Text;
+}
+struct SNCF_Information {
+ string Text;
+}
+struct Train {
+ string Number;
+}
+struct Vendor {
+ string Code;
+}
+struct Seats {
+ Seat Seat;
+}
+struct Seat {
+ FlightSegment FlightSegment;
+ string Changed;
+ string NameNumber;
+ string Number;
+ string SegmentNumber;
+ string SegmentStatus;
+ string SmokingPreference;
+ string Status;
+ string Type;
+ string TypeTwo;
+ string Id;
+}
+struct FlightSegment {
+ DestinationLocation DestinationLocation;
+ OriginLocation OriginLocation;
+}
+struct DestinationLocation {
+ string LocationCode;
+}
+struct OriginLocation {
+ string LocationCode;
+}
+struct Surface {
+ string ArrivalDepartureIdentifier;
+ FlightSegment FlightSegment;
+ OriginLocation OriginLocation;
+ string POS;
+ string Text;
+ Vendor Vendor;
+ string Id;
+ date DepartureDateTime;
+ string NumberInParty;
+ string SegmentNumber;
+ string Status;
+ string Type;
+ boolean IsPast;
+}
+struct FlightSegment {
+ DestinationLocation DestinationLocation;
+ MarketingAirline MarketingAirline;
+ OriginLocation OriginLocation;
+ string DepartureDateTime;
+ string FlightNumber;
+}
+struct DestinationLocation {
+ string LocationCode;
+}
+struct MarketingAirline {
+ string Code;
+ string FlightNumber;
+}
+struct OriginLocation {
+ string LocationCode;
+}
+struct OriginLocation {
+ string LocationCode;
+}
+struct Vendor {
+ string Code;
+}
+struct Tour {
+ TourDetails TourDetails;
+ string Id;
+ string DayOfWeekInd;
+ date DepartureDateTime;
+ string LinkCode;
+ string MergedSegmentInd;
+ string NumberInParty;
+ string SegmentNumber;
+ string Status;
+ string Type;
+ boolean IsPast;
+}
+struct TourDetails {
+ string ConfirmationNumber;
+ Duration Duration;
+ string Extensions;
+ string Features;
+ HotelInformation HotelInformation;
+ string Location;
+ string Meals;
+ string Options;
+ Price Price;
+ ServiceInformation ServiceInformation;
+ string Text;
+ VehicleInformation VehicleInformation;
+ string LocationCode;
+ string Name;
+ string Number;
+ string ServiceCityName;
+ string Vendor;
+}
+struct Duration {
+ string NumDays;
+}
+struct HotelInformation {
+ Room Room;
+}
+struct Room {
+ string OccupancyCode;
+ string Type;
+}
+struct Price {
+ string Amount;
+}
+struct ServiceInformation {
+ string Text;
+}
+struct VehicleInformation {
+ string Text;
+}
+struct Vehicle {
+ string ConfirmationNumber;
+ string DirectConnect;
+ POS POS;
+ VehRentalCore VehRentalCore;
+ VehVendorAvail VehVendorAvail;
+ string Id;
+ string DayOfWeekInd;
+ string LinkCode;
+ string MergedSegmentInd;
+ string SegmentNumber;
+ string Status;
+ boolean IsPast;
+}
+struct POS {
+ Source Source;
+}
+struct Source {
+ string RequestorID;
+}
+struct VehRentalCore {
+ DropOffLocationDetails DropOffLocationDetails;
+ FlightSegment FlightSegment;
+ LocationDetails LocationDetails;
+ string PickUpDateTime;
+ string PickUpDay;
+ string ReturnDateTime;
+}
+struct DropOffLocationDetails {
+ string LocationCode;
+}
+struct FlightSegment {
+ MarketingAirline MarketingAirline;
+ string FlightNumber;
+}
+struct MarketingAirline {
+ string Code;
+ string FlightNumber;
+}
+struct LocationDetails {
+ ContactNumbers ContactNumbers;
+ string ExtendedLocationCode;
+ string LocationCode;
+ string LocationName;
+}
+struct ContactNumbers {
+ ContactNumber ContactNumber;
+}
+struct ContactNumber {
+ string Fax;
+ string Phone;
+}
+struct VehVendorAvail {
+ VehResCore VehResCore;
+ Vendor Vendor;
+}
+struct VehResCore {
+ CollectionDeliveryInfo CollectionDeliveryInfo;
+ GuaranteePrepaid GuaranteePrepaid;
+ PricedEquip PricedEquip;
+ RentalRate RentalRate;
+ VehicleCharges VehicleCharges;
+}
+struct CollectionDeliveryInfo {
+ CollectionInfo CollectionInfo;
+ DeliveryInfo DeliveryInfo;
+}
+struct CollectionInfo {
+ Address Address;
+ ContactNumbers ContactNumbers;
+ string SiteID;
+ string SiteName;
+}
+struct Address {
+ string AddressLine;
+ string CityName;
+ string CountryCode;
+ string PostalCode;
+ StateCountyProv StateCountyProv;
+ string StreetNmbr;
+}
+struct StateCountyProv {
+ string StateCode;
+}
+struct ContactNumbers {
+ ContactNumber ContactNumber;
+}
+struct ContactNumber {
+ string Phone;
+}
+struct DeliveryInfo {
+ Address Address;
+ string CollectionFee;
+ ContactNumbers ContactNumbers;
+ string Text;
+ string SiteID;
+ string SiteName;
+}
+struct Address {
+ string AddressLine;
+ string CityName;
+ string CountryCode;
+ string PostalCode;
+ StateCountyProv StateCountyProv;
+ string StreetNmbr;
+}
+struct StateCountyProv {
+ string StateCode;
+}
+struct ContactNumbers {
+ ContactNumber ContactNumber;
+}
+struct ContactNumber {
+ string Phone;
+}
+struct GuaranteePrepaid {
+ CancellationRefundAmount CancellationRefundAmount;
+ string Amount;
+ string AmountPercentage;
+ string CurrencyCode;
+ string Ind;
+}
+struct CancellationRefundAmount {
+ string _;
+ string NumDays;
+}
+struct PricedEquip {
+ Equipment Equipment;
+}
+struct Equipment {
+ string EquipType;
+ string Quantity;
+ string SpecialEquip;
+ string SpecialEquipConfirmed;
+}
+struct RentalRate {
+ Billing Billing;
+ Client Client;
+ Corporate Corporate;
+ CustLoyalty CustLoyalty;
+ InvoiceRemarks InvoiceRemarks;
+ Remarks Remarks;
+ string ReserveUnderName;
+ ServiceInformation ServiceInformation;
+ TourCode TourCode;
+ VehicleTypes VehicleTypes;
+ Voucher Voucher;
+ string Changed;
+ string GuaranteedQuoted;
+ string RateCode;
+ string STM_RatePlan;
+}
+struct Billing {
+ string Number;
+ string Reference;
+}
+struct Client {
+ string ID;
+}
+struct Corporate {
+ string ID;
+}
+struct CustLoyalty {
+ string MembershipID;
+}
+struct InvoiceRemarks {
+ string Text;
+}
+struct Remarks {
+ string Text;
+}
+struct ServiceInformation {
+ string Text;
+}
+struct TourCode {
+ string Text;
+}
+struct VehicleTypes {
+ string VehType;
+ string UpgradedVehType;
+}
+struct Voucher {
+ string BillingNumber;
+ string Format;
+ string ID;
+ string Type;
+}
+struct VehicleCharges {
+ VehicleCharge VehicleCharge;
+}
+struct VehicleCharge {
+ string Amount;
+ ChargeDetails ChargeDetails;
+ Commission Commission;
+ Mileage Mileage;
+ string DropOffCharge;
+ string GuaranteeInd;
+}
+struct ChargeDetails {
+ ApproximateTotalCharge ApproximateTotalCharge;
+}
+struct ApproximateTotalCharge {
+ string Amount;
+ string MileageAllowance;
+ string NumDays;
+ string NumHours;
+ string RateType;
+ string TotalMandatoryCharges;
+}
+struct Commission {
+ string Amount;
+ string Percent;
+}
+struct Mileage {
+ string CurrencyCode;
+ string ExtraMileageCharge;
+ string UnitOfMeasure;
+}
+struct Vendor {
+ string Code;
+ string CompanyShortName;
+}
+struct Ancillaries {
+ AncillaryService AncillaryService;
+}
+struct AncillaryService {
+ string CommercialName;
+ string RficCode;
+ string RficSubcode;
+ string EMDNumber;
+ string EMDCoupon;
+ string SSRCode;
+ string ProductText;
+ string OwningCarrierCode;
+ string SsimCode;
+ string Vendor;
+ string EMDType;
+ EquivalentPrice EquivalentPrice;
+ TTLPrice TTLPrice;
+ string PortionOfTravelIndicator;
+ OriginalBasePrice OriginalBasePrice;
+ string PassengerTypeCode;
+ string BoardPoint;
+ string OffPoint;
+ boolean TaxesIncluded;
+ Taxes Taxes;
+ TicketCouponNumberAssociation TicketCouponNumberAssociation;
+ TotalOriginalBasePrice TotalOriginalBasePrice;
+ TotalEquivalentPrice TotalEquivalentPrice;
+ TotalTTLPrice TotalTTLPrice;
+ TotalTaxes TotalTaxes;
+ string FrequentFlyerTier;
+ string BookingSource;
+ string FeeWaiveReason;
+ string FulfillmentType;
+ string AaPayOriginalSeat;
+ string PdcSeat;
+ string EquipmentType;
+ string AaPayOptionalStatus;
+ dateTime TTYConfirmationTimestamp;
+ dateTime PurchaseTimestamp;
+ string BrandedFareId;
+ string GroupCode;
+ string TourCode;
+ string TicketUsedForEMDPricing;
+ EMDConsummedAtIssuance EMDConsummedAtIssuance;
+ TaxExemption TaxExemption;
+ string PresentTo;
+ string AtCity;
+ string Endorsements;
+ StationIndicator StationIndicator;
+ string ServiceCity;
+ string ServiceCityDestination;
+ RuleSet RuleSet;
+ Segment Segment;
+ TravelPortions TravelPortions;
+ string id;
+ string SequenceNumber;
+ string NameNumber;
+ string SegmentNumber;
+ string NumberOfItems;
+ string ActionCode;
+ string SegmentIndicator;
+ string FirstTravelDate;
+ string LastTravelDate;
+ string BookingIndicator;
+ string RefundIndicator;
+ string CommisionIndicator;
+ string InterlineIndicator;
+ string FeeApplicationIndicator;
+ string RefundFormIndicator;
+ string FareGuaranteedIndicator;
+ string ServiceChargeIndicator;
+ string AdvancePurchaseIndicator;
+ string TaxIndicator;
+ string TicketingIndicator;
+ string EmdPaperIndicator;
+ string SeatRequestTransactionID;
+}
+struct EquivalentPrice {
+ decimal Price;
+ string Currency;
+}
+struct TTLPrice {
+ decimal Price;
+ string Currency;
+}
+struct OriginalBasePrice {
+ decimal Price;
+ string Currency;
+}
+struct Taxes {
+ Tax Tax;
+}
+struct Tax {
+ decimal TaxAmount;
+ string TaxCode;
+}
+struct TicketCouponNumberAssociation {
+ short TicketCouponNumber;
+ string TicketReferenceNumber;
+}
+struct TotalOriginalBasePrice {
+ decimal Price;
+ string Currency;
+}
+struct TotalEquivalentPrice {
+ decimal Price;
+ string Currency;
+}
+struct TotalTTLPrice {
+ decimal Price;
+ string Currency;
+}
+struct TotalTaxes {
+ Tax Tax;
+}
+struct Tax {
+ decimal TaxAmount;
+ string TaxCode;
+}
+string EMDConsummedAtIssuance
+string TaxExemption
+string StationIndicator
+struct RuleSet {
+ string RuleName;
+ Deal Deal;
+ unsignedLong RuleId;
+}
+struct Deal {
+ decimal Percentage;
+ Amount Amount;
+ anonymous663 type;
+}
+struct Amount {
+ decimal _;
+ string currency;
+}
+string anonymous663
+struct Segment {
+ string AirlineCode;
+ string FlightNumber;
+ string ClassOfService;
+ date DepartureDate;
+ string BoardPoint;
+ string OffPoint;
+ string EquipmentType;
+ string ETicketNumber;
+ string ETicketCoupon;
+ string EMDNumber;
+ string EMDCoupon;
+ string id;
+ anonymous665 sequence;
+}
+integer anonymous665
+struct TravelPortions {
+ TravelPortion TravelPortion;
+}
+struct TravelPortion {
+ string AirlineCode;
+ string FlightNumber;
+ string ClassOfService;
+ date DepartureDate;
+ string BoardPoint;
+ string OffPoint;
+ string EquipmentType;
+ string ETicketNumber;
+ string ETicketCoupon;
+ string EMDNumber;
+ string EMDCoupon;
+ string id;
+ anonymous668 sequence;
+ boolean advisory;
+}
+integer anonymous668
+struct Ticketing {
+ PersonName PersonName;
+ string eTicketNumber;
+ string RPH;
+ string TicketTimeLimit;
+ string Id;
+ string Status;
+}
+struct PersonName {
+ string _;
+ string NameNumber;
+}
+struct ItineraryRef {
+ string Header;
+ Source Source;
+ TravelPolicy TravelPolicy;
+ string AccountingCity;
+ string AccountingCode;
+ boolean AirExtras;
+ string CustomerIdentifier;
+ string ID;
+ string InhibitCode;
+ string OfficeStationCode;
+ string OtherSystemID;
+ string PartitionID;
+ string PrimeHostID;
+ string TicketingCarrier;
+ string PhaseIVIndicator;
+}
+struct Source {
+ string AAA_PseudoCityCode;
+ string CreateDateTime;
+ string CreationAgent;
+ string HomePseudoCityCode;
+ string PseudoCityCode;
+ string ReceivedFrom;
+ string LastUpdateDateTime;
+ string SequenceNumber;
+}
+struct TravelPolicy {
+ string _;
+ string Id;
+}
+struct PayInfo {
+ PersonName PersonName;
+ string Text;
+ string FieldTagID;
+ string LinkSubkey;
+ string SectionID;
+ string SecurityIndicator;
+ string Id;
+}
+struct PersonName {
+ string _;
+ string NameNumber;
+}
+struct QueueInfo {
+ Placement Placement;
+}
+struct Placement {
+ string _;
+ string RPH;
+ string Id;
+}
+struct RemarkInfo {
+ Remark Remark;
+}
+struct Remark {
+ string Text;
+ PersonName PersonName;
+ string Code;
+ string RPH;
+ string SegmentNumber;
+ string Type;
+ string Id;
+}
+struct PersonName {
+ string _;
+ string NameNumber;
+}
+struct SpecialServiceInfo {
+ Service Service;
+ string RPH;
+ string Type;
+ string Id;
+}
+struct Service {
+ Airline Airline;
+ PersonName PersonName;
+ string Text;
+ string SSR_Code;
+ string SSR_Type;
+}
+struct Airline {
+ string Code;
+}
+struct PersonName {
+ string _;
+ string NameNumber;
+}
+struct OpenReservationElements {
+}
+struct CorporateIDInfo {
+ string Number;
+ string Name;
+ string primeHost;
+ string prefix;
+}
+struct VCR {
+ TicketingDocument TicketingDocument;
+}
+struct TicketingDocument {
+ ServiceCoupon ServiceCoupon;
+ string accountingCode;
+ string checkDigit;
+ string formNumber;
+ string number;
+ string serialNumber;
+ string type;
+}
+struct ServiceCoupon {
+ string ClassOfService;
+ string StartLocation;
+ string StartDateTime;
+ string EndLocation;
+ string CurrentStatus;
+ string coupon;
+}
+string time
+string dateOrTime
+string date
+date fullDate
+gYearMonth expireDate
+string dateTime
+dateTime fullDateTime
+string shortTime
+time fullTime
+string AssociationMatrixID
+struct AssociationMatrix {
+ string Name;
+ Parent Parent;
+ Child Child;
+ AssociationMatrixID elementId;
+}
+struct Parent {
+ AssociationMatrixID ref;
+ string newRef;
+}
+struct Child {
+ AssociationMatrixID ref;
+ string newRef;
+ string key;
+ string value;
+}
+struct AssociationMatrices {
+ AssociationMatrix AssociationMatrix;
+}
+base64Binary CryptoBinary
+struct SignatureType {
+ SignedInfoType SignedInfo;
+ SignatureValueType SignatureValue;
+ KeyInfoType KeyInfo;
+ ObjectType Object;
+ ID Id;
+}
+struct SignatureValueType {
+ base64Binary _;
+ ID Id;
+}
+struct SignedInfoType {
+ CanonicalizationMethodType CanonicalizationMethod;
+ SignatureMethodType SignatureMethod;
+ ReferenceType Reference;
+ ID Id;
+}
+struct CanonicalizationMethodType {
+ <anyXML> any;
+ anyURI Algorithm;
+}
+struct SignatureMethodType {
+ HMACOutputLengthType HMACOutputLength;
+ <anyXML> any;
+ anyURI Algorithm;
+}
+struct ReferenceType {
+ TransformsType Transforms;
+ DigestMethodType DigestMethod;
+ DigestValueType DigestValue;
+ ID Id;
+ anyURI URI;
+ anyURI Type;
+}
+struct TransformsType {
+ TransformType Transform;
+}
+struct TransformType {
+ <anyXML> any;
+ string XPath;
+ anyURI Algorithm;
+}
+struct DigestMethodType {
+ <anyXML> any;
+ anyURI Algorithm;
+}
+base64Binary DigestValueType
+struct KeyInfoType {
+ string KeyName;
+ KeyValueType KeyValue;
+ RetrievalMethodType RetrievalMethod;
+ X509DataType X509Data;
+ PGPDataType PGPData;
+ SPKIDataType SPKIData;
+ string MgmtData;
+ <anyXML> any;
+ ID Id;
+}
+struct KeyValueType {
+ DSAKeyValueType DSAKeyValue;
+ RSAKeyValueType RSAKeyValue;
+ <anyXML> any;
+}
+struct RetrievalMethodType {
+ TransformsType Transforms;
+ anyURI URI;
+ anyURI Type;
+}
+struct X509DataType {
+ X509IssuerSerialType X509IssuerSerial;
+ base64Binary X509SKI;
+ string X509SubjectName;
+ base64Binary X509Certificate;
+ base64Binary X509CRL;
+ <anyXML> any;
+}
+struct X509IssuerSerialType {
+ string X509IssuerName;
+ integer X509SerialNumber;
+}
+struct PGPDataType {
+ base64Binary PGPKeyID;
+ base64Binary PGPKeyPacket;
+ <anyXML> any;
+}
+struct SPKIDataType {
+ base64Binary SPKISexp;
+ <anyXML> any;
+}
+struct ObjectType {
+ <anyXML> any;
+ ID Id;
+ string MimeType;
+ anyURI Encoding;
+}
+struct ManifestType {
+ ReferenceType Reference;
+ ID Id;
+}
+struct SignaturePropertiesType {
+ SignaturePropertyType SignatureProperty;
+ ID Id;
+}
+struct SignaturePropertyType {
+ <anyXML> any;
+ anyURI Target;
+ ID Id;
+}
+integer HMACOutputLengthType
+struct DSAKeyValueType {
+ CryptoBinary P;
+ CryptoBinary Q;
+ CryptoBinary G;
+ CryptoBinary Y;
+ CryptoBinary J;
+ CryptoBinary Seed;
+ CryptoBinary PgenCounter;
+}
+struct RSAKeyValueType {
+ CryptoBinary Modulus;
+ CryptoBinary Exponent;
+}
+NMTOKEN anonymous729
+NMTOKEN anonymous730
+struct Envelope {
+ Header Header;
+ Body Body;
+ <anyXML> any;
+}
+struct Header {
+ <anyXML> any;
+}
+struct Body {
+ <anyXML> any;
+}
+boolean anonymous734
+list encodingStyle {anyURI}
+struct Fault {
+ QName faultcode;
+ string faultstring;
+ anyURI faultactor;
+ detail detail;
+}
+struct detail {
+ <anyXML> any;
+}
+NCName anonymous738
+struct Manifest {
+ Reference Reference;
+ <anyXML> any;
+ ID id;
+ non-empty-string version;
+}
+struct Reference {
+ Schema Schema;
+ Description Description;
+ <anyXML> any;
+ ID id;
+ anonymous729 type;
+ anyURI href;
+ anyURI role;
+}
+struct Schema {
+ anyURI location;
+ non-empty-string version;
+}
+struct MessageHeader {
+ From From;
+ To To;
+ non-empty-string CPAId;
+ non-empty-string ConversationId;
+ Service Service;
+ non-empty-string Action;
+ MessageData MessageData;
+ anyType DuplicateElimination;
+ Description Description;
+ <anyXML> any;
+ ID id;
+ non-empty-string version;
+}
+struct Service {
+ non-empty-string _;
+ non-empty-string type;
+}
+struct MessageData {
+ non-empty-string MessageId;
+ string Timestamp;
+ non-empty-string RefToMessageId;
+ dateTime TimeToLive;
+}
+struct SyncReply {
+ <anyXML> any;
+ anyURI actor;
+ ID id;
+ non-empty-string version;
+}
+struct MessageOrder {
+ sequenceNumber.type SequenceNumber;
+ <anyXML> any;
+ ID id;
+ non-empty-string version;
+}
+struct AckRequested {
+ <anyXML> any;
+ anyURI actor;
+ boolean signed;
+ ID id;
+ non-empty-string version;
+}
+struct Acknowledgment {
+ string Timestamp;
+ non-empty-string RefToMessageId;
+ From From;
+ Reference Reference;
+ <anyXML> any;
+ anyURI actor;
+ ID id;
+ non-empty-string version;
+}
+struct ErrorList {
+ Error Error;
+ <anyXML> any;
+ severity.type highestSeverity;
+ ID id;
+ non-empty-string version;
+}
+struct Error {
+ Description Description;
+ <anyXML> any;
+ ID id;
+ anyURI codeContext;
+ non-empty-string errorCode;
+ severity.type severity;
+ non-empty-string location;
+}
+struct StatusResponse {
+ non-empty-string RefToMessageId;
+ string Timestamp;
+ <anyXML> any;
+ messageStatus.type messageStatus;
+ ID id;
+ non-empty-string version;
+}
+struct StatusRequest {
+ non-empty-string RefToMessageId;
+ <anyXML> any;
+ ID id;
+ non-empty-string version;
+}
+struct sequenceNumber.type {
+ nonNegativeInteger _;
+ status.type status;
+}
+NMTOKEN status.type
+NMTOKEN messageStatus.type
+string non-empty-string
+NMTOKEN severity.type
+struct PartyId {
+ non-empty-string _;
+ non-empty-string type;
+}
+struct To {
+ PartyId PartyId;
+ non-empty-string Role;
+}
+struct From {
+ PartyId PartyId;
+ non-empty-string Role;
+}
+struct Description {
+ non-empty-string _;
+ language lang;
+}
+struct Security {
+ UsernameToken UsernameToken;
+ string SabreAth;
+ string BinarySecurityToken;
+}
+struct UsernameToken {
+ string Username;
+ string Password;
+ string NewPassword;
+ string Organization;
+ string Domain;
+}
+struct SabreHeader {
+ Service Service;
+ Identification Identification;
+ ResultSummary ResultSummary;
+ Security Security;
+ Traces Traces;
+ Diagnostics Diagnostics;
+}
+struct DiagnosticResults {
+ <anyXML> any;
+}
+struct Diagnostics {
+ DiagnosticLevels Level;
+ Text.Long Data;
+ DiagnosticResults Diagnostic;
+}
+struct Identification {
+ PseudoCityCodeOrOAC CustomerID;
+ Text.Short CustomerAppID;
+ TrackingID ConversationID;
+ Identifier MessageID;
+ dateTime TimeStamp;
+}
+struct Identifier.System {
+ Identifier _;
+ Identifier instance;
+ Identifier cluster;
+ Identifier host;
+ Identifier uri;
+}
+struct Message.Condition {
+ Text.Long _;
+ string code;
+}
+struct ProblemBase {
+ ErrorType type;
+ CompletionCodes status;
+ dateTime timeStamp;
+}
+struct ProblemSummary {
+ Identifier.System Source;
+ Identifier.System ReportingSystem;
+ Message.Condition Message;
+ Text.Short ShortText;
+ ErrorType type;
+ CompletionCodes status;
+ dateTime timeStamp;
+}
+struct ResultSummary {
+ EmptyElement Success;
+ ProblemSummary Error;
+}
+struct Security {
+ Text.Long SecurityToken;
+}
+struct Service {
+ Text.Short _;
+ Text.Short operation;
+ Text.Short version;
+ nonNegativeInteger ttl;
+}
+struct Traces {
+ TraceRecord Trace;
+}
+struct TraceRecord {
+ Identifier _;
+ Text.Long key;
+ dateTime start;
+ dateTime end;
+ Identifier appInstance;
+ Identifier cluster;
+ Identifier host;
+ anyURI targetURI;
+ TraceRole role;
+}
+struct TrackingID {
+ Identifier _;
+ integer seq;
+}
+token CompletionCodes
+string DiagnosticLevels
+string EmptyElement
+NMTOKEN ErrorType
+string Identifier
+string PseudoCityCodeOrOAC
+string Text.Long
+string Text.Short
+NMTOKEN TraceRole
+struct STL_Payload {
+ ApplicationResults ApplicationResults;
+ anonymous788 version;
+}
+string anonymous788
+struct Results {
+}
+struct ApplicationResults {
+ ProblemInformation Success;
+ ProblemInformation Error;
+ ProblemInformation Warning;
+ CompletionCodes status;
+}
+struct ProblemInformation {
+ SystemSpecificResults SystemSpecificResults;
+ ErrorType type;
+ dateTime timeStamp;
+}
+struct SystemSpecificResults {
+ HostCommand HostCommand;
+ Message.Condition Message;
+ Text.Short ShortText;
+ Text.Long Element;
+ Identifier RecordID;
+ anyURI DocURL;
+ dateTime timeStamp;
+}
+struct HostCommand {
+ Text.Long _;
+ string LNIATA;
+}
